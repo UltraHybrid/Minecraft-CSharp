@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics;
 
 namespace tmp
@@ -12,7 +13,7 @@ namespace tmp
         public Matrix4 ViewProjectionMatrix = Matrix4.Identity;
         public Matrix4 ModelViewProjectionMatix = Matrix4.Identity;
 
-        public abstract int[] GetVerts();
+        public abstract List<Vector3> GetVertexes();
         public abstract int[] GetIndices(int offset = 0);
         public abstract Vector3[] GetColorData();
         public abstract void CalculateModelMatrix();

@@ -563,11 +563,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\tmp.csproj",
+      "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
       "projectName": "tmp",
-      "projectPath": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\tmp.csproj",
+      "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
       "packagesPath": "C:\\Users\\Ultra\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\obj\\",
+      "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Ultra\\AppData\\Roaming\\NuGet\\NuGet.Config",

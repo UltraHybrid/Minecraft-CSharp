@@ -8,10 +8,6 @@ namespace tmp
         {
             var gameWindow = new GameWindow();
             var r = new Window();
-
-
         }
     }
-
-
 }
