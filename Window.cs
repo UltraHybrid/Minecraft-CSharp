@@ -13,7 +13,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window() : base(900, 600, new GraphicsMode(32, 24, 0, 16))
+        public Window() : base(800, 600, new GraphicsMode(new ColorFormat(8), 3, 3, 4), "Minecraft", GameWindowFlags.Default, DisplayDevice.Default, 3, 0, GraphicsContextFlags.Default)
         {
             VSync = VSyncMode.Off;
         }
@@ -21,8 +21,6 @@ namespace tmp
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
-            Title = "Minecraft";
             
             InitShaders();
             InitCubes();
@@ -54,6 +52,7 @@ namespace tmp
                 case Key.F:
                     for (var i = 0; i < 10; i++)
                         AddCube(new Cube(new Vector3(i-3, 3, -c)));
+                    OnUpdateFrame1();
                     c++;
                     
 
@@ -159,8 +158,8 @@ namespace tmp
         private void InitCubes()
         {
             //for (var i = 0; i < 3; i++)
-            for (var i = -200; i < 200; i++)
-            for (var j = -200; j < 200; j++)
+            for (var i = -350; i < 350; i++)
+            for (var j = -350; j < 350; j++)
             {
                 //var j = 0;
                 _cubes.Add(new Cube(new Vector3(i * 2, -2, j)));
@@ -174,7 +173,7 @@ namespace tmp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            OnUpdateFrame1();
+            //OnUpdateFrame1();
         }
 
         private void OnUpdateFrame1()
@@ -194,7 +193,7 @@ namespace tmp
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _iboId);
             GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * _indices.Count, _indices.ToArray(), BufferUsageHint.StaticDraw);
 
-
+            Console.WriteLine(_indices.Count + " cubes: " + _cubes.Count);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
         }

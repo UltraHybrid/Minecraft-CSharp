@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj": {}
+    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test without sfml\\tmp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj": {
+    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test without sfml\\tmp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+        "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test without sfml\\tmp.csproj",
         "projectName": "tmp",
-        "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+        "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test without sfml\\tmp.csproj",
         "packagesPath": "C:\\Users\\Ultra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\obj\\",
+        "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test without sfml\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ultra\\AppData\\Roaming\\NuGet\\NuGet.Config",
