@@ -6,8 +6,10 @@ namespace tmp
     {
         static void Main(string[] args)
         {
-            var gameWindow = new GameWindow();
-            var r = new Window();
+            using (var game = new Window())
+            {
+                game.Run(10, 200);
+            }
         }
     }
 }

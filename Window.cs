@@ -1,78 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
-using SFML.Graphics;
-using SFML.Window;
+using OpenTK.Input;
 using Vector3 = OpenTK.Vector3;
+using OpenTKUtilities = OpenTK.Platform.Utilities;
 
 namespace tmp
 {
-    internal sealed class Window : RenderWindow
+    internal sealed class Window : GameWindow
     {
-        public Window() : base(new VideoMode(800, 600), "First", Styles.Default, new ContextSettings {DepthBits = 2, AntialiasingLevel = 2})
+        public Window() : base(900, 600, new GraphicsMode(32, 24, 0, 16))
         {
-            GL.Enable(EnableCap.DepthTest);
-                //SetFramerateLimit(240);
-            SetVerticalSyncEnabled(false);
-            Resized += OnResized;
-            KeyPressed += OnKeyPressed;
-            Closed += OnClose;
-            GL.Viewport(0, 0, (int) Size.X, (int) Size.Y);
+            VSync = VSyncMode.Off;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            
+            Title = "Minecraft";
+            
             InitShaders();
-
-            GL.ClearColor(1f, 1f, 0f, 0.5f);
-
-
             InitCubes();
-            UpdateFrame();
-            while (IsOpen)
-            {
-                DispatchEvents();
-                RenderFrame();
+            InitData();
+            SetMatrix(0f);
+            GL.UseProgram(_shaderProgramId);
+            OnUpdateFrame1();
+            GL.ClearColor(Color.Gray);
+        }
 
-                Display();
+        private int c;
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.W:
+                    _camera.Move(0, 0.1f, 0);
+                    break;
+                case Key.S:
+                    _camera.Move(0, -0.1f, 0);
+                    break;
+                case Key.A:
+                    _camera.Move(-0.1f, 0f, 0);
+                    break;
+                case Key.D:
+                    _camera.Move(0.1f, 0f, 0);
+                    break;
+                case Key.F:
+                    for (var i = 0; i < 10; i++)
+                        AddCube(new Cube(new Vector3(i-3, 3, -c)));
+                    c++;
+                    
+
+                    break;
+            }
+
+            if (e.Key == Key.Escape)
+            {
+                Close();
             }
         }
-        
-        private void OnKeyPressed(object? sender, KeyEventArgs e)
-        {
-            var window = (RenderWindow) sender;
-            switch (e.Code)
-            {
-                case Keyboard.Key.W:
-                    camera.Move(0, 0.1f, 0);
-                    break;
-                case Keyboard.Key.S:
-                    camera.Move(0, -0.1f, 0);
-                    break;
-                case Keyboard.Key.A:
-                    camera.Move(-0.1f, 0f, 0);
-                    break;
-                case Keyboard.Key.D:
-                    camera.Move(0.1f, 0f, 0);
-                    break;
-            }
 
-            if (e.Code == Keyboard.Key.Escape)
-            {
-                window.Close();
-            }
+        protected override void OnResize(EventArgs sizeEventArgs)
+        {
+            base.OnResize(sizeEventArgs);
+            GL.Viewport(0, 0, Size.Width, Size.Height);
+            _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1.0f, 64.0f);
         }
 
-        private void OnResized(object? sender, SizeEventArgs sizeEventArgs)
+        protected override void OnClosed(EventArgs e)
         {
-            GL.Viewport(0, 0, (int) Size.X, (int) Size.Y);
+            base.OnClosed(e);
         }
-
-        private static void OnClose(object? sender, EventArgs eventArgs)
-        {
-            var r = (RenderWindow) sender;
-            r.Close();
-        }
-
 
         private int _shaderProgramId;
         private int _vertexShaderId; 
@@ -128,7 +132,7 @@ namespace tmp
         {
             _modelMatrix = Matrix4.CreateRotationZ(a);
             _viewMatrix = Matrix4.CreateTranslation(-0.5f, -0.5f, -50);
-            _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, Size.X / (float) Size.Y, 0.1f, 500f);
+            _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, Size.Width / (float) Size.Height, 0.1f, 500f);
         }
         private static void LoadShader(string fileName, ShaderType shaderType, int program, out int address)
         {
@@ -149,32 +153,31 @@ namespace tmp
         private Matrix4 _projectionMatrix;
 
 
-        private Camera camera = new Camera();
-        private List<Cube> cubes = new List<Cube>();
+        private readonly Camera _camera = new Camera(new Vector3(3, 0, 5));
+        private readonly List<Cube> _cubes = new List<Cube>();
 
         private void InitCubes()
         {
-            var t = 0;
-            for (var i = -350; i < 350; i++)
-                for(var j = -350; j < 350; j++)
+            //for (var i = 0; i < 3; i++)
+            for (var i = -200; i < 200; i++)
+            for (var j = -200; j < 200; j++)
             {
-                var tmpCube = new Cube(new Vector3(i, -2, j));
-                cubes.Add(tmpCube);
-                _vertexes.AddRange(tmpCube.GetVertexes());
-                _colors.AddRange(tmpCube.GetColorData());
-                _indices.AddRange(tmpCube.GetIndices(t * 8));
-                t++;
+                //var j = 0;
+                _cubes.Add(new Cube(new Vector3(i * 2, -2, j)));
             }
-
-            //_vertexes = cubes.SelectMany(x => x.GetVertexes()).ToList();
-
         }
 
         private List<Vector3> _vertexes = new List<Vector3>();
         private List<Vector3> _colors = new List<Vector3>();
         private List<int> _indices = new List<int>();
 
-        private void UpdateFrame()
+        protected override void OnUpdateFrame(FrameEventArgs e)
+        {
+            base.OnUpdateFrame(e);
+            OnUpdateFrame1();
+        }
+
+        private void OnUpdateFrame1()
         {
             GL.BindVertexArray(_vaoId);
 
@@ -189,46 +192,51 @@ namespace tmp
             GL.EnableVertexAttribArray(_attributeVertexColor);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _iboId);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * _indices.Count, _indices.ToArray(),
-                BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * _indices.Count, _indices.ToArray(), BufferUsageHint.StaticDraw);
 
-            //SetMatrix(0);
-            //GL.UniformMatrix4(_uniformModel, false, ref _modelMatrix);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
         }
 
-
-        private float _counter;
-        
-        private void RenderFrame()
+        private void InitData()
         {
-            GL.Viewport(0, 0, (int) Size.X, (int) Size.Y);
+            var t = 0;
+            foreach (var cube in _cubes)
+            {
+                _vertexes.AddRange(cube.GetVertexes());
+                _colors.AddRange(cube.GetColorData());
+                _indices.AddRange(cube.GetIndices(t * 8));
+                t++;
+            }
+        }
+
+        public void AddCube(Cube cube)
+        {
+            _vertexes.AddRange(cube.GetVertexes());
+            _colors.AddRange(cube.GetColorData());
+            _indices.AddRange(cube.GetIndices(_cubes.Count * 8));
+            _cubes.Add(cube);
+        }
+
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
-            GL.UseProgram(_shaderProgramId);
-            //SetMatrix(_counter / 1000);
-            //_counter++;
-            SetMatrix(1f);
             GL.BindVertexArray(_vaoId);
-            
-            _viewMatrix = camera.GetViewMatrix();
-            _modelMatrix = Matrix4.Identity;
-            
+            SetMatrix(0f);
+            _viewMatrix = _camera.GetViewMatrix();
             GL.UniformMatrix4(_uniformModel, false, ref _modelMatrix);
             GL.UniformMatrix4(_uniformView, false, ref _viewMatrix); 
             GL.UniformMatrix4(_uniformProjection, false, ref _projectionMatrix);
             
-            
             GL.DrawElements(BeginMode.Quads, _indices.Count, DrawElementsType.UnsignedInt, 0);
-            
-            
-            //GL.DrawElements(BeginMode.Quads, indices.Length, DrawElementsType.UnsignedInt, 0);
-            //GL.DrawArrays(PrimitiveType.Quads, 0, 4);
             GL.BindVertexArray(0);
 
             GL.Flush();
+            SwapBuffers();
         }
     }
 }
