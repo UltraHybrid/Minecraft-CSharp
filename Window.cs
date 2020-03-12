@@ -16,7 +16,7 @@ namespace tmp
             "Minecraft OpenGL 4.5",
             GameWindowFlags.Default,
             DisplayDevice.Default,
-            4, 5,
+            4, 1,
             GraphicsContextFlags.ForwardCompatible)
         {
             VSync = VSyncMode.Off;
