@@ -13,11 +13,11 @@ namespace tmp
         public Window() : base(
             1280, 720,
             GraphicsMode.Default,
-            "Minecraft OpenGL 4.5",
+            "Minecraft OpenGL 4.1",
             GameWindowFlags.Default,
             DisplayDevice.Default,
             4, 1,
-            GraphicsContextFlags.ForwardCompatible)
+            GraphicsContextFlags.Default)
         {
             VSync = VSyncMode.Off;
         }
@@ -63,11 +63,11 @@ namespace tmp
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
-            ClearBackground(Color4.Bisque);   
+            ClearBackground(Color4.Aqua);   
             GL.UseProgram(shaderProgram);
             
             GL.DrawArrays(PrimitiveType.Points, 0, 1);
-            GL.PointSize(100);
+            GL.PointSize(1000);
             
             
             
