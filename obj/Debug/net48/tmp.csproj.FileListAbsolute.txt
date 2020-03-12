@@ -6,15 +6,7 @@ C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\tmp.exe
 C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\tmp.pdb
 C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\Microsoft.Win32.SystemEvents.dll
 C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\OpenTK.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\SFML.Graphics.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\SFML.System.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\SFML.Window.dll
 C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\System.Drawing.Common.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\csfml-Audio.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\csfml-Graphics.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\csfml-System.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\csfml-Window.dll
-C:\Users\Ultra\RiderProjects\opengl_c-_test\bin\Debug\net48\openal32.dll
 C:\Users\Ultra\RiderProjects\opengl_c-_test\obj\Debug\net48\tmp.csproj.CopyComplete
 C:\Users\Ultra\RiderProjects\opengl_c-_test\obj\Debug\net48\tmp.exe
 C:\Users\Ultra\RiderProjects\opengl_c-_test\obj\Debug\net48\tmp.pdb
