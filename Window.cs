@@ -54,7 +54,7 @@ namespace tmp
 
         protected override void OnClosed(EventArgs e)
         {
-            OpenTK.Graphics.OpenGL.GL.DeleteVertexArrays(1, ref vertexArray);
+            GL.DeleteVertexArrays(1, ref vertexArray);
             GL.DeleteProgram(shaderProgram);
             
             base.OnClosed(e);

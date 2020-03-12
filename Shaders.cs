@@ -10,7 +10,7 @@ namespace tmp
 
             void main(void)
             {
-                gl_Position = vec4(0.75, 0.75, 0.5, 1.0)
+                gl_Position = vec4(0.75, 0.75, 0.5, 1.0);
             }";
 
         private static string _fragSrc =
