@@ -67,7 +67,7 @@ namespace tmp
             GL.UseProgram(shaderProgram);
             
             GL.DrawArrays(PrimitiveType.Points, 0, 1);
-            GL.PointSize(1000);
+            GL.PointSize(100);
             
             
             

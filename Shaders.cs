@@ -5,15 +5,15 @@ namespace tmp
 {
     public static class Shaders
     {
-        private static string _vertSrc =
+        private const string VertSrc = 
             @"#version 410 core
 
             void main(void)
             {
-                gl_Position = vec4(0.75, 0.75, 0.5, 1.0);
+                gl_Position = vec4(-0.25, 0.25, 0.5, 1.0);
             }";
 
-        private static string _fragSrc =
+        private const string FragSrc = 
             @"#version 410 core
 
             out vec4 outColor;
@@ -26,11 +26,11 @@ namespace tmp
         public static int InitShaders()
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShader, _vertSrc);
+            GL.ShaderSource(vertexShader, VertSrc);
             GL.CompileShader(vertexShader);
 
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragmentShader, _fragSrc);
+            GL.ShaderSource(fragmentShader, FragSrc);
             GL.CompileShader(fragmentShader);
 
             var shaderProgram = GL.CreateProgram();
