@@ -1,6 +1,6 @@
 ﻿namespace tmp
 {
-    public class Game
+    public class RenderObject
     {
         
     }

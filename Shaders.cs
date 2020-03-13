@@ -8,19 +8,25 @@ namespace tmp
         private const string VertSrc = 
             @"#version 410 core
 
+            layout (location = 0) in vec4 position;
+            layout (location = 1) in vec4 color;
+            out vec4 col;            
+
             void main(void)
             {
-                gl_Position = vec4(-0.25, 0.25, 0.5, 1.0);
+                col = color;
+                gl_Position = position;
             }";
 
         private const string FragSrc = 
             @"#version 410 core
 
+            in vec4 col;
             out vec4 outColor;
 
             void main(void)
             {
-                outColor = vec4(1.0, 1.0, 0.0, 1.0);
+                outColor = col;
             }";
 
         public static int InitShaders()

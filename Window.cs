@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
@@ -26,9 +28,27 @@ namespace tmp
         
         private int shaderProgram;
 
-        private int vertexArray; 
+        private int vao;
 
+        private int vbo;
 
+        private int ebo;
+
+        private List<Vector3> t = new List<Vector3>()
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(0, 1, 0),
+            new Vector3(1, 1, 0),
+            new Vector3(1, 0, 0)
+        };
+
+        private int[] i = new[]
+        {
+            0, 1, 2,
+            2, 3, 0
+
+        };
+        
         #endregion
 
 
@@ -41,10 +61,7 @@ namespace tmp
         {
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
-            
-            GL.GenVertexArrays(1, out vertexArray);
-            GL.BindVertexArray(vertexArray);
-
+            InitBuffers();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -54,7 +71,7 @@ namespace tmp
 
         protected override void OnClosed(EventArgs e)
         {
-            GL.DeleteVertexArrays(1, ref vertexArray);
+            GL.DeleteVertexArrays(1, ref vao);
             GL.DeleteProgram(shaderProgram);
             
             base.OnClosed(e);
@@ -66,8 +83,9 @@ namespace tmp
             ClearBackground(Color4.Aqua);   
             GL.UseProgram(shaderProgram);
             
-            GL.DrawArrays(PrimitiveType.Points, 0, 1);
-            GL.PointSize(100);
+            GL.BindVertexArray(vao);
+            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(0);
             
             
             
@@ -78,6 +96,30 @@ namespace tmp
         {
             GL.ClearColor(backgroundColor);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        }
+
+        private void InitBuffers()
+        {
+            GL.GenVertexArrays(1, out vao);
+            GL.BindVertexArray(vao);
+            
+            GL.GenBuffers(1, out vbo);     
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * t.Count, t.ToArray(), BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.EnableVertexAttribArray(0);
+
+            GL.GenBuffers(1, out ebo);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, i.Length * sizeof(int), i, BufferUsageHint.StaticDraw);
+            
+            
+            GL.BindVertexArray(0);
+        }
+        
+        private void UpdateFrame()
+        {
+            
         }
     }
 }
