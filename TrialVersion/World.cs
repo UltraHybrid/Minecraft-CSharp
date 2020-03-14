@@ -8,12 +8,12 @@ namespace tmp.TrialVersion
 {
     public class World : IEnumerable<Chunk>
     {
-        private Chunk[,,] chunks;
-        private const int maxCount = 5;
+        private Chunk[,] chunks;
+        public const int MaxCount = 5;
 
         public World()
         {
-            chunks = new Chunk[maxCount, maxCount, maxCount];
+            chunks = new Chunk[MaxCount, MaxCount];
         }
 
         public IEnumerator<Chunk> GetEnumerator()
@@ -26,24 +26,55 @@ namespace tmp.TrialVersion
             return GetEnumerator();
         }
 
-        private bool CheckBounds(int x, int y, int z)
+        private bool CheckBounds(Point3 position)
         {
-            return 0 <= x && x < maxCount && 0 <= y && y < maxCount && 0 <= z && z < maxCount;
+            var numberX = position.X / Chunk.XLenght;
+            var numberZ = position.Z / Chunk.ZLength;
+            return CheckBounds(numberX, numberZ);
         }
 
-        public Chunk this[int x, int y, int z]
+        private bool CheckBounds(int x, int z)
+        {
+            return 0 <= x && x < MaxCount && 0 <= z && z < MaxCount;
+        }
+
+        public Block this[Point3 position]
         {
             get
             {
-                if (!CheckBounds(x, y, z))
+                if (!CheckBounds(position))
                     throw new ArgumentException();
-                return chunks[x, y, z];
+                var numberX = position.X / Chunk.XLenght;
+                var numberZ = position.Z / Chunk.ZLength;
+                var chunckX = position.X % Chunk.XLenght;
+                var chunckZ = position.Z % Chunk.ZLength;
+                return chunks[numberX, numberZ][new Point3(chunckX, position.Y, chunckZ)];
             }
             set
             {
-                if (!CheckBounds(x, y, z))
+                if (!CheckBounds(position))
                     throw new ArgumentException();
-                chunks[x, y, z] = value;
+                var numberX = position.X / Chunk.XLenght;
+                var numberZ = position.Z / Chunk.ZLength;
+                var chunckX = position.X % Chunk.XLenght;
+                var chunckZ = position.Z % Chunk.ZLength;
+                chunks[numberX, numberZ][new Point3(chunckX, position.Y, chunckZ)] = value;
+            }
+        }
+
+        public Chunk this[int x, int z]
+        {
+            get
+            {
+                if (!CheckBounds(x, z))
+                    throw new ArgumentException();
+                return chunks[x, z];
+            }
+            set
+            {
+                if (!CheckBounds(x, z))
+                    throw new ArgumentException();
+                chunks[x, z] = value;
             }
         }
     }

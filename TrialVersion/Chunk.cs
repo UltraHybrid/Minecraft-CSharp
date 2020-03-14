@@ -8,37 +8,21 @@ namespace tmp.TrialVersion
     public class Chunk : IEnumerable<Block>
     {
         private readonly Block[,,] blocks;
-        private const int xLenght = 16;
-        private const int yLength = 256;
-        private const int zLength = 16;
+        public const int XLenght = 16;
+        public const int YLength = 256;
+        public const int ZLength = 16;
 
         public Chunk()
         {
-            blocks = new Block[xLenght, yLength, zLength];
+            blocks = new Block[XLenght, YLength, ZLength];
         }
 
         public void FillBlocks(BlockItem blockItem)
         {
-            for (var i = 0; i < xLenght; i++)
-            for (var j = 0; j < yLength; j++)
-            for (var k = 0; k < zLength; k++)
-                blocks[i, j, k] = new Block(blockItem);
-        }
-
-        public IEnumerable<Block> GetVisibleBlocks()
-        {
-            for (var i = 0; i < xLenght; i++)
-            for (var j = 0; j < yLength; j++)
-            for (var k = 0; k < zLength; k++)
-            {
-                var block = blocks[i, j, k];
-                for (var x = 0; x < 3; x++)
-                for (var y = 0; y < 3; y++)
-                for (var z = 0; z < 3; z++)
-                    if (x != 1 && y != 1 && z != 1 && CheckBounds(i + x, j + y, k + z) &&
-                        block.BlockItem != BaseBlocks.Empty)
-                        yield return block;
-            }
+            for (var i = 0; i < XLenght; i++)
+            for (var j = 0; j < YLength; j++)
+            for (var k = 0; k < ZLength; k++)
+                blocks[i, j, k] = new Block(blockItem, new Point3(i, j, k));
         }
 
         public IEnumerator<Block> GetEnumerator()
@@ -51,25 +35,27 @@ namespace tmp.TrialVersion
             return GetEnumerator();
         }
 
-        private bool CheckBounds(int x, int y, int z)
+        private bool CheckBounds(Point3 position)
         {
-            return 0 <= x && x < xLenght && 0 <= y && y < yLength && 0 <= z && z < zLength;
+            return 0 <= position.X && position.X < XLenght
+                                   && 0 <= position.Y && position.Y < YLength
+                                   && 0 <= position.Z && position.Z <= ZLength;
         }
 
-        public Block this[int x, int y, int z]
+        public Block this[Point3 position]
         {
             get
             {
-                if (!CheckBounds(x, y, z))
+                if (!CheckBounds(position))
                     throw new ArgumentException();
-                return blocks[x, y, z];
+                return blocks[position.X, position.Y, position.Z];
             }
 
             set
             {
-                if (!CheckBounds(x, y, z))
+                if (!CheckBounds(position))
                     throw new ArgumentException();
-                blocks[x, y, z] = value;
+                blocks[position.X, position.Y, position.Z] = value;
             }
         }
     }
