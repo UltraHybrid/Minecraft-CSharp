@@ -8,12 +8,19 @@ namespace tmp.TrialVersion
 {
     public class World : IEnumerable<Chunk>
     {
-        private Chunk[,] chunks;
+        private readonly Chunk[,] chunks;
         public const int MaxCount = 5;
 
         public World()
         {
             chunks = new Chunk[MaxCount, MaxCount];
+            for (var x = 0; x < MaxCount; x++)
+            for (var z = 0; z < MaxCount; z++)
+            {
+                var chunk = new Chunk();
+                chunk.FillBlocks(BaseBlocks.Dirt);
+                chunks[x, z] = chunk;
+            }
         }
 
         public IEnumerator<Chunk> GetEnumerator()
