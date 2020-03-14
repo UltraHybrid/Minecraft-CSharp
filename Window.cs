@@ -39,7 +39,7 @@ namespace tmp
 
         protected override void OnLoad(EventArgs e)
         {
-            CursorVisible = false;
+            CursorVisible = true;
             shaderProgram = Shaders.InitShaders();
             
             GL.GenVertexArrays(1, out vertexArray);
