@@ -16,7 +16,6 @@
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Program.cs" t="Include" />
-      <e p="RenderObject.cs" t="Include" />
       <e p="Shaders.cs" t="Include" />
       <e p="Texture.cs" t="Include" />
       <e p="tmp.csproj" t="IncludeRecursive" />

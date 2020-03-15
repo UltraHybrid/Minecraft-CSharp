@@ -38,6 +38,10 @@
         "System.Drawing.Common": {
           "target": "Package",
           "version": "[4.7.0, )"
+        },
+        "Veldrid.ImageSharp": {
+          "target": "Package",
+          "version": "[4.7.0, )"
         }
       },
       "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
