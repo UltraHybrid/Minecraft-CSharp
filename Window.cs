@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using OpenTK;
 using OpenTK.Graphics;
 using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
 
 namespace tmp
@@ -22,9 +24,17 @@ namespace tmp
             GraphicsContextFlags.Default)
         {
             VSync = VSyncMode.Off;
+            keys = new Dictionary<Key, bool>();
+            foreach (Key key in Enum.GetValues(typeof(Key)))
+            {
+                keys[key] = false;
+            }
+            camera = new Camera(keys, new Vector3(0f, 0f, 0));
         }
         
         #region Variables
+
+        private Dictionary<Key, bool> keys;
         
         private int shaderProgram;
 
@@ -34,20 +44,19 @@ namespace tmp
 
         private int ebo;
 
-        private List<Vector3> t = new List<Vector3>()
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(0, 1, 0),
-            new Vector3(1, 1, 0),
-            new Vector3(1, 0, 0)
-        };
+        private List<Cube> cubes = new List<Cube>();
 
-        private int[] i = new[]
-        {
-            0, 1, 2,
-            2, 3, 0
+        private readonly Camera camera;
+        private float lastXPos;
+        private float lastYPos;
 
-        };
+        private int modelMatrixAttributeLocation;
+        private int viewMatrixAttributeLocation;
+        private int projectionMatrixAttributeLocation;
+        
+        private Matrix4 modelMatrix;
+        private Matrix4 viewMatrix;
+        private Matrix4 projectionMatrix;
         
         #endregion
 
@@ -55,18 +64,24 @@ namespace tmp
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
+            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width/(float)Height, 0.1f, 500);
         }
 
         protected override void OnLoad(EventArgs e)
         {
+            Mouse.SetPosition(Width / 2f, Height / 2f);
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
+            cubes.Add(new Cube(new Vector3(0, 0, 0)));
             InitBuffers();
+            InitShaderAttributes();
+            InitUniformMatrix();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+            camera.Move((float)e.Time);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -80,17 +95,40 @@ namespace tmp
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
+            GL.Enable(EnableCap.DepthTest);
             ClearBackground(Color4.Aqua);   
             GL.UseProgram(shaderProgram);
+
+            viewMatrix = camera.GetViewMatrix();
+            GL.UniformMatrix4(modelMatrixAttributeLocation, false, ref modelMatrix);
+            GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
+            GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
             
             GL.BindVertexArray(vao);
-            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, 36, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
             
             
             
             SwapBuffers();
         }
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            keys[e.Key] = true;
+        }
+
+        protected override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            keys[e.Key] = false;
+        }
+        
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            Mouse.SetPosition(Width, Height);
+            camera.MouseMove();
+        }
+
 
         private static void ClearBackground(Color4 backgroundColor)
         {
@@ -105,21 +143,30 @@ namespace tmp
             
             GL.GenBuffers(1, out vbo);     
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * t.Count, t.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * cubes[0].GetVertexes().Count, cubes[0].GetVertexes().ToArray(), BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
 
             GL.GenBuffers(1, out ebo);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, i.Length * sizeof(int), i, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, cubes[0].GetIndices().Length * sizeof(int), cubes[0].GetIndices(), BufferUsageHint.StaticDraw);
             
             
             GL.BindVertexArray(0);
         }
-        
-        private void UpdateFrame()
+
+        private void InitShaderAttributes()
         {
-            
+            modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
+            viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
+            projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "projection");
+        }
+
+        private void InitUniformMatrix()
+        {
+            modelMatrix = Matrix4.Identity;
+            viewMatrix = Matrix4.Identity;
+            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, Width/(float)Height, 0.1f, 500);
         }
     }
 }

@@ -18,23 +18,35 @@ namespace tmp
             
             _vertexes = new List<Vector3>
             { 
-                new Vector3(0f, 1f,  0f) + position,
-                new Vector3(1f, 1f,  0f) + position,
-                new Vector3(1f, 1f,  1f) + position,
                 new Vector3(0f, 1f,  1f) + position,
-                new Vector3(0f, 0f, 1f) + position,
-                new Vector3(1f, 0f, 1f) + position,
+                new Vector3(1f, 1f,  1f) + position,
+                new Vector3(1f, 0f,  1f) + position,
+                new Vector3(0f, 0f,  1f) + position,
+                new Vector3(0f, 0f, 0f) + position,
                 new Vector3(1f, 0f, 0f) + position,
-                new Vector3(0f, 0f, 0f) + position, 
+                new Vector3(0f, 1f, 0f) + position,
+                new Vector3(1f, 1f, 0f) + position, 
             };
 
             _indices =  new[]{
-                0, 1, 2, 3,
-                2, 3, 4, 5,
-                1, 2, 5, 6,
-                0, 1, 6, 7,
-                0, 3, 4, 7,
-                4, 5, 6, 7,
+                //front
+                0, 1, 2,
+                2, 3, 0,
+                //bot
+                2, 3, 4,
+                4, 5, 2,
+                //back
+                4, 6, 7,
+                7, 5, 4,
+                //left
+                0, 3, 4,
+                4, 6, 0,
+                //right
+                1, 7, 5,
+                5, 2, 1,
+                //top
+                0, 6, 7,
+                7, 1, 0
             };
         }
 

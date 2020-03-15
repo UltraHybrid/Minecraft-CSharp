@@ -8,7 +8,7 @@ namespace tmp
         {
             using (var game = new Window())
             {
-                game.Run(10, 200);
+                game.Run(125, 200);
             }
         }
     }
