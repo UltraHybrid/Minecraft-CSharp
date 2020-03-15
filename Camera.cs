@@ -28,6 +28,8 @@ namespace tmp
             front = new Vector3(0, 0, 1);
             right = Vector3.Cross(Vector3.UnitY, direction).Normalized();
             up = Vector3.Cross(direction, right).Normalized();
+
+            
         }
 
         public Matrix4 GetViewMatrix() => Matrix4.LookAt(position, position + front, up);
