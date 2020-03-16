@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using OpenTK;
 using OpenTK.Graphics;
 using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
@@ -9,6 +7,7 @@ using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
+using StringName = OpenTK.Graphics.OpenGL.StringName;
 using Vector2 = OpenTK.Vector2;
 using Vector3 = OpenTK.Vector3;
 
@@ -79,7 +78,7 @@ namespace tmp
             Mouse.SetPosition(Width / 2f, Height / 2f);
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
-            InitCubes(500, -3, 500);
+            InitCubes(50, -3, 50);
             InitBuffers();
             InitShaderAttributes();
             InitUniformMatrix();
@@ -196,6 +195,7 @@ namespace tmp
         private void InitCubes(int x, int y, int z)
         {
             Console.WriteLine(x*z*4);
+            Console.WriteLine(OpenTK.Graphics.OpenGL.GL.GetString(StringName.Version));
             for (var i = -x; i < x; i++)
             for (var j = -z; j < z; j++)
             {

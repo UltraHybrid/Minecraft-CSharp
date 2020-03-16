@@ -17,8 +17,7 @@ namespace tmp
         public int GetTexture() => texture;
         public Texture()
         {
-            texture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.CreateTextures(TextureTarget.Texture2D, 1, out texture);
             var image = Image.Load("cobblestone.png");
             image.Mutate(x => x.Flip(FlipMode.Vertical));
             var tempPixels = image.GetPixelSpan().ToArray();
@@ -32,8 +31,9 @@ namespace tmp
                 pixels.Add(p.B);
                 pixels.Add(p.A);
             }
-            
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            GL.TextureStorage2D(texture, 1, SizedInternalFormat.Rgba8, image.Width, image.Height);
+            GL.TextureSubImage2D(texture, 0, 0, 0, image.Width, image.Height, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            //GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
         
