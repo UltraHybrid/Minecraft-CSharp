@@ -48,7 +48,6 @@ namespace tmp
                 position += MoveSpeed * up * time;
             if (keys[Key.ShiftLeft])
                 position -= MoveSpeed * up * time;
-            Console.WriteLine(position);
         }
 
         private Vector2 lastPos;

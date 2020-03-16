@@ -19,40 +19,40 @@ namespace tmp
             
             vertexes = new List<Vector3> {
                 //left
-                new Vector3(-0.5f, -0.5f,  -0.5f) + position,
-                new Vector3(0.5f, 0.5f,  -0.5f) + position,
-                new Vector3(0.5f, -0.5f,  -0.5f) + position,
-                new Vector3(-0.5f, 0.5f,  -0.5f) + position,
+                new Vector3(0f, 0f,  0f) + position,
+                new Vector3(1f, 1f,  0f) + position,
+                new Vector3(1f, 0f,  0f) + position,
+                new Vector3(0f, 1f,  0f) + position,
 
                 //back
-                new Vector3(0.5f, -0.5f,  -0.5f) + position,
-                new Vector3(0.5f, 0.5f,  -0.5f) + position,
-                new Vector3(0.5f, 0.5f,  0.5f) + position,
-                new Vector3(0.5f, -0.5f,  0.5f) + position,
+                new Vector3(1f, 0f,  0f) + position,
+                new Vector3(1f, 1f,  0f) + position,
+                new Vector3(1f, 1f,  1f) + position,
+                new Vector3(1f, 0f,  1f) + position,
 
                 //right
-                new Vector3(-0.5f, -0.5f,  0.5f) + position,
-                new Vector3(0.5f, -0.5f,  0.5f) + position,
-                new Vector3(0.5f, 0.5f,  0.5f) + position,
-                new Vector3(-0.5f, 0.5f,  0.5f) + position,
+                new Vector3(0f, 0f,  1f) + position,
+                new Vector3(1f, 0f,  1f) + position,
+                new Vector3(1f, 1f,  1f) + position,
+                new Vector3(0f, 1f,  1f) + position,
 
                 //top
-                new Vector3(0.5f, 0.5f,  -0.5f) + position,
-                new Vector3(-0.5f, 0.5f,  -0.5f) + position,
-                new Vector3(0.5f, 0.5f,  0.5f) + position,
-                new Vector3(-0.5f, 0.5f,  0.5f) + position,
+                new Vector3(1f, 1f,  0f) + position,
+                new Vector3(0f, 1f,  0f) + position,
+                new Vector3(1f, 1f,  1f) + position,
+                new Vector3(0f, 1f,  1f) + position,
 
                 //front
-                new Vector3(-0.5f, -0.5f,  -0.5f) + position, 
-                new Vector3(-0.5f, 0.5f,  0.5f) + position, 
-                new Vector3(-0.5f, 0.5f,  -0.5f) + position,
-                new Vector3(-0.5f, -0.5f,  0.5f) + position,
+                new Vector3(0f, 0f,  0f) + position, 
+                new Vector3(0f, 1f,  1f) + position, 
+                new Vector3(0f, 1f,  0f) + position,
+                new Vector3(0f, 0f,  1f) + position,
 
                 //bottom
-                new Vector3(-0.5f, -0.5f,  -0.5f) + position, 
-                new Vector3(0.5f, -0.5f,  -0.5f) + position,
-                new Vector3(0.5f, -0.5f,  0.5f) + position,
-                new Vector3(-0.5f, -0.5f,  0.5f) + position
+                new Vector3(0f, 0f,  0f) + position, 
+                new Vector3(1f, 0f,  0f) + position,
+                new Vector3(1f, 0f,  1f) + position,
+                new Vector3(0f, 0f,  1f) + position
 
             };
             
