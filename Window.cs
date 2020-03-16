@@ -46,6 +46,8 @@ namespace tmp
         private int textureBuffer;
 
         private int texture;
+        private int texture2;
+
 
         private readonly Camera camera;
 
@@ -82,7 +84,9 @@ namespace tmp
             InitBuffers();
             InitShaderAttributes();
             InitUniformMatrix();
-            texture = new Texture().GetTexture();
+            texture = new Texture().GetTexture1();
+            texture2 = new Texture().GetTexture2();
+            
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -103,6 +107,8 @@ namespace tmp
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             ClearBackground(Color4.Aqua);
             GL.UseProgram(shaderProgram);
 
@@ -137,7 +143,7 @@ namespace tmp
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
-        {
+        { 
             Mouse.SetPosition(Width / 2f, Height / 2f);
             camera.MouseMove();
         }
@@ -199,7 +205,7 @@ namespace tmp
             for (var i = -x; i < x; i++)
             for (var j = -z; j < z; j++)
             {
-                var a = new Cube(new Vector3(i, y, j));
+                var a = new Cube(new Vector3(i * 2, y, j));
                 cubes.Add(a);
                 indices.AddRange(a.GetIndices(t * 24));
                 vertex.AddRange(a.GetVertexes());
