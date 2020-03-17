@@ -15,13 +15,16 @@ namespace tmp.TrialVersion
         public Chunk()
         {
             blocks = new Block[XLenght, YLength, ZLength];
+            FillLayers(BaseBlocks.Empty, ZLength);
         }
 
-        public void FillBlocks(BlockItem blockItem)
+        public void FillLayers(BlockItem blockItem, int count)
         {
+            if (count < 0 || count >= ZLength)
+                throw new ArgumentException();
+            for (var k = 0; k < count; k++)
             for (var i = 0; i < XLenght; i++)
             for (var j = 0; j < YLength; j++)
-            for (var k = 0; k < ZLength; k++)
                 blocks[i, j, k] = new Block(blockItem, new Point3(i, j, k));
         }
 

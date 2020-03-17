@@ -18,7 +18,7 @@ namespace tmp.TrialVersion
             for (var z = 0; z < MaxCount; z++)
             {
                 var chunk = new Chunk();
-                chunk.FillBlocks(BaseBlocks.Dirt);
+                chunk.FillLayers(BaseBlocks.Dirt, 30);
                 chunks[x, z] = chunk;
             }
         }
