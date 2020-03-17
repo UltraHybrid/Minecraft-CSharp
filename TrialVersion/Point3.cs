@@ -32,5 +32,10 @@ namespace tmp.TrialVersion
         {
             return new Vector3(point.X, point.Y, point.Z);
         }
+
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ", " + Z + ")";
+        }
     }
 }

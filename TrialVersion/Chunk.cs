@@ -16,16 +16,16 @@ namespace tmp.TrialVersion
         public Chunk()
         {
             blocks = new Block[XLenght, YLength, ZLength];
-            FillLayers(BaseBlocks.Empty, ZLength);
+            FillLayers(BaseBlocks.Empty, YLength);
         }
 
         public void FillLayers(BlockItem blockItem, int count)
         {
-            if (count < 0 || count >= ZLength)
+            if (count < 0 || count > YLength)
                 throw new ArgumentException();
-            for (var k = 0; k < count; k++)
+            for (var j = 0; j < count; j++)
             for (var i = 0; i < XLenght; i++)
-            for (var j = 0; j < YLength; j++)
+            for (var k = 0; k < ZLength; k++)
                 blocks[i, j, k] = new Block(blockItem, new Point3(i, j, k));
         }
 
@@ -43,7 +43,7 @@ namespace tmp.TrialVersion
         {
             return 0 <= position.X && position.X < XLenght
                                    && 0 <= position.Y && position.Y < YLength
-                                   && 0 <= position.Z && position.Z <= ZLength;
+                                   && 0 <= position.Z && position.Z < ZLength;
         }
 
         public Block this[Point3 position]

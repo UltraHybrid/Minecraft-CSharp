@@ -31,7 +31,7 @@ namespace tmp.TrialVersion
             foreach (var block in chunk)
             {
                 var position = GetAbsolutPosition(block, x, z);
-                if (block.BlockItem == BaseBlocks.Empty || IsBorderOnEmpty(block, position))
+                if (block.BlockItem == BaseBlocks.Empty || !IsBorderOnEmpty(block, position))
                     continue;
 
                 var key = block.BlockItem.TextureName;
@@ -59,7 +59,8 @@ namespace tmp.TrialVersion
             };
             for (var i = 0; i < offsets.Length; i++)
             {
-                if (IsCorrectIndex(position) && this[position + offsets[i]].BlockItem == BaseBlocks.Empty)
+                //Console.WriteLine(position);
+                if (IsCorrectIndex(position+offsets[i]) && this[position + offsets[i]].BlockItem == BaseBlocks.Empty)
                     return true;
             }
 
