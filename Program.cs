@@ -1,4 +1,6 @@
-﻿using OpenTK;
+﻿using System;
+using OpenTK;
+using tmp.TrialVersion;
 
 namespace tmp
 {
@@ -6,10 +8,7 @@ namespace tmp
     {
         static void Main(string[] args)
         {
-            using (var game = new Window())
-            {
-                game.Run(125, 200);
-            }
+            game.Run(125, 200);   
         }
     }
 }
