@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <Nullable>enable</Nullable>
         <LangVersion>8</LangVersion>
         <TargetFramework>net472</TargetFramework>
@@ -11,6 +11,7 @@
       <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
       <PackageReference Include="OpenTK" Version="3.1.0" />
       <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+      <PackageReference Include="Veldrid.ImageSharp" Version="4.7.0" />
     </ItemGroup>
 
 </Project>

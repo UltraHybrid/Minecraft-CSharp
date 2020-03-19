@@ -7,7 +7,6 @@
       <e p="bin" t="ExcludeRecursive" />
       <e p="Camera.cs" t="Include" />
       <e p="Cube.cs" t="Include" />
-      <e p="Game.cs" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="net472" t="Include">
@@ -20,6 +19,11 @@
       <e p="Shaders.cs" t="Include" />
       <e p="Texture.cs" t="Include" />
       <e p="tmp.csproj" t="IncludeRecursive" />
+      <e p="TrialVersion" t="Include">
+        <e p="BaseBlocks.cs" t="Include" />
+        <e p="Block.cs" t="Include" />
+        <e p="BlockItem.cs" t="Include" />
+      </e>
       <e p="Volume.cs" t="Include" />
       <e p="Window.cs" t="Include" />
     </e>

@@ -15,7 +15,6 @@ namespace tmp
 
         public abstract List<Vector3> GetVertexes();
         public abstract int[] GetIndices(int offset = 0);
-        public abstract Vector3[] GetColorData();
         public abstract void CalculateModelMatrix();
     }
 }
