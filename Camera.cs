@@ -35,9 +35,9 @@ namespace tmp
         public void Move(float time)
         {
             if (keys[Key.W])
-                position += MoveSpeed * new Vector3(front.X, 0, front.Z) * time;
+                position += MoveSpeed * new Vector3(front.X, 0, front.Z).Normalized() * time;
             if (keys[Key.S])
-                position -= MoveSpeed * new Vector3(front.X, 0, front.Z) * time;
+                position -= MoveSpeed * new Vector3(front.X, 0, front.Z).Normalized() * time;
             if (keys[Key.D])
                 position += MoveSpeed * right * time;
             if (keys[Key.A])
