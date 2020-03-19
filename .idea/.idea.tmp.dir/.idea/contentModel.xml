@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Ultra\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Ultra\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_.19.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Ultra\RiderProjects\opengl_c-_test" t="IncludeRecursive">
+    <e p="C:\Users\UltraHybrid\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\UltraHybrid\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_.19.00" t="ExcludeRecursive" />
+    <e p="C:\Users\UltraHybrid\RiderProjects\opengl_c-_test" t="IncludeRecursive">
       <e p="bin" t="ExcludeRecursive" />
       <e p="Camera.cs" t="Include" />
       <e p="Cube.cs" t="Include" />
@@ -15,14 +15,43 @@
         </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />
+      <e p="Player" t="Include">
+        <e p="Player.cs" t="Include" />
+        <e p="PlayerPoint.cs" t="Include" />
+      </e>
       <e p="Program.cs" t="Include" />
       <e p="Shaders.cs" t="Include" />
       <e p="Texture.cs" t="Include" />
+      <e p="Textures" t="Include">
+        <e p="bedrock.png" t="Include" />
+        <e p="bricks.png" t="Include" />
+        <e p="coal_ore.png" t="Include" />
+        <e p="cobblestone.png" t="Include" />
+        <e p="diamond_ore.png" t="Include" />
+        <e p="dirt.png" t="Include" />
+        <e p="emerald_ore.png" t="Include" />
+        <e p="glass.png" t="Include" />
+        <e p="gold_ore.png" t="Include" />
+        <e p="grass_path_side.png" t="Include" />
+        <e p="grass_path_top.png" t="Include" />
+        <e p="iron_ore.png" t="Include" />
+        <e p="lapis_ore.png" t="Include" />
+        <e p="oak_log.png" t="Include" />
+        <e p="oak_log_top.png" t="Include" />
+        <e p="oak_planks.png" t="Include" />
+        <e p="sand.png" t="Include" />
+        <e p="sandstone.png" t="Include" />
+        <e p="sandstone_top.png" t="Include" />
+        <e p="stone.png" t="Include" />
+      </e>
       <e p="tmp.csproj" t="IncludeRecursive" />
       <e p="TrialVersion" t="Include">
         <e p="BaseBlocks.cs" t="Include" />
         <e p="Block.cs" t="Include" />
         <e p="BlockItem.cs" t="Include" />
+        <e p="Chunk.cs" t="Include" />
+        <e p="Point3.cs" t="Include" />
+        <e p="World.cs" t="Include" />
       </e>
       <e p="Volume.cs" t="Include" />
       <e p="Window.cs" t="Include" />

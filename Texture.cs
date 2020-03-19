@@ -6,16 +6,12 @@ using SixLabors.ImageSharp.Processing;
 
 namespace tmp
 {
-    public class Texture
+    public static class Texture
     {
-        private int texture1;
-        private int texture2;
-
-        public int GetTexture1() => InitTexture("./Textures/dirt.png");
-        public int GetTexture2() => InitTexture("./Textures/cobblestone.png");
+        public static int GetTexture(string name) => GetTex(name);
 
 
-        private int InitTexture(string name)
+        private static int GetTex(string name)
         {
             var texture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, texture);

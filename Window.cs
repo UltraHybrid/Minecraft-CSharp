@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenTK;
 using OpenTK.Graphics;
 using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
@@ -24,6 +25,7 @@ namespace tmp
             4, 1,
             GraphicsContextFlags.Default)
         {
+            textures = new Dictionary<string, int>();
             VSync = VSyncMode.Off;
             keys = new Dictionary<Key, bool>();
             foreach (Key key in Enum.GetValues(typeof(Key)))
@@ -45,8 +47,7 @@ namespace tmp
         private int ebo;
         private int textureBuffer;
 
-        private int texture;
-        private int texture2;
+        private Dictionary<string, int> textures;
 
 
         private readonly Camera camera;
@@ -64,6 +65,7 @@ namespace tmp
         private List<Vector3> vertex = new List<Vector3>();
         private List<int> indices = new List<int>();
         private List<Vector2> texcoords = new List<Vector2>();
+        
 
         #endregion
 
@@ -80,12 +82,11 @@ namespace tmp
             Mouse.SetPosition(Width / 2f, Height / 2f);
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
-            InitCubes(200, -3, 200);
+            InitCubes(20, -3, 20);
             InitBuffers();
             InitShaderAttributes();
             InitUniformMatrix();
-            texture = new Texture().GetTexture1();
-            texture2 = new Texture().GetTexture2();
+            InitTextures("Textures");
             
         }
 
@@ -118,7 +119,7 @@ namespace tmp
             GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
             GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
 
-            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.BindTexture(TextureTarget.Texture2D, textures["oak_log"]);
             GL.BindVertexArray(vao);
             GL.DrawElements(PrimitiveType.Triangles, 36 * cubes.Count, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
@@ -184,6 +185,16 @@ namespace tmp
             modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
             viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
             projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "projection");
+        }
+
+        private void InitTextures(string textureStorage)
+        {
+            foreach (var textureFile in Directory.GetFiles(textureStorage, "*.png"))
+            {
+                var texture = Texture.GetTexture(textureFile);
+                var name = Path.GetFileNameWithoutExtension(textureFile);
+                textures.Add(name, texture);
+            }
         }
 
         private void InitUniformMatrix()

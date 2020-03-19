@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj": {}
+    "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj": {
+    "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+        "projectUniqueName": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
         "projectName": "tmp",
-        "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
-        "packagesPath": "C:\\Users\\Ultra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\obj\\",
+        "projectPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+        "packagesPath": "C:\\Users\\UltraHybrid\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Ultra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\UltraHybrid\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,11 +55,11 @@
               "version": "[4.7.0, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
-        "win7-x86": {
+        "win7-x64": {
           "#import": []
         }
       }

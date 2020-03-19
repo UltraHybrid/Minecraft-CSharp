@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+    "projectUniqueName": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
     "projectName": "tmp",
-    "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
-    "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\obj\\",
+    "projectPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+    "outputPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "net472"
@@ -44,11 +44,11 @@
           "version": "[4.7.0, )"
         }
       },
-      "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
     }
   },
   "runtimes": {
-    "win7-x86": {
+    "win7-x64": {
       "#import": []
     }
   }
