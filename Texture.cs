@@ -11,7 +11,7 @@ namespace tmp
         private int texture1;
         private int texture2;
 
-        public int GetTexture1() => InitTexture("./Textures/sand.png");
+        public int GetTexture1() => InitTexture("./Textures/dirt.png");
         public int GetTexture2() => InitTexture("./Textures/cobblestone.png");
 
 

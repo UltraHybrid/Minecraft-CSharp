@@ -17,14 +17,14 @@ namespace tmp
         private float pitch;
         private float yaw;
 
-        public Camera(Dictionary<Key, bool> keys, Vector3 position = default, Vector3 orientation = default)
+        public Camera(Dictionary<Key, bool> keys, Vector3 position = default)
         {
             this.keys = keys;
             target = new Vector3(0, 0, 0);
             this.position = new Vector3(0, 0, -5);
             direction = new Vector3(this.position - target);
-            MoveSpeed = 5f;
-            MouseSensitivity = 0.1f;
+            MoveSpeed = 7f;
+            MouseSensitivity = 0.05f;
             front = new Vector3(0, 0, 1);
             right = Vector3.Cross(Vector3.UnitY, direction).Normalized();
             up = Vector3.Cross(direction, right).Normalized();

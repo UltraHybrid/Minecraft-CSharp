@@ -80,7 +80,7 @@ namespace tmp
             Mouse.SetPosition(Width / 2f, Height / 2f);
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
-            InitCubes(500, -3, 500);
+            InitCubes(200, -3, 200);
             InitBuffers();
             InitShaderAttributes();
             InitUniformMatrix();
@@ -91,7 +91,6 @@ namespace tmp
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            base.OnUpdateFrame(e);
             camera.Move((float) e.Time);
         }
 
@@ -107,9 +106,6 @@ namespace tmp
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
             GL.Enable(EnableCap.DepthTest);
-            //GL.Enable(EnableCap.Blend);
-            //GL.BlendFunc(BlendingFactor.SrcAlphaSaturate, BlendingFactor.One);
-            //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             ClearBackground(Color4.Aqua);
             GL.UseProgram(shaderProgram);
 
