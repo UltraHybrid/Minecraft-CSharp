@@ -107,8 +107,9 @@ namespace tmp
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
             GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            //GL.Enable(EnableCap.Blend);
+            //GL.BlendFunc(BlendingFactor.SrcAlphaSaturate, BlendingFactor.One);
+            //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             ClearBackground(Color4.Aqua);
             GL.UseProgram(shaderProgram);
 

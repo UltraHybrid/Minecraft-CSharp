@@ -33,7 +33,10 @@ namespace tmp
 
             void main(void)
             {
-                outColor = texture(ourTexture, TexCoord);            
+                vec4 tmp = texture(ourTexture, TexCoord);  
+                if(tmp.a < 0.1)
+                    discard;
+                outColor = tmp;
             }";
 
         public static int InitShaders()
