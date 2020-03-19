@@ -1,20 +1,20 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\tmp.csproj",
+    "projectUniqueName": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
     "projectName": "tmp",
-    "projectPath": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\tmp.csproj",
-    "outputPath": "C:\\Users\\Ultra\\RiderProjects\\graphic_3d\\tmp\\obj\\",
+    "projectPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+    "outputPath": "C:\\Users\\Ultra\\RiderProjects\\opengl_c-_test\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
-      "netcoreapp3.1"
+      "net472"
     ],
     "sources": {
       "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {
-      "netcoreapp3.1": {
+      "net472": {
         "projectReferences": {}
       }
     },
@@ -25,7 +25,7 @@
     }
   },
   "frameworks": {
-    "netcoreapp3.1": {
+    "net472": {
       "dependencies": {
         "Microsoft.Win32.SystemEvents": {
           "target": "Package",
@@ -35,31 +35,17 @@
           "target": "Package",
           "version": "[3.1.0, )"
         },
-        "SFML.Graphics": {
-          "target": "Package",
-          "version": "[2.5.0, )"
-        },
         "System.Drawing.Common": {
           "target": "Package",
           "version": "[4.7.0, )"
         }
       },
-      "imports": [
-        "net461",
-        "net462",
-        "net47",
-        "net471",
-        "net472",
-        "net48"
-      ],
-      "assetTargetFallback": true,
-      "warn": true,
-      "frameworkReferences": {
-        "Microsoft.NETCore.App": {
-          "privateAssets": "all"
-        }
-      },
       "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+    }
+  },
+  "runtimes": {
+    "win7-x86": {
+      "#import": []
     }
   }
 }
