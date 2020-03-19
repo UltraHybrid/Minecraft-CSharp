@@ -28,8 +28,6 @@ namespace tmp
             front = new Vector3(0, 0, 1);
             right = Vector3.Cross(Vector3.UnitY, direction).Normalized();
             up = Vector3.Cross(direction, right).Normalized();
-
-            
         }
 
         public Matrix4 GetViewMatrix() => Matrix4.LookAt(position, position + front, up);
@@ -52,40 +50,37 @@ namespace tmp
 
         private Vector2 lastPos;
         private bool firstMouse = true;
+
         public void MouseMove()
         {
             var mouse = Mouse.GetState();
 
-            if (firstMouse)
-            {
-                lastPos = new Vector2(mouse.X, mouse.Y);
-                firstMouse = false;
-            }
-            else
-            {
-                var deltaX = mouse.X - lastPos.X;
-                var deltaY = -mouse.Y + lastPos.Y;
-                lastPos = new Vector2(mouse.X, mouse.Y);
+
+            var deltaX = mouse.X - lastPos.X;
+            var deltaY = -mouse.Y + lastPos.Y;
+            lastPos = new Vector2(mouse.X, mouse.Y);
 
 
-                yaw += deltaX * MouseSensitivity;
-                pitch += deltaY * MouseSensitivity;
-            }
+            yaw += deltaX * MouseSensitivity;
+            pitch += deltaY * MouseSensitivity;
 
-            if(pitch > 89.0f)
+
+            if (pitch > 89.0f)
                 pitch = 89.0f;
-            if(pitch < -89.0f)
+            if (pitch < -89.0f)
                 pitch = -89.0f;
 
-            front.X = (float)Math.Cos(MathHelper.DegreesToRadians(yaw)) * (float)Math.Cos(MathHelper.DegreesToRadians(pitch));
-            front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
-            front.Z = (float) Math.Sin(MathHelper.DegreesToRadians(yaw)) * (float)Math.Cos(MathHelper.DegreesToRadians(pitch));
+            front.X = (float) Math.Cos(MathHelper.DegreesToRadians(yaw)) *
+                      (float) Math.Cos(MathHelper.DegreesToRadians(pitch));
+            front.Y = (float) Math.Sin(MathHelper.DegreesToRadians(pitch));
+            front.Z = (float) Math.Sin(MathHelper.DegreesToRadians(yaw)) *
+                      (float) Math.Cos(MathHelper.DegreesToRadians(pitch));
             front.Normalize();
             right = -Vector3.Cross(up, front).Normalized();
         }
 
         private float MoveSpeed { get; set; }
-        
+
 
         private float MouseSensitivity { get; set; }
     }

@@ -6,8 +6,9 @@ namespace tmp
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            var game = new Window();
             game.Run(125, 200);   
         }
     }

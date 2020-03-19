@@ -80,7 +80,7 @@ namespace tmp
             Mouse.SetPosition(Width / 2f, Height / 2f);
             CursorVisible = false;
             shaderProgram = Shaders.InitShaders();
-            InitCubes(50, -3, 50);
+            InitCubes(500, -3, 500);
             InitBuffers();
             InitShaderAttributes();
             InitUniformMatrix();
@@ -144,8 +144,8 @@ namespace tmp
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
-        { 
-            Mouse.SetPosition(Width / 2f, Height / 2f);
+        {
+            Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
             camera.MouseMove();
         }
 
