@@ -62,7 +62,7 @@ namespace tmp
 
 
         private readonly List<Cube> cubes = new List<Cube>();
-        private List<Vector3> vertex = new List<Vector3>();
+        private readonly List<Vector3> vertex = new List<Vector3>();
         private List<int> indices = new List<int>();
         private List<Vector2> texcoords = new List<Vector2>();
         
