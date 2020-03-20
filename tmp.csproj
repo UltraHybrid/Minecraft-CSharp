@@ -26,6 +26,13 @@
       <None Update="Textures\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Textures\skybox\*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Textures\skybox" />
     </ItemGroup>
 
 </Project>

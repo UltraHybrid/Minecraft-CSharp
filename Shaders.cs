@@ -39,14 +39,46 @@ namespace tmp
                 outColor = tmp;
             }";
 
-        public static int InitShaders()
+        private const string VertSkyBox = 
+            @"#version 410 core
+
+            layout (location = 0) in vec3 aPos;
+            out vec3 TexCoords;
+
+            uniform mat4 projection;
+            uniform mat4 view;
+
+            void main()
+            {
+                TexCoords = aPos;
+                vec4 pos = projection * view * vec4(aPos, 1.0);
+                gl_Position = pos.xyww;
+            }";
+
+        private const string FragSkyBox =
+            @"#version 410 core
+            out vec4 FragColor;
+
+            in vec3 TexCoords;
+
+            uniform samplerCube skybox;
+
+            void main()
+            {    
+                FragColor = texture(skybox, TexCoords);
+            }";
+
+        public static int GetDefaultShader() => InitShaders(VertSrc, FragSrc);
+
+        public static int GetSkyBoxShader() => InitShaders(VertSkyBox, FragSkyBox);
+        public static int InitShaders(string vert, string frag)
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShader, VertSrc);
+            GL.ShaderSource(vertexShader, vert);
             GL.CompileShader(vertexShader);
 
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragmentShader, FragSrc);
+            GL.ShaderSource(fragmentShader, frag);
             GL.CompileShader(fragmentShader);
 
             var shaderProgram = GL.CreateProgram();
