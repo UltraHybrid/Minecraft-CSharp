@@ -9,7 +9,7 @@ namespace tmp
         private static void Main(string[] args)
         {
             var game = new Window();
-            game.Run(100, 100);   
+            game.Run(200, 200);   
         }
     }
 }

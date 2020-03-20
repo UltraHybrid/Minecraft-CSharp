@@ -20,9 +20,8 @@ namespace tmp
         public Camera(Dictionary<Key, bool> keys, Vector3 position = default)
         {
             this.keys = keys;
-            target = new Vector3(0, 0, 0);
-            this.position = new Vector3(0, 0, -5);
-            direction = new Vector3(this.position - target);
+            this.position = new Vector3(0, 30, -5);
+            direction = new Vector3(0, 0, -5);
             MoveSpeed = 7f;
             MouseSensitivity = 0.05f;
             front = new Vector3(0, 0, 1);

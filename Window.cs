@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Policy;
 using OpenTK;
 using OpenTK.Graphics;
 using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
+using tmp.TrialVersion;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
 using StringName = OpenTK.Graphics.OpenGL.StringName;
 using Vector2 = OpenTK.Vector2;
@@ -25,7 +27,6 @@ namespace tmp
             4, 1,
             GraphicsContextFlags.Default)
         {
-            textures = new Dictionary<string, int>();
             VSync = VSyncMode.Off;
             keys = new Dictionary<Key, bool>();
             foreach (Key key in Enum.GetValues(typeof(Key)))
@@ -33,98 +34,50 @@ namespace tmp
                 keys[key] = false;
             }
 
-            camera = new Camera(keys, new Vector3(0f, 0f, 0));
+            world = new World();
+            camera = new Camera(keys, new Vector3(0f, 30f, 0));
+            render = new Render(camera, world);
         }
 
         #region Variables
 
+        private World world;
+        private Camera camera;
+        private Render render;
         private readonly Dictionary<Key, bool> keys;
-
-        private int shaderProgram;
-
-        private int vao;
-        private int vbo;
-        private int ebo;
-        private int textureBuffer;
-
-        private Dictionary<string, int> textures;
-
-
-        private readonly Camera camera;
-
-        private int modelMatrixAttributeLocation;
-        private int viewMatrixAttributeLocation;
-        private int projectionMatrixAttributeLocation;
-
-        private Matrix4 modelMatrix;
-        private Matrix4 viewMatrix;
-        private Matrix4 projectionMatrix;
-
-
-        private readonly List<Cube> cubes = new List<Cube>();
-        private readonly List<Vector3> vertex = new List<Vector3>();
-        private List<int> indices = new List<int>();
-        private List<Vector2> texcoords = new List<Vector2>();
         
-
         #endregion
 
 
         protected override void OnResize(EventArgs e)
         {
-            GL.Viewport(0, 0, Width, Height);
-            projectionMatrix =
-                Matrix4.CreatePerspectiveFieldOfView((float) Math.PI / 4, Width / (float) Height, 0.1f, 500);
+            render.Resize(Width, Height);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            Mouse.SetPosition(Width / 2f, Height / 2f);
+            GL.Enable(EnableCap.DepthTest);
             CursorVisible = false;
-            shaderProgram = Shaders.InitShaders();
-            InitCubes(20, -3, 20);
-            InitBuffers();
-            InitShaderAttributes();
-            InitUniformMatrix();
-            InitTextures("Textures");
-            
+            render.Initialise(Width, Height);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             camera.Move((float) e.Time);
+            render.UpdateFrame();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            GL.DeleteVertexArrays(1, ref vao);
-            GL.DeleteProgram(shaderProgram);
-
             base.OnClosed(e);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
-            GL.Enable(EnableCap.DepthTest);
-            ClearBackground(Color4.Aqua);
-            GL.UseProgram(shaderProgram);
-
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int) TextureMinFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Nearest);
-            viewMatrix = camera.GetViewMatrix();
-            GL.UniformMatrix4(modelMatrixAttributeLocation, false, ref modelMatrix);
-            GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
-            GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
-
-            GL.BindTexture(TextureTarget.Texture2D, textures["oak_log"]);
-            GL.BindVertexArray(vao);
-            GL.DrawElements(PrimitiveType.Triangles, 36 * cubes.Count, DrawElementsType.UnsignedInt, 0);
-            GL.BindVertexArray(0);
-
-
+            
+            render.RenderFrame();
+            
             SwapBuffers();
         }
 
@@ -144,82 +97,6 @@ namespace tmp
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
             camera.MouseMove();
-        }
-
-
-        private static void ClearBackground(Color4 backgroundColor)
-        {
-            GL.ClearColor(backgroundColor);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        }
-
-        private void InitBuffers()
-        {
-            GL.GenVertexArrays(1, out vao);
-            GL.BindVertexArray(vao);
-
-            GL.GenBuffers(1, out vbo);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * vertex.Count,
-                vertex.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-            GL.EnableVertexAttribArray(0);
-
-            GL.GenBuffers(1, out textureBuffer);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * texcoords.Count,
-                texcoords.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
-            GL.EnableVertexAttribArray(1);
-
-            GL.GenBuffers(1, out ebo);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(int),
-                indices.ToArray(), BufferUsageHint.StaticDraw);
-            
-            GL.BindVertexArray(0);
-        }
-
-        private void InitShaderAttributes()
-        {
-            modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
-            viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
-            projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "projection");
-        }
-
-        private void InitTextures(string textureStorage)
-        {
-            foreach (var textureFile in Directory.GetFiles(textureStorage, "*.png"))
-            {
-                var texture = Texture.GetTexture(textureFile);
-                var name = Path.GetFileNameWithoutExtension(textureFile);
-                textures.Add(name, texture);
-            }
-        }
-
-        private void InitUniformMatrix()
-        {
-            modelMatrix = Matrix4.Identity;
-            viewMatrix = Matrix4.Identity;
-            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, Width / (float) Height, 0.1f, 500);
-        }
-
-        private int t;
-
-        private void InitCubes(int x, int y, int z)
-        {
-            Console.WriteLine(x*z*4);
-            Console.WriteLine(OpenTK.Graphics.OpenGL.GL.GetString(StringName.Version));
-            for (var i = -x; i < x; i++)
-            for (var j = -z; j < z; j++)
-            {
-                var a = new Cube(new Vector3(i * 2, y, j));
-                cubes.Add(a);
-                indices.AddRange(a.GetIndices(t * 24));
-                vertex.AddRange(a.GetVertexes());
-                texcoords.AddRange(a.GetTextureCoords());
-                t++;
-            }
         }
     }
 }
