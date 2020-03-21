@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace tmp.TrialVersion
 {
@@ -12,5 +13,18 @@ namespace tmp.TrialVersion
         public static readonly BlockItem CoalOre = new BlockItem("CoalOre", 5, "coal_ore.png");
         public static readonly BlockItem Cobblestone = new BlockItem("Cobblestone", 10, "cobblestone.png");
         public static readonly BlockItem Bedrock = new BlockItem("Bedrock", int.MaxValue, "bedrock.png");
+
+        private static readonly List<BlockItem> allBlocks = new List<BlockItem>();
+
+        public static IReadOnlyList<BlockItem> AllBlocks => allBlocks;
+
+        static BaseBlocks()
+        {
+            foreach (var field in typeof(BaseBlocks).GetFields())
+            {
+                var blockItem = (BlockItem) field.GetValue(new object());
+                allBlocks.Add(blockItem);
+            }
+        }
     }
 }
