@@ -21,6 +21,8 @@ namespace tmp
 
         private readonly Dictionary<string, int> textures = new Dictionary<string, int>();
 
+        private int arrayTex;
+
 
         
 
@@ -62,7 +64,7 @@ namespace tmp
             GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
             GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
 
-            GL.BindTexture(TextureTarget.Texture2D, textures["dirt"]);
+            GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
             GL.BindVertexArray(vao);
             GL.DrawElements(PrimitiveType.Triangles, 36 * cubes.Count, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
@@ -101,6 +103,8 @@ namespace tmp
             var textureStorage = Path.Combine("Textures", "skybox");
             skyBoxShaderProgram = Shaders.GetSkyBoxShader();
             texture = Texture.GetCubeMap(Directory.GetFiles(textureStorage, "*.png").ToList());
+            arrayTex = Texture.InitArray(Directory.GetFiles("Textures", "*.png").ToList());
+
         }
         
         private static void ClearBackground(Color4 backgroundColor)

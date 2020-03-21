@@ -29,11 +29,17 @@ namespace tmp
             in vec2 TexCoord;
             out vec4 outColor;
 
-            uniform sampler2D ourTexture;
+            uniform sampler2DArray texture_array;
+            uniform uint diffuse_layer;
+
+            float getCoord(uint capacity, uint layer)
+            {
+	            return max(0, min(float(capacity - 1), floor(float(layer) + 0.5)));
+            }
 
             void main(void)
             {
-                vec4 tmp = texture(ourTexture, TexCoord);  
+                vec4 tmp = texture(texture_array, vec3(TexCoord, getCoord(5, 3)));  
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;

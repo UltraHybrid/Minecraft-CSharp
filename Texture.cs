@@ -75,16 +75,16 @@ namespace tmp
         
         //3dtextures/2darray
 
-        private static void InitArray(List<string> path, int count)
+        public static int InitArray(List<string> path)
         {
             const int width = 16;
             const int height = 16;
-            var laysersCount = count;
+            var laysersCount = path.Count;
 
             
             var texturesArray = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2DArray, texturesArray);
-            var finalPixels = new byte[256,laysersCount];
+            var finalPixels = new byte[laysersCount, 256 * 4];
             
             
             var pixelAll = new List<byte[]>();
@@ -105,6 +105,8 @@ namespace tmp
                     pixels.Add(p.A);
                 }
                 pixelAll.Add(pixels.ToArray());
+                Console.WriteLine(img);
+                Console.WriteLine(pixels.Count);
             }
 
             for (var i = 0; i < pixelAll.Count; i++)
@@ -117,7 +119,12 @@ namespace tmp
             }
 
             GL.TexImage3D(TextureTarget.Texture2DArray,  0, PixelInternalFormat.Rgba, width, height, laysersCount, 0,
-                PixelFormat.Rgb, PixelType.UnsignedByte, finalPixels);
+                PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
+            
+            SetTextureParameters(TextureTarget.Texture2DArray, (int)ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
+            
+            return texturesArray;
         }
     }
 }
