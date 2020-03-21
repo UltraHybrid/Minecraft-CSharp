@@ -123,6 +123,7 @@ namespace tmp
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
             
             SetTextureParameters(TextureTarget.Texture2DArray, (int)ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
+            
             return texturesArray;
         }
     }
