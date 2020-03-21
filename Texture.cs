@@ -15,7 +15,6 @@ namespace tmp
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
             SetImage(name, TextureTarget.Texture2D);
-
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int)ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
             
@@ -26,7 +25,7 @@ namespace tmp
 
         public static int GetCubeMap(List<string> paths)
         {
-            GL.GenTextures(1, out int texture);
+            var texture = GL.GenTexture();
             GL.BindTexture(TextureTarget.TextureCubeMap, texture);
             
             if(paths.Count != 6) throw new Exception("wrong count of textures for cubemap");
@@ -37,9 +36,10 @@ namespace tmp
                 SetImage(paths[i], TextureTarget.TextureCubeMapPositiveX + i);
             }
 
+            
             SetTextureParameters(TextureTarget.TextureCubeMap, (int)ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Linear);
 
-            //GL.BindTexture(TextureTarget.TextureCubeMap, 0);
+            GL.BindTexture(TextureTarget.TextureCubeMap, 0);
             return texture;
         }
 
@@ -59,8 +59,8 @@ namespace tmp
                 pixels.Add(p.A);
             }
 
-            GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba,
-                PixelType.UnsignedByte, pixels.ToArray());
+            GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 
+                0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
         }
 
         private static void SetTextureParameters(TextureTarget textureTarget, int paramWrap, int paramFilter)
@@ -70,6 +70,54 @@ namespace tmp
             GL.TexParameter(textureTarget, TextureParameterName.TextureWrapR, paramWrap);
             GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, paramFilter);
             GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, paramFilter);
+        }
+        
+        
+        //3dtextures/2darray
+
+        private static void InitArray(List<string> path, int count)
+        {
+            const int width = 16;
+            const int height = 16;
+            var laysersCount = count;
+
+            
+            var texturesArray = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2DArray, texturesArray);
+            var finalPixels = new byte[256,laysersCount];
+            
+            
+            var pixelAll = new List<byte[]>();
+
+            foreach (var img in path)
+            {
+                var pixels = new List<byte>();
+                var image = Image.Load(img);
+                image.Mutate(x => x.Flip(FlipMode.Vertical));
+                var tempPixels = image.GetPixelSpan().ToArray();
+
+
+                foreach (var p in tempPixels)
+                {
+                    pixels.Add(p.R);
+                    pixels.Add(p.G);
+                    pixels.Add(p.B);
+                    pixels.Add(p.A);
+                }
+                pixelAll.Add(pixels.ToArray());
+            }
+
+            for (var i = 0; i < pixelAll.Count; i++)
+            {
+                var t = pixelAll[i];
+                for (var j = 0; j < t.Length; j++)
+                {
+                    finalPixels[i, j] = t[j];
+                }
+            }
+
+            GL.TexImage3D(TextureTarget.Texture2DArray,  0, PixelInternalFormat.Rgba, width, height, laysersCount, 0,
+                PixelFormat.Rgb, PixelType.UnsignedByte, finalPixels);
         }
     }
 }

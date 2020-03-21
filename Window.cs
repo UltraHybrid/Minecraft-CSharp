@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security.Policy;
 using OpenTK;
 using OpenTK.Graphics;
-using ClearBufferMask = OpenTK.Graphics.OpenGL4.ClearBufferMask;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using tmp.TrialVersion;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
-using StringName = OpenTK.Graphics.OpenGL.StringName;
-using Vector2 = OpenTK.Vector2;
 using Vector3 = OpenTK.Vector3;
 
 namespace tmp

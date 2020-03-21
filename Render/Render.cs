@@ -42,7 +42,6 @@ namespace tmp
         private List<Vector2> texcoords = new List<Vector2>();
 
         private World world;
-        private Skybox skybox;
         private readonly Camera camera;
 
         #endregion
@@ -51,7 +50,6 @@ namespace tmp
         {
             this.world = world;
             this.camera = camera;
-            skybox = new Skybox();
         }
 
         public void RenderFrame()
@@ -100,7 +98,9 @@ namespace tmp
             InitShaderAttributes();
             Resize(width, height);
             InitTextures("Textures");
-            texture = skybox.InitTextures(Path.Combine("Textures", "skybox"));
+            var textureStorage = Path.Combine("Textures", "skybox");
+            skyBoxShaderProgram = Shaders.GetSkyBoxShader();
+            texture = Texture.GetCubeMap(Directory.GetFiles(textureStorage, "*.png").ToList());
         }
         
         private static void ClearBackground(Color4 backgroundColor)
