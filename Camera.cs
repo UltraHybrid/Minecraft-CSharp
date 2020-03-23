@@ -2,85 +2,66 @@
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
+using Vector2 = OpenTK.Vector2;
+using Vector3 = OpenTK.Vector3;
 
 namespace tmp
 {
     public class Camera
     {
-        private Vector3 position;
-        private Vector3 direction;
-        private Vector3 target;
-        private Vector3 front;
-        private Vector3 up;
-        private Vector3 right;
         private Dictionary<Key, bool> keys;
-        private float pitch;
-        private float yaw;
+        private Vector2 lastMousePosition;
+        private float MouseSensitivity { get; set; }
+        private readonly Player player;
 
-        public Camera(Dictionary<Key, bool> keys, Vector3 position = default)
+        public Camera(Dictionary<Key, bool> keys, Player player)
         {
             this.keys = keys;
-            this.position = position;
-            direction = new Vector3(0, 0, -1);
-            MoveSpeed = 7f;
+            this.player = player;
             MouseSensitivity = 0.05f;
-            front = new Vector3(0, 0, 1);
-            right = Vector3.Cross(Vector3.UnitY, direction).Normalized();
-            up = Vector3.Cross(direction, right).Normalized();
         }
 
-        public Matrix4 GetViewMatrix() => Matrix4.LookAt(position, position + front, up);
+        public Matrix4 GetViewMatrix()
+        {
+            var eye = player.Mover.Position.Convert() + new Vector3(0, player.Height, 0);
+            return Matrix4.LookAt(eye, eye + player.Mover.Front.Convert(), player.Mover.Up.Convert());
+        }
 
         public void Move(float time)
         {
+            var directions = new List<Direction>();
             if (keys[Key.W])
-                position += MoveSpeed * new Vector3(front.X, 0, front.Z).Normalized() * time;
+                directions.Add(Direction.Forward);
             if (keys[Key.S])
-                position -= MoveSpeed * new Vector3(front.X, 0, front.Z).Normalized() * time;
+                directions.Add(Direction.Back);
             if (keys[Key.D])
-                position += MoveSpeed * right * time;
+                directions.Add(Direction.Right);
             if (keys[Key.A])
-                position -= MoveSpeed * right * time;
+                directions.Add(Direction.Left);
             if (keys[Key.Space])
-                position += MoveSpeed * up * time;
+                directions.Add(Direction.Up);
             if (keys[Key.ShiftLeft])
-                position -= MoveSpeed * up * time;
+                directions.Add(Direction.Down);
+            player.Mover.Move(directions, time);
         }
-
-        private Vector2 lastPos;
-        private bool firstMouse = true;
 
         public void MouseMove()
         {
             var mouse = Mouse.GetState();
-
-
-            var deltaX = mouse.X - lastPos.X;
-            var deltaY = -mouse.Y + lastPos.Y;
-            lastPos = new Vector2(mouse.X, mouse.Y);
-
-
-            yaw += deltaX * MouseSensitivity;
-            pitch += deltaY * MouseSensitivity;
-
-
-            if (pitch > 89.0f)
-                pitch = 89.0f;
-            if (pitch < -89.0f)
-                pitch = -89.0f;
-
-            front.X = (float) Math.Cos(MathHelper.DegreesToRadians(yaw)) *
-                      (float) Math.Cos(MathHelper.DegreesToRadians(pitch));
-            front.Y = (float) Math.Sin(MathHelper.DegreesToRadians(pitch));
-            front.Z = (float) Math.Sin(MathHelper.DegreesToRadians(yaw)) *
-                      (float) Math.Cos(MathHelper.DegreesToRadians(pitch));
-            front.Normalize();
-            right = -Vector3.Cross(up, front).Normalized();
+            var deltaX = mouse.X - lastMousePosition.X;
+            var deltaY = -mouse.Y + lastMousePosition.Y;
+            lastMousePosition = new Vector2(mouse.X, mouse.Y);
+            var yaw = deltaX * MouseSensitivity;
+            var pitch = deltaY * MouseSensitivity;
+            player.Mover.Rotate(yaw, pitch);
         }
+    }
 
-        private float MoveSpeed { get; set; }
-
-
-        private float MouseSensitivity { get; set; }
+    public static class ModelExtension
+    {
+        public static Vector3 Convert(this Vector vector)
+        {
+            return new Vector3(vector.X, vector.Y, vector.Z);
+        }
     }
 }

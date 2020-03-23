@@ -1,19 +1,20 @@
-﻿namespace tmp.Player
+﻿using System;
+using System.Deployment.Internal;
+using System.Numerics;
+
+namespace tmp
 {
     public class Player
     {
-        public PlayerPoint Position;
-        public PlayerPoint Focus;
-        public int Hardness;
-        public PlayerPoint Direction;
-        public float Speed { get; set; }
+        public int Hardness { get; private set; }
+        public readonly PlayerMover Mover;
+        public float Height { get; }
 
-        public Player(PlayerPoint position, PlayerPoint focus, PlayerPoint direction, int hardness)
+        public Player(Vector position, Vector direction, int hardness, float speed)
         {
-            Position = position;
-            Focus = focus;
+            Mover = new PlayerMover(position, direction, speed);
             Hardness = hardness;
-            Direction = direction;
+            Height = 1.8f;
         }
     }
 }
