@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace tmp.TrialVersion
 {
@@ -20,11 +21,9 @@ namespace tmp.TrialVersion
 
         static BaseBlocks()
         {
-            foreach (var field in typeof(BaseBlocks).GetFields())
-            {
-                var blockItem = (BlockItem) field.GetValue(new object());
-                allBlocks.Add(blockItem);
-            }
+            allBlocks = typeof(BaseBlocks).GetFields()
+                .Select(field => (BlockItem) field.GetValue(new object()))
+                .ToList();
         }
     }
 }

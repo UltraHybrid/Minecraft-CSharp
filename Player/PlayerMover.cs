@@ -29,7 +29,7 @@ namespace tmp
         {
             Speed = speed;
             var direction = new Vector(0, 0, -1);
-            Front = new Vector(0, 0, 1);
+            Front = front;
             Right = Vector.Cross(new Vector(0, 1, 0), direction).Normalize();
             Up = Vector.Cross(direction, Right).Normalize();
         }
