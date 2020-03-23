@@ -99,10 +99,8 @@ namespace tmp
             InitBuffers();
             InitShaderAttributes();
             Resize(width, height);
-            InitTextures("Textures");
-            var textureStorage = Path.Combine("Textures", "skybox");
             skyBoxShaderProgram = Shaders.GetSkyBoxShader();
-            texture = Texture.GetCubeMap(Directory.GetFiles(textureStorage, "*.png").ToList());
+            texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png").ToList());
             arrayTex = Texture.InitArray(Directory.GetFiles("Textures", "*.png").ToList());
 
         }
@@ -188,7 +186,6 @@ namespace tmp
             {
                 foreach (var blockCord in blocks.Value)
                 {
-                    Console.WriteLine(blockCord);
                     var a = new Cube(blockCord);
                     cubes.Add(a);
                     indices.AddRange(a.GetIndices(t * 24));

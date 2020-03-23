@@ -15,7 +15,5 @@
             Hardness = hardness;
             Direction = direction;
         }
-        
-        
     }
 }

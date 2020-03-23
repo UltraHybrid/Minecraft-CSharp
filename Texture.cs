@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenTK.Graphics.OpenGL4;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -9,6 +10,7 @@ namespace tmp
 {
     public static class Texture
     {
+        public static Dictionary<string, int> textures = new Dictionary<string, int>();
         public static int GetTexture(string name)
         {
             var texture = GL.GenTexture();
@@ -32,7 +34,6 @@ namespace tmp
 
             for (var i = 0; i < 6; i++)
             {
-                Console.WriteLine(paths[i]);
                 SetImage(paths[i], TextureTarget.TextureCubeMapPositiveX + i);
             }
 
@@ -80,6 +81,7 @@ namespace tmp
             const int width = 16;
             const int height = 16;
             var laysersCount = path.Count;
+            
 
             
             var texturesArray = GL.GenTexture();
@@ -89,10 +91,13 @@ namespace tmp
             
             var pixelAll = new List<byte[]>();
 
-            foreach (var img in path)
+            for (var id = 0; id < laysersCount; id++)
             {
+                var e = path[id];
+                var name = Path.GetFileNameWithoutExtension(e);
+                textures.Add(name ?? throw new Exception("image path does not exist"), id);
                 var pixels = new List<byte>();
-                var image = Image.Load(img);
+                var image = Image.Load(e);
                 image.Mutate(x => x.Flip(FlipMode.Vertical));
                 var tempPixels = image.GetPixelSpan().ToArray();
 
@@ -105,8 +110,7 @@ namespace tmp
                     pixels.Add(p.A);
                 }
                 pixelAll.Add(pixels.ToArray());
-                Console.WriteLine(img);
-                Console.WriteLine(pixels.Count);
+                Console.WriteLine($"{name} : {id}" );
             }
 
             for (var i = 0; i < pixelAll.Count; i++)

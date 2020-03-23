@@ -30,7 +30,6 @@ namespace tmp
             out vec4 outColor;
 
             uniform sampler2DArray texture_array;
-            uniform uint diffuse_layer;
 
             float getCoord(uint capacity, uint layer)
             {
@@ -39,7 +38,7 @@ namespace tmp
 
             void main(void)
             {
-                vec4 tmp = texture(texture_array, vec3(TexCoord, getCoord(5, 3)));  
+                vec4 tmp = texture(texture_array, vec3(TexCoord, getCoord(20, 10)));
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;

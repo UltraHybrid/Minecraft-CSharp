@@ -20,6 +20,9 @@
         <e p="PlayerPoint.cs" t="Include" />
       </e>
       <e p="Program.cs" t="Include" />
+      <e p="Render" t="Include">
+        <e p="Render.cs" t="Include" />
+      </e>
       <e p="Shaders.cs" t="Include" />
       <e p="Texture.cs" t="Include" />
       <e p="Textures" t="Include">
@@ -42,6 +45,14 @@
         <e p="sand.png" t="Include" />
         <e p="sandstone.png" t="Include" />
         <e p="sandstone_top.png" t="Include" />
+        <e p="skybox" t="Include">
+          <e p="0.png" t="Include" />
+          <e p="1.png" t="Include" />
+          <e p="2.png" t="Include" />
+          <e p="3.png" t="Include" />
+          <e p="4.png" t="Include" />
+          <e p="5.png" t="Include" />
+        </e>
         <e p="stone.png" t="Include" />
       </e>
       <e p="tmp.csproj" t="IncludeRecursive" />

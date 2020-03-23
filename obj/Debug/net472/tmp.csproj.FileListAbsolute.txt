@@ -47,10 +47,6 @@ C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\lapi
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\oak_log.png
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\oak_log_top.png
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\oak_planks.png
-C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sand.png
-C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sandstone.png
-C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sandstone_top.png
-C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\stone.png
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\tmp.exe.config
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\tmp.exe
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\tmp.pdb
@@ -85,3 +81,13 @@ C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\obj\Debug\net472\tmp.AssemblyI
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\obj\Debug\net472\tmp.csproj.CopyComplete
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\obj\Debug\net472\tmp.exe
 C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\obj\Debug\net472\tmp.pdb
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\1.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sand.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sandstone.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\sandstone_top.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\stone.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\0.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\2.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\3.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\4.png
+C:\Users\UltraHybrid\RiderProjects\opengl_c-_test\bin\Debug\net472\Textures\skybox\5.png
