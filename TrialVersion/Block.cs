@@ -2,18 +2,18 @@
 {
     public class Block
     {
-        public readonly BlockItem BlockItem;
+        public readonly BlockType BlockType;
         public int Hardness { get; set; }
         public Point3 Position { get; set; }
 
-        public Block(BlockItem blockItem)
+        public Block(BlockType blockType)
         {
-            BlockItem = blockItem;
-            Hardness = blockItem.Hardness;
+            BlockType = blockType;
+            Hardness = blockType.Hardness;
             Position = Point3.Default;
         }
 
-        public Block(BlockItem blockItem, Point3 position) : this(blockItem)
+        public Block(BlockType blockType, Point3 position) : this(blockType)
         {
             Position = position;
         }

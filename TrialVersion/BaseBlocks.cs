@@ -6,24 +6,43 @@ namespace tmp.TrialVersion
 {
     public static class BaseBlocks
     {
-        public static readonly BlockItem Empty = new BlockItem("Empty", 0, null);
-        public static readonly BlockItem Dirt = new BlockItem("Dirt", 3, "dirt.png");
-        public static readonly BlockItem Glass = new BlockItem("Glass", 1, "glass.png");
-        public static readonly BlockItem Stone = new BlockItem("Stone", 10, "stone.png");
-        public static readonly BlockItem Sand = new BlockItem("Sand", 2, "sand,png");
-        public static readonly BlockItem CoalOre = new BlockItem("CoalOre", 5, "coal_ore.png");
-        public static readonly BlockItem Cobblestone = new BlockItem("Cobblestone", 10, "cobblestone.png");
-        public static readonly BlockItem Bedrock = new BlockItem("Bedrock", int.MaxValue, "bedrock.png");
+        public static readonly BlockType Empty = new BlockType("Empty", 0, null);
+        public static readonly BlockType Dirt = new BlockType("Dirt", 3, FillOneTexture("dirt.png"));
+        public static readonly BlockType Glass = new BlockType("Glass", 1, FillOneTexture("glass.png"));
+        public static readonly BlockType Stone = new BlockType("Stone", 10, FillOneTexture("stone.png"));
+        public static readonly BlockType Sand = new BlockType("Sand", 2, FillOneTexture("sand.png"));
+        public static readonly BlockType CoalOre = new BlockType("CoalOre", 5, FillOneTexture("coal_ore.png"));
 
-        private static readonly List<BlockItem> allBlocks = new List<BlockItem>();
+        public static readonly BlockType Cobblestone =
+            new BlockType("Cobblestone", 10, FillOneTexture("cobblestone.png"));
 
-        public static IReadOnlyList<BlockItem> AllBlocks => allBlocks;
+        public static readonly BlockType
+            Bedrock = new BlockType("Bedrock", int.MaxValue, FillOneTexture("bedrock.png"));
+
+        public static readonly BlockType GrassPath = new BlockType("GrassPath", 3,
+            new[]
+            {
+                "grass_path_side.png", "grass_path_side.png", "grass_path_side.png",
+                "grass_path_top.png", "grass_path_side.png", "grass_path_side.png"
+            });
+
+        private static readonly List<BlockType> allBlocks;
+
+        public static IReadOnlyList<BlockType> AllBlocks => allBlocks;
 
         static BaseBlocks()
         {
             allBlocks = typeof(BaseBlocks).GetFields()
-                .Select(field => (BlockItem) field.GetValue(new object()))
+                .Select(field => (BlockType) field.GetValue(new object()))
                 .ToList();
+        }
+
+        private static string[] FillOneTexture(string name)
+        {
+            var result = new string[6];
+            for (var i = 0; i < 6; i++)
+                result[i] = name;
+            return result;
         }
     }
 }

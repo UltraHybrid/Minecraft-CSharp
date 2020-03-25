@@ -19,14 +19,14 @@ namespace tmp.TrialVersion
             FillLayers(BaseBlocks.Empty, YLength);
         }
 
-        public void FillLayers(BlockItem blockItem, int count)
+        public void FillLayers(BlockType blockType, int count)
         {
             if (count < 0 || count > YLength)
                 throw new ArgumentException();
             for (var j = 0; j < count; j++)
             for (var i = 0; i < XLenght; i++)
             for (var k = 0; k < ZLength; k++)
-                blocks[i, j, k] = new Block(blockItem, new Point3(i, j, k));
+                blocks[i, j, k] = new Block(blockType, new Point3(i, j, k));
         }
 
         public IEnumerator<Block> GetEnumerator()

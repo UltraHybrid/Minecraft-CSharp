@@ -24,17 +24,17 @@ namespace tmp.TrialVersion
             }
         }
 
-        public Dictionary<string, List<Vector3>> GetVisibleBlock(int x, int z)
+        public Dictionary<string[], List<Vector3>> GetVisibleBlock(int x, int z)
         {
             var chunk = chunks[x, z];
-            var result = new Dictionary<string, List<Vector3>>();
+            var result = new Dictionary<string[], List<Vector3>>();
             foreach (var block in chunk)
             {
                 var position = GetAbsolutPosition(block, x, z);
-                if (block.BlockItem == BaseBlocks.Empty || !IsBorderOnEmpty(block, position))
+                if (block.BlockType == BaseBlocks.Empty || !IsBorderOnEmpty(block, position))
                     continue;
 
-                var key = block.BlockItem.TextureName;
+                var key = block.BlockType.TextureName;
                 if (result.ContainsKey(key))
                     result[key].Add(position);
                 else
@@ -60,7 +60,7 @@ namespace tmp.TrialVersion
             for (var i = 0; i < offsets.Length; i++)
             {
                 //Console.WriteLine(position);
-                if (IsCorrectIndex(position+offsets[i]) && this[position + offsets[i]].BlockItem == BaseBlocks.Empty)
+                if (IsCorrectIndex(position + offsets[i]) && this[position + offsets[i]].BlockType == BaseBlocks.Empty)
                     return true;
             }
 
