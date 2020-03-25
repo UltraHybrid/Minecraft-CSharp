@@ -8,6 +8,8 @@ namespace tmp
         public float Y { get; set; }
         public float Z { get; set; }
 
+        public static Vector Default = new Vector(0, 0, 0);
+
         public float Length => (float) Math.Sqrt(X * X + Y * Y + Z * Z);
 
         public Vector(float x, float y, float z)
@@ -20,7 +22,7 @@ namespace tmp
         public Vector Normalize()
         {
             var length = Length;
-            return new Vector(X / length, Y / length, Z / length);
+            return length == 0 ? Default : new Vector(X / length, Y / length, Z / length);
         }
 
         public static Vector Cross(Vector v1, Vector v2)
@@ -38,10 +40,10 @@ namespace tmp
 
         public static Vector operator -(Vector v)
         {
-            v.X *= -1;
-            v.Y *= -1;
-            v.Z *= -1;
-            return v;
+            var x = -v.X;
+            var y = -v.Y;
+            var z = -v.Z;
+            return new Vector(x, y, z);
         }
 
         public static Vector operator -(Vector v1, Vector v2)

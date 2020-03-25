@@ -38,33 +38,36 @@ namespace tmp
         {
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
+            var resultMove = Vector.Default;
             Console.WriteLine(Position.X + " " + Position.Y + " " + Position.Z);
             foreach (var direction in directions)
             {
                 switch (direction)
                 {
                     case Direction.Forward:
-                        Position += distance * frontXZ;
+                        resultMove += frontXZ;
                         break;
                     case Direction.Back:
-                        Position -= distance * frontXZ;
+                        resultMove -= frontXZ;
                         break;
                     case Direction.Right:
-                        Position += distance * Right;
+                        resultMove += Right;
                         break;
                     case Direction.Left:
-                        Position -= distance * Right;
+                        resultMove -= Right;
                         break;
                     case Direction.Up:
-                        Position += distance * Up;
+                        resultMove += Up;
                         break;
                     case Direction.Down:
-                        Position -= distance * Up;
+                        resultMove -= Up;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            Position += distance * (resultMove.Normalize());
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
