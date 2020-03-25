@@ -12,19 +12,21 @@ namespace tmp
         private Dictionary<Key, bool> keys;
         private Vector2 lastMousePosition;
         private float MouseSensitivity { get; set; }
-        private readonly Player player;
+        private readonly EntityMover viewer;
+        private readonly Vector3 offset;
 
-        public Camera(Dictionary<Key, bool> keys, Player player)
+        public Camera(Dictionary<Key, bool> keys, EntityMover viewer, Vector3 offset)
         {
             this.keys = keys;
-            this.player = player;
+            this.viewer = viewer;
             MouseSensitivity = 0.05f;
+            this.offset = offset;
         }
 
         public Matrix4 GetViewMatrix()
         {
-            var eye = player.Mover.Position.Convert() + new Vector3(0, player.Height, 0);
-            return Matrix4.LookAt(eye, eye + player.Mover.Front.Convert(), player.Mover.Up.Convert());
+            var eye = viewer.Position.Convert() + offset;
+            return Matrix4.LookAt(eye, eye + viewer.Front.Convert(), viewer.Up.Convert());
         }
 
         public void Move(float time)
@@ -42,7 +44,7 @@ namespace tmp
                 directions.Add(Direction.Up);
             if (keys[Key.ShiftLeft])
                 directions.Add(Direction.Down);
-            player.Mover.Move(directions, time);
+            viewer.Move(directions, time);
         }
 
         public void MouseMove()
@@ -53,7 +55,7 @@ namespace tmp
             lastMousePosition = new Vector2(mouse.X, mouse.Y);
             var yaw = deltaX * MouseSensitivity;
             var pitch = deltaY * MouseSensitivity;
-            player.Mover.Rotate(yaw, pitch);
+            viewer.Rotate(yaw, pitch);
         }
     }
 

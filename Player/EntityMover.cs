@@ -5,8 +5,8 @@ namespace tmp
 {
     public abstract class EntityMover : IMover
     {
-        public Vector Position { get; set; }
-        public Vector Front { get; set; }
+        public Vector Position { get; protected set; }
+        public Vector Front { get; protected set; }
         public abstract Vector Right { get; set; }
         public abstract Vector Up { get; set; }
         public abstract float Speed { get; set; }

@@ -30,7 +30,7 @@ namespace tmp
             }
 
             world = new World();
-            camera = new Camera(keys, player);
+            camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
             render = new Render(camera, world);
         }
 
@@ -40,7 +40,7 @@ namespace tmp
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
-        
+
         #endregion
 
 
@@ -70,9 +70,9 @@ namespace tmp
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
-            
+
             render.RenderFrame();
-            
+
             SwapBuffers();
         }
 
