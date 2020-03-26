@@ -66,7 +66,9 @@ namespace tmp.TrialVersion
             };
             for (var i = 0; i < offsets.Length; i++)
             {
-                if (IsCorrectIndex(position + offsets[i]) && this[position + offsets[i]].BlockType == BaseBlocks.Empty)
+                if (!IsCorrectIndex(position + offsets[i]))
+                    return true;
+                if (this[position + offsets[i]].BlockType == BaseBlocks.Empty)
                     return true;
             }
 

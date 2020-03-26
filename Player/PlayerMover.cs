@@ -39,7 +39,6 @@ namespace tmp
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            Console.WriteLine(Position.X + " " + Position.Y + " " + Position.Z);
             foreach (var direction in directions)
             {
                 switch (direction)
