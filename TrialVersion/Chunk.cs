@@ -9,6 +9,7 @@ namespace tmp.TrialVersion
     public class Chunk : IEnumerable<Block>
     {
         private readonly Block[,,] blocks;
+        public Point3 Position { get; set; }
         public const int XLenght = 16;
         public const int YLength = 256;
         public const int ZLength = 16;

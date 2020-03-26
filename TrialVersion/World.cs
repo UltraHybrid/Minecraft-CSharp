@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using OpenTK;
 
 namespace tmp.TrialVersion
@@ -20,6 +21,7 @@ namespace tmp.TrialVersion
             {
                 var chunk = new Chunk();
                 chunk.FillLayers(BaseBlocks.Dirt, 30);
+                chunk.Position = new Point3(x, 0, z);
                 chunks[x, z] = chunk;
             }
         }
@@ -44,6 +46,11 @@ namespace tmp.TrialVersion
             return result;
         }
 
+        public Dictionary<string[], List<Vector3>> GetVisibleBlock(Chunk chunk)
+        {
+            return GetVisibleBlock(chunk.Position.X, chunk.Position.Z);
+        }
+
         private Point3 GetAbsolutPosition(Block block, int x, int z)
         {
             return block.Position + new Point3(x * Chunk.XLenght, 0, z * Chunk.ZLength);
@@ -59,7 +66,6 @@ namespace tmp.TrialVersion
             };
             for (var i = 0; i < offsets.Length; i++)
             {
-                //Console.WriteLine(position);
                 if (IsCorrectIndex(position + offsets[i]) && this[position + offsets[i]].BlockType == BaseBlocks.Empty)
                     return true;
             }
@@ -75,7 +81,9 @@ namespace tmp.TrialVersion
 
         public IEnumerator<Chunk> GetEnumerator()
         {
-            return chunks.Cast<Chunk>().GetEnumerator();
+            for (var x = 0; x < Chunk.XLenght; x++)
+            for (var z = 0; z < Chunk.ZLength; z++)
+                yield return chunks[x, z];
         }
 
         IEnumerator IEnumerable.GetEnumerator()
