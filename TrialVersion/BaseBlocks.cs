@@ -23,7 +23,7 @@ namespace tmp.TrialVersion
             new[]
             {
                 "grass_path_side.png", "grass_path_side.png", "grass_path_side.png",
-                "grass_path_top.png", "grass_path_side.png", "grass_path_side.png"
+                "grass_path_top.png", "grass_path_side.png", "dirt.png"
             });
 
         private static readonly List<BlockType> allBlocks;
