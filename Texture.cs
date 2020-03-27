@@ -94,7 +94,7 @@ namespace tmp
             for (var id = 0; id < laysersCount; id++)
             {
                 var e = path[id];
-                var name = Path.GetFileNameWithoutExtension(e);
+                var name = Path.GetFileName(e);
                 textures.Add(name ?? throw new Exception("image path does not exist"), id);
                 var pixels = new List<byte>();
                 var image = Image.Load(e);

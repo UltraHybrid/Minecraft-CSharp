@@ -10,9 +10,11 @@ namespace tmp
         private List<Vector3> vertexes;
         private int[] indices;
         private List<Vector2> textureCords;
+        private List<int> texId;
         
-        public Cube(Vector3 position = default)
+        public Cube(Vector3 position = default, List<int> texId = null)
         {
+            this.texId = texId;
             this.position = position;
             VertCount = 24;
             IndiceCount = 36;
@@ -87,48 +89,48 @@ namespace tmp
             };
         }
 
-        public Vector2[] GetTextureCoords() => new[]
+        public Vector3[] GetTextureCoords() => new[]
             {
                 // left
-                new Vector2(0.0f, 0.0f),
-                new Vector2(-1.0f, 1.0f),
-                new Vector2(-1.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
+                new Vector3(0.0f, 0.0f, texId[0]),
+                new Vector3(-1.0f, 1.0f, texId[0]),
+                new Vector3(-1.0f, 0.0f, texId[0]),
+                new Vector3(0.0f, 1.0f, texId[0]),
 
                 // back
-                new Vector2(0.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
-                new Vector2(-1.0f, 1.0f),
-                new Vector2(-1.0f, 0.0f),
+                new Vector3(0.0f, 0.0f, texId[1]),
+                new Vector3(0.0f, 1.0f, texId[1]),
+                new Vector3(-1.0f, 1.0f, texId[1]),
+                new Vector3(-1.0f, 0.0f, texId[1]),
 
                 // right
-                new Vector2(-1.0f, 0.0f),
-                new Vector2(0.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
-                new Vector2(-1.0f, 1.0f),
+                new Vector3(-1.0f, 0.0f, texId[2]),
+                new Vector3(0.0f, 0.0f, texId[2]),
+                new Vector3(0.0f, 1.0f, texId[2]),
+                new Vector3(-1.0f, 1.0f, texId[2]),
 
                 // top
-                new Vector2(0.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
-                new Vector2(-1.0f, 0.0f),
-                new Vector2(-1.0f, 1.0f),
+                new Vector3(0.0f, 0.0f, texId[3]),
+                new Vector3(0.0f, 1.0f, texId[3]),
+                new Vector3(-1.0f, 0.0f, texId[3]),
+                new Vector3(-1.0f, 1.0f, texId[3]),
 
                 // front
-                new Vector2(0.0f, 0.0f),
-                new Vector2(1.0f, 1.0f),
-                new Vector2(0.0f, 1.0f),
-                new Vector2(1.0f, 0.0f),
+                new Vector3(0.0f, 0.0f, texId[4]),
+                new Vector3(1.0f, 1.0f, texId[4]),
+                new Vector3(0.0f, 1.0f, texId[4]),
+                new Vector3(1.0f, 0.0f, texId[4]),
 
                 // bottom
-                new Vector2(0.0f, 0.0f),
-                new Vector2(0.0f, 1.0f),
-                new Vector2(-1.0f, 1.0f),
-                new Vector2(-1.0f, 0.0f)
+                new Vector3(0.0f, 0.0f, texId[5]),
+                new Vector3(0.0f, 1.0f, texId[5]),
+                new Vector3(-1.0f, 1.0f, texId[5]),
+                new Vector3(-1.0f, 0.0f, texId[5])
             };
 
-        public override List<Vector3> GetVertexes() => vertexes;
+        public List<Vector3> GetVertexes() => vertexes;
 
-        public override int[] GetIndices(int offset = 0)
+        public int[] GetIndices(int offset = 0)
         {
             if (offset == 0) return indices;
             for (var i = 0; i < indices.Length; i++)
@@ -137,6 +139,6 @@ namespace tmp
             return indices;
         }
         
-        public override void CalculateModelMatrix() => Matrix4.CreateTranslation(position);
+        public void CalculateModelMatrix() => Matrix4.CreateTranslation(position);
     }
 }

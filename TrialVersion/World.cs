@@ -22,7 +22,7 @@ namespace tmp.TrialVersion
                 var chunk = new Chunk();
                 chunk.FillLayers(BaseBlocks.Dirt, 30);
                 chunk.Position = new Point3(x, 0, z);
-                chunks[x, z] = chunk;
+                chunks[x, z] = this.GetTestChunk();
             }
         }
 

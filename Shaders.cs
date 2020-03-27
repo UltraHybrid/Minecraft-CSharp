@@ -9,13 +9,13 @@ namespace tmp
             @"#version 410 core
 
             layout (location = 0) in vec3 position;
-            layout (location = 1) in vec2 texCoord;
+            layout (location = 1) in vec3 texCoord;
 
             uniform mat4 model;
             uniform mat4 view;
             uniform mat4 projection;
 
-            out vec2 TexCoord;
+            out vec3 TexCoord;
 
             void main(void)
             {
@@ -26,19 +26,14 @@ namespace tmp
         private const string FragSrc = 
             @"#version 410 core
             
-            in vec2 TexCoord;
+            in vec3 TexCoord;
             out vec4 outColor;
 
             uniform sampler2DArray texture_array;
 
-            float getCoord(uint capacity, uint layer)
-            {
-	            return max(0, min(float(capacity - 1), floor(float(layer) + 0.5)));
-            }
-
             void main(void)
             {
-                vec4 tmp = texture(texture_array, vec3(TexCoord, getCoord(20, 10)));
+                vec4 tmp = texture(texture_array, TexCoord);
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;

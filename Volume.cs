@@ -12,9 +12,5 @@ namespace tmp
         public Matrix4 ModelMatrix = Matrix4.Identity;
         public Matrix4 ViewProjectionMatrix = Matrix4.Identity;
         public Matrix4 ModelViewProjectionMatix = Matrix4.Identity;
-
-        public abstract List<Vector3> GetVertexes();
-        public abstract int[] GetIndices(int offset = 0);
-        public abstract void CalculateModelMatrix();
     }
 }

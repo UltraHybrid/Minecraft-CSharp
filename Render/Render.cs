@@ -16,7 +16,7 @@ namespace tmp
         private int shaderProgram, skyBoxShaderProgram;
 
         private int vao, vbo, ebo, textureBuffer;
-        
+
         private int vaoS, vboS, texture;
 
         private readonly Dictionary<string, int> textures = new Dictionary<string, int>();
@@ -24,12 +24,12 @@ namespace tmp
         private int arrayTex;
 
 
-        
+
 
         private int modelMatrixAttributeLocation;
         private int viewMatrixAttributeLocation;
         private int projectionMatrixAttributeLocation;
-        
+
         private int viewMatrixAttributeLocationS;
         private int projectionMatrixAttributeLocationS;
 
@@ -41,7 +41,7 @@ namespace tmp
         private readonly List<Cube> cubes = new List<Cube>();
         private readonly List<Vector3> vertex = new List<Vector3>();
         private List<int> indices = new List<int>();
-        private List<Vector2> texcoords = new List<Vector2>();
+        private List<Vector3> texcoords = new List<Vector3>();
 
         private World world;
         private readonly Camera camera;
@@ -58,7 +58,7 @@ namespace tmp
         {
             ClearBackground(Color4.White);
             GL.UseProgram(shaderProgram);
-            
+
             viewMatrix = camera.GetViewMatrix();
             GL.UniformMatrix4(modelMatrixAttributeLocation, false, ref modelMatrix);
             GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
@@ -66,45 +66,44 @@ namespace tmp
 
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
             GL.BindVertexArray(vao);
-            GL.DrawElements(PrimitiveType.Triangles, 36 * cubes.Count, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, 36 * t, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
-            
+
             //sky
-            
+
             GL.DepthFunc(DepthFunction.Lequal);
             GL.UseProgram(skyBoxShaderProgram);
 
             viewMatrix = new Matrix4(new Matrix3(viewMatrix));
             GL.UniformMatrix4(projectionMatrixAttributeLocationS, false, ref projectionMatrix);
             GL.UniformMatrix4(viewMatrixAttributeLocationS, false, ref viewMatrix);
-            
+
             GL.BindVertexArray(vaoS);
-            //GL.ActiveTexture(0);
             GL.BindTexture(TextureTarget.TextureCubeMap, texture);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
             GL.BindVertexArray(0);
             GL.DepthFunc(DepthFunction.Less);
-            
+
         }
+
         public void UpdateFrame()
         {
-            
+
         }
 
         public void Initialise(int width, int height)
         {
             shaderProgram = Shaders.GetDefaultShader();
             skyBoxShaderProgram = Shaders.GetSkyBoxShader();
-            InitCubes();
-            InitBuffers();
             InitShaderAttributes();
             Resize(width, height);
             skyBoxShaderProgram = Shaders.GetSkyBoxShader();
             texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png").ToList());
             arrayTex = Texture.InitArray(Directory.GetFiles("Textures", "*.png").ToList());
-
+            InitCubes();
+            InitBuffers();
         }
-        
+
         private static void ClearBackground(Color4 backgroundColor)
         {
             GL.ClearColor(backgroundColor);
@@ -125,9 +124,9 @@ namespace tmp
 
             GL.GenBuffers(1, out textureBuffer);
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * texcoords.Count,
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * texcoords.Count,
                 texcoords.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(1);
 
             GL.GenBuffers(1, out ebo);
@@ -136,18 +135,19 @@ namespace tmp
                 indices.ToArray(), BufferUsageHint.StaticDraw);
 
             GL.BindVertexArray(0);
-            
-            
+
+
             //sky
             GL.GenVertexArrays(1, out vaoS);
             GL.BindVertexArray(vaoS);
-            
+
             GL.GenBuffers(1, out vboS);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboS);
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * skyboxVertices.Length, skyboxVertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * skyboxVertices.Length, skyboxVertices,
+                BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
-            
+
         }
 
         private void InitShaderAttributes()
@@ -155,7 +155,7 @@ namespace tmp
             modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
             viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
             projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "projection");
-            
+
             viewMatrixAttributeLocationS = GL.GetUniformLocation(skyBoxShaderProgram, "view");
             projectionMatrixAttributeLocationS = GL.GetUniformLocation(skyBoxShaderProgram, "projection");
         }
@@ -184,10 +184,10 @@ namespace tmp
         {
             foreach (var blocks in world.GetVisibleBlock(0, 0))
             {
+                var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks.Value)
                 {
-                    var a = new Cube(blockCord);
-                    cubes.Add(a);
+                    var a = new Cube(blockCord, tmp);
                     indices.AddRange(a.GetIndices(t * 24));
                     vertex.AddRange(a.GetVertexes());
                     texcoords.AddRange(a.GetTextureCoords());
@@ -195,50 +195,51 @@ namespace tmp
                 }
             }
         }
-        
-    public float[] skyboxVertices = {
-        // positions          
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
 
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
+        public float[] skyboxVertices =
+        {
+            // positions          
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
 
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
 
-        -1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f
-    };
+            -1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f
+        };
     }
 }
