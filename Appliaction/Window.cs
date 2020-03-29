@@ -12,7 +12,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(Player player) : base(
+        public Window(World world, Player player) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -28,7 +28,6 @@ namespace tmp
                 keys[key] = false;
             }
 
-            world = new World();
             camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
             render = new Render(camera, world);
         }

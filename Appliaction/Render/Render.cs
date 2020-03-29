@@ -180,7 +180,8 @@ namespace tmp
 
         private void InitCubes()
         {
-            foreach (var blocks in world.GetVisibleBlock(0, 0))
+            foreach (var chunk in world)
+            foreach (var blocks in world.GetVisibleBlock(chunk))
             {
                 var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks.Value)

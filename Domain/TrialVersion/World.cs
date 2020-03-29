@@ -8,18 +8,17 @@ namespace tmp
     public class World : IEnumerable<Chunk>
     {
         private readonly Chunk[,] chunks;
-        public const int MaxCount = 5;
+        public const int MaxCount = 10;
 
-        public World()
+        public World(IGenerator generator)
         {
             chunks = new Chunk[MaxCount, MaxCount];
             for (var x = 0; x < MaxCount; x++)
             for (var z = 0; z < MaxCount; z++)
             {
-                var chunk = new Chunk();
-                chunk.FillLayers(BaseBlocks.Dirt, 30);
+                var chunk = generator.Generate(x, z);
                 chunk.Position = new Point3(x, 0, z);
-                chunks[x, z] = this.GetTestChunk();
+                chunks[x, z] = chunk;
             }
         }
 
@@ -80,8 +79,8 @@ namespace tmp
 
         public IEnumerator<Chunk> GetEnumerator()
         {
-            for (var x = 0; x < Chunk.XLenght; x++)
-            for (var z = 0; z < Chunk.ZLength; z++)
+            for (var x = 0; x < MaxCount; x++)
+            for (var z = 0; z < MaxCount; z++)
                 yield return chunks[x, z];
         }
 
