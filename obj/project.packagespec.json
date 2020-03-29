@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+    "projectUniqueName": "C:\\Users\\lvakk\\RiderProjects\\opengl_c-_test\\tmp.csproj",
     "projectName": "tmp",
-    "projectPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\tmp.csproj",
-    "outputPath": "C:\\Users\\UltraHybrid\\RiderProjects\\opengl_c-_test\\obj\\",
+    "projectPath": "C:\\Users\\lvakk\\RiderProjects\\opengl_c-_test\\tmp.csproj",
+    "outputPath": "C:\\Users\\lvakk\\RiderProjects\\opengl_c-_test\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "net472"

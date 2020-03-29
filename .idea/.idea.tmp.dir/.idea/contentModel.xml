@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\UltraHybrid\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\UltraHybrid\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_.19.00" t="ExcludeRecursive" />
-    <e p="C:\Users\UltraHybrid\RiderProjects\opengl_c-_test" t="IncludeRecursive">
+    <e p="C:\Users\lvakk\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\lvakk\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_.19.00" t="ExcludeRecursive" />
+    <e p="C:\Users\lvakk\RiderProjects\opengl_c-_test" t="IncludeRecursive">
+      <e p=".gitignore" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="Camera.cs" t="Include" />
       <e p="Cube.cs" t="Include" />
@@ -69,11 +70,16 @@
         <e p="bricks.png" t="Include" />
         <e p="coal_ore.png" t="Include" />
         <e p="cobblestone.png" t="Include" />
+        <e p="desktop.ini" t="Include" />
         <e p="diamond_ore.png" t="Include" />
         <e p="dirt.png" t="Include" />
         <e p="emerald_ore.png" t="Include" />
         <e p="glass.png" t="Include" />
         <e p="gold_ore.png" t="Include" />
+        <e p="grass_block_side.png" t="Include" />
+        <e p="grass_block_side_overlay.png" t="Include" />
+        <e p="grass_block_snow.png" t="Include" />
+        <e p="grass_block_top.png" t="Include" />
         <e p="grass_path_side.png" t="Include" />
         <e p="grass_path_top.png" t="Include" />
         <e p="iron_ore.png" t="Include" />
@@ -92,6 +98,7 @@
           <e p="4.png" t="Include" />
           <e p="5.png" t="Include" />
         </e>
+        <e p="snow.png" t="Include" />
         <e p="stone.png" t="Include" />
       </e>
       <e p="tmp.csproj" t="IncludeRecursive" />
