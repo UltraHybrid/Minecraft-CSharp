@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using OpenTK;
 
-namespace tmp.TrialVersion
+namespace tmp
 {
     public class Point3
     {

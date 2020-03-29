@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
 using Vector2 = OpenTK.Vector2;

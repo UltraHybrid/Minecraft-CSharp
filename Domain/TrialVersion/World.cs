@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using OpenTK;
 
-namespace tmp.TrialVersion
+namespace tmp
 {
     public class World : IEnumerable<Chunk>
     {

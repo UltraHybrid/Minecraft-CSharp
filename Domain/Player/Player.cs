@@ -1,8 +1,4 @@
-﻿using System;
-using System.Deployment.Internal;
-using System.Numerics;
-
-namespace tmp
+﻿namespace tmp
 {
     public class Player
     {

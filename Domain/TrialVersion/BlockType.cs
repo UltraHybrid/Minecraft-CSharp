@@ -1,4 +1,4 @@
-﻿namespace tmp.TrialVersion
+﻿namespace tmp
 {
     public class BlockType
     {

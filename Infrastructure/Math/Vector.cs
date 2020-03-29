@@ -8,7 +8,7 @@ namespace tmp
         public float Y { get; set; }
         public float Z { get; set; }
 
-        public static Vector Default = new Vector(0, 0, 0);
+        public static readonly Vector Default = new Vector(0, 0, 0);
 
         public float Length => (float) Math.Sqrt(X * X + Y * Y + Z * Z);
 

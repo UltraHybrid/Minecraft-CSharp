@@ -5,7 +5,6 @@ using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
-using tmp.TrialVersion;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
 using Vector3 = OpenTK.Vector3;
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using OpenTK;
-using OpenTK.Graphics;
+﻿using OpenTK;
 
 namespace tmp
 {

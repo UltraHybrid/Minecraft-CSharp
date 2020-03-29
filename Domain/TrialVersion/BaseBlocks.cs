@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace tmp.TrialVersion
+namespace tmp
 {
     public static class BaseBlocks
     {

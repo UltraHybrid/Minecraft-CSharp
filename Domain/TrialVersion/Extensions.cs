@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tmp.TrialVersion
+namespace tmp
 {
     public static class Extensions
     {

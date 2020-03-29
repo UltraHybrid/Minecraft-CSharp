@@ -1,8 +1,4 @@
-﻿using System;
-using OpenTK;
-using tmp.TrialVersion;
-
-namespace tmp
+﻿namespace tmp
 {
     class Program
     {
