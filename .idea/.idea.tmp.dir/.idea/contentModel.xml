@@ -63,36 +63,8 @@
         <e p="Render.cs" t="Include" />
       </e>
       <e p="Shaders.cs" t="Include" />
-      <e p="Texture.cs" t="Include" />
       <e p="Textures" t="Include">
-        <e p="bedrock.png" t="Include" />
-        <e p="bricks.png" t="Include" />
-        <e p="coal_ore.png" t="Include" />
-        <e p="cobblestone.png" t="Include" />
-        <e p="diamond_ore.png" t="Include" />
-        <e p="dirt.png" t="Include" />
-        <e p="emerald_ore.png" t="Include" />
-        <e p="glass.png" t="Include" />
-        <e p="gold_ore.png" t="Include" />
-        <e p="grass_path_side.png" t="Include" />
-        <e p="grass_path_top.png" t="Include" />
-        <e p="iron_ore.png" t="Include" />
-        <e p="lapis_ore.png" t="Include" />
-        <e p="oak_log.png" t="Include" />
-        <e p="oak_log_top.png" t="Include" />
-        <e p="oak_planks.png" t="Include" />
-        <e p="sand.png" t="Include" />
-        <e p="sandstone.png" t="Include" />
-        <e p="sandstone_top.png" t="Include" />
-        <e p="skybox" t="Include">
-          <e p="0.png" t="Include" />
-          <e p="1.png" t="Include" />
-          <e p="2.png" t="Include" />
-          <e p="3.png" t="Include" />
-          <e p="4.png" t="Include" />
-          <e p="5.png" t="Include" />
-        </e>
-        <e p="stone.png" t="Include" />
+        <e p="Texture.cs" t="Include" />
       </e>
       <e p="tmp.csproj" t="IncludeRecursive" />
       <e p="TrialVersion" t="Include">

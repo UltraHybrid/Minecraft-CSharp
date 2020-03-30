@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
@@ -28,6 +29,8 @@ namespace tmp
             {
                 keys[key] = false;
             }
+
+            Location = new Point(0, 0);
 
             world = new World();
             camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));

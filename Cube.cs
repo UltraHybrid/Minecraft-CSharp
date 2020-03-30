@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
+using OpenTK.Input;
 
 namespace tmp
 {
@@ -14,50 +15,11 @@ namespace tmp
         
         public Cube(Vector3 position = default, List<int> texId = null)
         {
-            this.texId = texId;
+            this.texId = texId ?? new int[7].ToList();
             this.position = position;
             VertCount = 24;
             IndiceCount = 36;
-            
-            vertexes = new List<Vector3> {
-                //left
-                new Vector3(0f, 0f,  0f) + position,
-                new Vector3(1f, 1f,  0f) + position,
-                new Vector3(1f, 0f,  0f) + position,
-                new Vector3(0f, 1f,  0f) + position,
 
-                //back
-                new Vector3(1f, 0f,  0f) + position,
-                new Vector3(1f, 1f,  0f) + position,
-                new Vector3(1f, 1f,  1f) + position,
-                new Vector3(1f, 0f,  1f) + position,
-
-                //right
-                new Vector3(0f, 0f,  1f) + position,
-                new Vector3(1f, 0f,  1f) + position,
-                new Vector3(1f, 1f,  1f) + position,
-                new Vector3(0f, 1f,  1f) + position,
-
-                //top
-                new Vector3(1f, 1f,  0f) + position,
-                new Vector3(0f, 1f,  0f) + position,
-                new Vector3(1f, 1f,  1f) + position,
-                new Vector3(0f, 1f,  1f) + position,
-
-                //front
-                new Vector3(0f, 0f,  0f) + position, 
-                new Vector3(0f, 1f,  1f) + position, 
-                new Vector3(0f, 1f,  0f) + position,
-                new Vector3(0f, 0f,  1f) + position,
-
-                //bottom
-                new Vector3(0f, 0f,  0f) + position, 
-                new Vector3(1f, 0f,  0f) + position,
-                new Vector3(1f, 0f,  1f) + position,
-                new Vector3(0f, 0f,  1f) + position
-
-            };
-            
             textureCords = new List<Vector2>()
             {
                 //front
@@ -128,7 +90,49 @@ namespace tmp
                 new Vector3(-1.0f, 0.0f, texId[5])
             };
 
-        public List<Vector3> GetVertexes() => vertexes;
+        public List<Vector3> GetVertexesWithoutOffset() => GetVertexe(new Vector3(0, 0, 0));
+        public List<Vector3> GetVertexes() => GetVertexe(position);
+        public List<Vector3> GetVertexe(Vector3 position1=default)
+        { 
+            return  new List<Vector3> {
+                //left
+                new Vector3(0f, 0f,  0f) + position1,
+                new Vector3(1f, 1f,  0f) + position1,
+                new Vector3(1f, 0f,  0f) + position1,
+                new Vector3(0f, 1f,  0f) + position1,
+
+                //back
+                new Vector3(1f, 0f,  0f) + position1,
+                new Vector3(1f, 1f,  0f) + position1,
+                new Vector3(1f, 1f,  1f) + position1,
+                new Vector3(1f, 0f,  1f) + position1,
+
+                //right
+                new Vector3(0f, 0f,  1f) + position1,
+                new Vector3(1f, 0f,  1f) + position1,
+                new Vector3(1f, 1f,  1f) + position1,
+                new Vector3(0f, 1f,  1f) + position1,
+
+                //top
+                new Vector3(1f, 1f,  0f) + position1,
+                new Vector3(0f, 1f,  0f) + position1,
+                new Vector3(1f, 1f,  1f) + position1,
+                new Vector3(0f, 1f,  1f) + position1,
+
+                //front
+                new Vector3(0f, 0f,  0f) + position1, 
+                new Vector3(0f, 1f,  1f) + position1, 
+                new Vector3(0f, 1f,  0f) + position1,
+                new Vector3(0f, 0f,  1f) + position1,
+
+                //bottom
+                new Vector3(0f, 0f,  0f) + position, 
+                new Vector3(1f, 0f,  0f) + position,
+                new Vector3(1f, 0f,  1f) + position,
+                new Vector3(0f, 0f,  1f) + position
+
+            };   
+        }
 
         public int[] GetIndices(int offset = 0)
         {
