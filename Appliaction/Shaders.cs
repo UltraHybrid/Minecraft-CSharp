@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using System.IO;
+using OpenTK.Graphics.OpenGL4;
 
 namespace tmp
 {
@@ -7,32 +8,33 @@ namespace tmp
         private const string VertSrc = 
             @"#version 410 core
 
-            layout (location = 0) in vec3 position;
-            layout (location = 1) in vec3 texCoord;
+            layout (location = 0) in vec3 vert;
+            layout (location = 1) in vec2 texCord;
+            layout (location = 2) in vec3 position;
 
             uniform mat4 model;
             uniform mat4 view;
             uniform mat4 projection;
 
-            out vec3 TexCoord;
+            out vec2 TexCord;
 
             void main(void)
             {
-                gl_Position = projection * view * model * vec4(position, 1.0);
-                TexCoord = texCoord;
+                gl_Position = projection * view * model * vec4(position + vert, 1.0);
+                TexCord = texCord;
             }";
 
         private const string FragSrc = 
             @"#version 410 core
-            
-            in vec3 TexCoord;
+
+            in vec2 TexCord;
             out vec4 outColor;
 
             uniform sampler2DArray texture_array;
 
             void main(void)
             {
-                vec4 tmp = texture(texture_array, TexCoord);
+                vec4 tmp = texture(texture_array, vec3(TexCord, 1));
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;

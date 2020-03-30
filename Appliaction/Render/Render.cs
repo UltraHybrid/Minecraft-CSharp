@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenTK;
@@ -13,15 +14,13 @@ namespace tmp
 
         private int shaderProgram, skyBoxShaderProgram;
 
-        private int vao, vbo, ebo, textureBuffer;
+        private int vao, vbo, ebo, textureBuffer, position;
 
         private int vaoS, vboS, texture;
 
         private readonly Dictionary<string, int> textures = new Dictionary<string, int>();
 
         private int arrayTex;
-
-
 
 
         private int modelMatrixAttributeLocation;
@@ -38,8 +37,9 @@ namespace tmp
 
         private readonly List<Cube> cubes = new List<Cube>();
         private readonly List<Vector3> vertex = new List<Vector3>();
+        private readonly List<Vector3> positions = new List<Vector3>();
         private List<int> indices = new List<int>();
-        private List<Vector3> texcoords = new List<Vector3>();
+        private List<Vector2> texcoords = new List<Vector2>();
 
         private World world;
         private readonly Camera camera;
@@ -64,7 +64,7 @@ namespace tmp
 
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
             GL.BindVertexArray(vao);
-            GL.DrawElements(PrimitiveType.Triangles, 36 * t, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElementsInstanced(PrimitiveType.Triangles, 36, DrawElementsType.UnsignedInt, IntPtr.Zero, t);
             GL.BindVertexArray(0);
 
             //sky
@@ -81,12 +81,10 @@ namespace tmp
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
             GL.BindVertexArray(0);
             GL.DepthFunc(DepthFunction.Less);
-
         }
 
         public void UpdateFrame()
         {
-
         }
 
         public void Initialise(int width, int height)
@@ -96,8 +94,9 @@ namespace tmp
             InitShaderAttributes();
             Resize(width, height);
             skyBoxShaderProgram = Shaders.GetSkyBoxShader();
-            texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png").ToList());
-            arrayTex = Texture.InitArray(Directory.GetFiles("Textures", "*.png").ToList());
+            texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png")
+                .ToList());
+            arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
             InitCubes();
             InitBuffers();
         }
@@ -120,18 +119,31 @@ namespace tmp
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
 
+            vertex.Clear();
+
             GL.GenBuffers(1, out textureBuffer);
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * texcoords.Count,
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * texcoords.Count,
                 texcoords.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(1);
+
+            GL.GenBuffers(1, out position);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, position);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Count,
+                positions.ToArray(), BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.EnableVertexAttribArray(2);
+            GL.VertexAttribDivisor(2, 1);
+
+            texcoords.Clear();
 
             GL.GenBuffers(1, out ebo);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(int),
                 indices.ToArray(), BufferUsageHint.StaticDraw);
 
+            indices.Clear();
             GL.BindVertexArray(0);
 
 
@@ -145,7 +157,6 @@ namespace tmp
                 BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
-
         }
 
         private void InitShaderAttributes()
@@ -160,11 +171,10 @@ namespace tmp
 
         private void InitTextures(string textureStorage)
         {
-            foreach (var textureFile in Directory.GetFiles(textureStorage, "*.png"))
+            foreach (var a in BaseBlocks.AllBlocks.ToDictionary(x => x.Name, y => y.TextureName))
             {
-                var www = Texture.GetTexture(textureFile);
-                var name = Path.GetFileNameWithoutExtension(textureFile);
-                textures.Add(Path.GetFileNameWithoutExtension(textureFile), www);
+                
+                
             }
         }
 
@@ -180,16 +190,17 @@ namespace tmp
 
         private void InitCubes()
         {
-            foreach (var chunk in world)
-            foreach (var blocks in world.GetVisibleBlock(chunk))
+            var a = new Cube();
+            indices.AddRange(a.GetIndices());
+            vertex.AddRange(a.GetVertexesWithoutOffset());
+            var tm = a.GetTextureCoords().Select(v3 => v3.Xy);
+            texcoords.AddRange(tm);
+            foreach (var blocks in world.GetVisibleBlock(0, 0))
             {
                 var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks.Value)
                 {
-                    var a = new Cube(blockCord, tmp);
-                    indices.AddRange(a.GetIndices(t * 24));
-                    vertex.AddRange(a.GetVertexes());
-                    texcoords.AddRange(a.GetTextureCoords());
+                    positions.Add(blockCord);
                     t++;
                 }
             }
