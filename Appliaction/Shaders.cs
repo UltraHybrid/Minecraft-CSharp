@@ -9,32 +9,45 @@ namespace tmp
             @"#version 410 core
 
             layout (location = 0) in vec3 vert;
-            layout (location = 1) in vec2 texCord;
+            layout (location = 1) in vec3 texCord;
             layout (location = 2) in vec3 position;
+            layout (location = 3) in vec3 cubeTex1;
+            layout (location = 4) in vec3 cubeTex2;
 
-            uniform mat4 model;
-            uniform mat4 view;
-            uniform mat4 projection;
+            uniform mat4 viewProjection;
 
-            out vec2 TexCord;
+            out vec3 TexCord;
 
             void main(void)
             {
-                gl_Position = projection * view * vec4(position + vert, 1.0);
-                TexCord = texCord;
+                float layer;
+                int id;
+                id = int(texCord.p);
+
+                if (id > 2)
+                {
+                    layer = float(cubeTex2[id - 3]);
+                }
+                if (id < 3)
+                {
+                    layer = float(cubeTex1[id]);
+                }
+
+                gl_Position = viewProjection * vec4(position + vert, 1.0);
+                TexCord = vec3(texCord.st, layer);
             }";
 
         private const string FragSrc = 
             @"#version 410 core
 
-            in vec2 TexCord;
+            in vec3 TexCord;
             out vec4 outColor;
 
-            uniform sampler2DArray texture_array;
+            uniform sampler2DArray tarr;
 
             void main(void)
             {
-                vec4 tmp = texture(texture_array, vec3(TexCord, 13));
+                vec4 tmp = texture(tarr, TexCord);
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;

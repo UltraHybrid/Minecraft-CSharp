@@ -4,6 +4,7 @@ using System.IO;
 using OpenTK.Graphics.OpenGL4;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace tmp
@@ -17,7 +18,10 @@ namespace tmp
             var texture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
-            SetImage(name, TextureTarget.Texture2D);
+            var image = Image.Load(name);
+            var pixels = SetImage(image);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width,
+                0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
                 (int) TextureMagFilter.Nearest);
@@ -36,7 +40,10 @@ namespace tmp
 
             for (var i = 0; i < 6; i++)
             {
-                SetImage(paths[i], TextureTarget.TextureCubeMapPositiveX + i);
+                var image = Image.Load(paths[i]);
+                var pixels = SetImage(image);
+                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
+                    0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             }
 
 
@@ -47,9 +54,8 @@ namespace tmp
             return texture;
         }
 
-        private static void SetImage(string name, TextureTarget textureTarget)
+        private static List<byte> SetImage(Image<Rgba32> image)
         {
-            var image = Image.Load(name);
             image.Mutate(x => x.Flip(FlipMode.Vertical));
             var tempPixels = image.GetPixelSpan().ToArray();
 
@@ -63,8 +69,7 @@ namespace tmp
                 pixels.Add(p.A);
             }
 
-            GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
-                0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            return pixels;
         }
 
         private static void SetTextureParameters(TextureTarget textureTarget, int paramWrap, int paramFilter)
@@ -76,6 +81,34 @@ namespace tmp
             GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, paramFilter);
         }
 
+        //cubemaparray
+        public static int InitCubeMapArray(Dictionary<string, string[]> dataTex)
+        {
+            const int size = 16;
+            var layersCount = dataTex.Keys.Count;
+            var cubeMapArray = GL.GenTexture();
+            GL.BindTexture(TextureTarget.TextureCubeMapArray, cubeMapArray);
+
+            GL.TexImage3D(TextureTarget.TextureCubeMapArray, 0, PixelInternalFormat.Rgba, size, size,
+               layersCount * 6, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+
+            var cubeIndex = 0;
+            foreach (var cubeTexInfo in dataTex)
+            {
+                for (var i = 0; i < 6; i++)
+                {
+                    var image = Image.Load(Path.Combine("Textures", cubeTexInfo.Value[i]));
+                    var pixels = SetImage(image);
+                    GL.TexSubImage3D(TextureTarget.TextureCubeMapPositiveX + i, 0, 0, 0, cubeIndex, size, size, 1, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+                }
+
+                cubeIndex++;
+            }
+            SetTextureParameters(TextureTarget.TextureCubeMapArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
+                (int) TextureMagFilter.Linear);
+            GL.GenerateMipmap(GenerateMipmapTarget.TextureCubeMapArray);
+            return cubeMapArray;
+        }
 
         //3dtextures/2darray
 
@@ -102,7 +135,6 @@ namespace tmp
                 var image = Image.Load(e);
                 image.Mutate(x => x.Flip(FlipMode.Vertical));
                 var tempPixels = image.GetPixelSpan().ToArray();
-                Console.WriteLine(name);
 
                 foreach (var p in tempPixels)
                 {

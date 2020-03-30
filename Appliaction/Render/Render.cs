@@ -16,11 +16,11 @@ namespace tmp
 
         private int vao, vbo, ebo, textureBuffer, position;
 
-        private int vaoS, vboS, texture;
+        private int vaoS, vboS, texture, texId;
 
         private readonly Dictionary<string, int> textures = new Dictionary<string, int>();
 
-        private int arrayTex;
+        private int arrayTex, cubeMapArray;
 
 
         private int modelMatrixAttributeLocation;
@@ -32,14 +32,14 @@ namespace tmp
 
         private Matrix4 modelMatrix;
         private Matrix4 viewMatrix;
-        private Matrix4 projectionMatrix;
+        private Matrix4 projectionMatrix, viewProjectionMatrix;
 
 
-        private readonly List<Cube> cubes = new List<Cube>();
+        private readonly List<int> texturesId = new List<int>();
         private readonly List<Vector3> vertex = new List<Vector3>();
-        private List<Vector3> positions = new List<Vector3>();
+        private readonly List<Vector3> positions = new List<Vector3>();
         private List<int> indices = new List<int>();
-        private List<Vector2> texcoords = new List<Vector2>();
+        private List<Vector3> texcoords = new List<Vector3>();
 
         private World world;
         private readonly Camera camera;
@@ -58,9 +58,10 @@ namespace tmp
             GL.UseProgram(shaderProgram);
 
             viewMatrix = camera.GetViewMatrix();
-            GL.UniformMatrix4(modelMatrixAttributeLocation, false, ref modelMatrix);
-            GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref projectionMatrix);
-            GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
+            viewProjectionMatrix = viewMatrix * projectionMatrix;
+            //GL.UniformMatrix4(modelMatrixAttributeLocation, false, ref modelMatrix);
+            GL.UniformMatrix4(projectionMatrixAttributeLocation, false, ref viewProjectionMatrix);
+            //GL.UniformMatrix4(viewMatrixAttributeLocation, false, ref viewMatrix);
 
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
             GL.BindVertexArray(vao);
@@ -97,6 +98,7 @@ namespace tmp
             texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png")
                 .ToList());
             arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
+            //cubeMapArray = Texture.InitCubeMapArray(BaseBlocks.AllBlocks.Where(w => w.TextureName != null).ToDictionary(x => x.Name, y => y.TextureName));
             InitCubes();
             InitBuffers();
         }
@@ -119,30 +121,41 @@ namespace tmp
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
 
-            vertex.Clear();
 
             GL.GenBuffers(1, out textureBuffer);
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * texcoords.Count,
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * texcoords.Count,
                 texcoords.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(1);
-
+            
             GL.GenBuffers(1, out position);
             GL.BindBuffer(BufferTarget.ArrayBuffer, position);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Count,
                 positions.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(2);
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
+            
+            GL.GenBuffers(1, out texId);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, texId);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(int) * texturesId.Count,
+                texturesId.ToArray(), BufferUsageHint.StaticDraw);
+            GL.EnableVertexAttribArray(3);
+            GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Int, false, 6 * sizeof(int), 0);
+            GL.EnableVertexAttribArray(4);
+            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Int, false, 6 * sizeof(int), 3 * sizeof(int));
+            
+            
             GL.VertexAttribDivisor(2, 1);
+            GL.VertexAttribDivisor(3, 1);
+            GL.VertexAttribDivisor(4, 1);
 
-            texcoords.Clear();
+
             GL.GenBuffers(1, out ebo);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(int),
                 indices.ToArray(), BufferUsageHint.StaticDraw);
 
-            indices.Clear();
             GL.BindVertexArray(0);
 
 
@@ -152,7 +165,7 @@ namespace tmp
 
             GL.GenBuffers(1, out vboS);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboS);
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * skyboxVertices.Length, skyboxVertices,
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * SkyboxVertices.Length, SkyboxVertices,
                 BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
@@ -160,29 +173,21 @@ namespace tmp
 
         private void InitShaderAttributes()
         {
-            modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
-            viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
-            projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "projection");
+            //modelMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "model");
+            //viewMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "view");
+            projectionMatrixAttributeLocation = GL.GetUniformLocation(shaderProgram, "viewProjection");
 
             viewMatrixAttributeLocationS = GL.GetUniformLocation(skyBoxShaderProgram, "view");
             projectionMatrixAttributeLocationS = GL.GetUniformLocation(skyBoxShaderProgram, "projection");
         }
 
-        private void InitTextures(string textureStorage)
-        {
-            foreach (var a in BaseBlocks.AllBlocks.ToDictionary(x => x.Name, y => y.TextureName))
-            {
-                
-                
-            }
-        }
 
         public void Resize(int width, int height)
         {
             GL.Viewport(0, 0, width, height);
             modelMatrix = Matrix4.Identity;
             viewMatrix = Matrix4.Identity;
-            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, width / (float) height, 0.1f, 500);
+            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, width / (float) height, 0.1f, 1500);
         }
 
         private int t;
@@ -192,20 +197,21 @@ namespace tmp
             var a = new Cube();
             indices.AddRange(a.GetIndices());
             vertex.AddRange(a.GetVertexesWithoutOffset());
-            var tm = a.GetTextureCoords().Select(v3 => v3.Xy);
-            texcoords.AddRange(tm);
-            foreach(var chunk in world)
-            foreach (var blocks in world.GetVisibleBlock(chunk))
+            texcoords.AddRange(a.GetTextureCoords());
+            foreach (var ch in world)
+            foreach (var blocks in world.GetVisibleBlock(ch))
             {
+                var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks)
                 {
                     positions.Add(blockCord.Convert());
+                    texturesId.AddRange(tmp);
                     t++;
                 }
             }
         }
 
-        public float[] skyboxVertices =
+        public static float[] SkyboxVertices =
         {
             // positions          
             -1.0f, 1.0f, -1.0f,
