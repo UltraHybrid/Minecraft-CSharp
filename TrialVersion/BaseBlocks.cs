@@ -23,8 +23,20 @@ namespace tmp.TrialVersion
             new[]
             {
                 "grass_path_side.png", "grass_path_side.png", "grass_path_side.png",
-                "grass_path_top.png", "grass_path_side.png", "grass_path_side.png"
+                "grass_path_top.png", "grass_path_side.png", "dirt.png"
             });
+
+        public static readonly BlockType Grass = new BlockType("Grass", 3, new[]
+        {
+            "grass_block_side.png", "grass_block_side.png", "grass_block_side.png",
+            "grass_block_top.png", "grass_block_side.png", "dirt.png"
+        });
+
+        public static readonly BlockType OakLog = new BlockType("OakLog", 4, new[]
+        {
+            "oak_log.png", "oak_log.png", "oak_log.png",
+            "oak_log_top.png", "oak_log.png", "oak_log_top.png"
+        });
 
         private static readonly List<BlockType> allBlocks;
 
