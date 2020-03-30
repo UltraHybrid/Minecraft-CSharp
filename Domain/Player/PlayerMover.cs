@@ -23,7 +23,20 @@ namespace tmp
             }
         }
 
-        public override float Yaw { get; set; }
+        private float yaw;
+
+        public override float Yaw
+        {
+            get => yaw;
+            set
+            {
+                yaw = value;
+                if (yaw > 360)
+                    yaw -= 360;
+                if (yaw < 0)
+                    yaw += 360;
+            }
+        }
 
         public PlayerMover(Vector position, Vector front, float speed) : base(position, front)
         {
