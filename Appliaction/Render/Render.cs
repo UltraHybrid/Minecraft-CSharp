@@ -37,7 +37,7 @@ namespace tmp
 
         private readonly List<Cube> cubes = new List<Cube>();
         private readonly List<Vector3> vertex = new List<Vector3>();
-        private readonly List<Vector3> positions = new List<Vector3>();
+        private List<Vector3> positions = new List<Vector3>();
         private List<int> indices = new List<int>();
         private List<Vector2> texcoords = new List<Vector2>();
 
@@ -137,7 +137,6 @@ namespace tmp
             GL.VertexAttribDivisor(2, 1);
 
             texcoords.Clear();
-
             GL.GenBuffers(1, out ebo);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(int),
@@ -195,7 +194,8 @@ namespace tmp
             vertex.AddRange(a.GetVertexesWithoutOffset());
             var tm = a.GetTextureCoords().Select(v3 => v3.Xy);
             texcoords.AddRange(tm);
-            foreach (var blocks in world.GetVisibleBlock(0, 0))
+            foreach(var chunk in world)
+            foreach (var blocks in world.GetVisibleBlock(chunk))
             {
                 var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks.Value)

@@ -20,7 +20,7 @@ namespace tmp
 
             void main(void)
             {
-                gl_Position = projection * view * model * vec4(position + vert, 1.0);
+                gl_Position = projection * view * vec4(position + vert, 1.0);
                 TexCord = texCord;
             }";
 
@@ -34,7 +34,7 @@ namespace tmp
 
             void main(void)
             {
-                vec4 tmp = texture(texture_array, vec3(TexCord, 1));
+                vec4 tmp = texture(texture_array, vec3(TexCord, 13));
                 if(tmp.a < 0.1)
                     discard;
                 outColor = tmp;
