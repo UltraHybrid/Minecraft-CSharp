@@ -197,10 +197,9 @@ namespace tmp
             foreach(var chunk in world)
             foreach (var blocks in world.GetVisibleBlock(chunk))
             {
-                var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
-                foreach (var blockCord in blocks.Value)
+                foreach (var blockCord in blocks)
                 {
-                    positions.Add(blockCord);
+                    positions.Add(blockCord.Convert());
                     t++;
                 }
             }

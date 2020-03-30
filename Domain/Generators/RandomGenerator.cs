@@ -2,29 +2,25 @@ using System;
 
 namespace tmp
 {
-    public class RandomGenerator: IGenerator
+    public class RandomGenerator : IGenerator<Chunk>
     {
-        private readonly Random rnd = new Random(); 
+        private readonly Random rnd = new Random();
+
         public Chunk Generate(int x, int z)
         {
             var chunk = new Chunk();
             var allBlocks = BaseBlocks.AllBlocks;
-            for (var i = 0; i < Chunk.XLenght; i++)
-            for (var j = 0; j < Chunk.YLength; j++)
-            for (var k = 0; k < Chunk.ZLength; k++)
+            for (byte i = 0; i < Chunk.XLenght; i++)
+            for (byte j = 0; j < Chunk.YLength - 1; j++)
+            for (byte k = 0; k < Chunk.ZLength; k++)
             {
-                var position = new Point3(i, j, k);
-                var rndValue = rnd.Next(allBlocks.Count * 2);
-                var blockItem = rndValue < allBlocks.Count ? allBlocks[rndValue] : BaseBlocks.Empty;
-                chunk[position] = new Block(blockItem, position);
+                var position = new PointB(i, j, k);
+                var rndValue = rnd.Next(0, allBlocks.Count * 2);
+                if (rndValue < allBlocks.Count)
+                    chunk[position] = new Block(allBlocks[rndValue], position);
             }
 
             return chunk;
-        }
-
-        public Point3 GetHigh(Point3 point)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

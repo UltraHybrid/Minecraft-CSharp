@@ -2,9 +2,9 @@ namespace tmp
 {
     public class ChunkManager : IChunkManager
     {
-        private readonly IGenerator generator;
+        private readonly IGenerator<Chunk> generator;
 
-        public ChunkManager(IGenerator generator)
+        public ChunkManager(IGenerator<Chunk> generator)
         {
             this.generator = generator;
         }

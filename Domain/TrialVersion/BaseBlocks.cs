@@ -5,7 +5,6 @@ namespace tmp
 {
     public static class BaseBlocks
     {
-        public static readonly BlockType Empty = new BlockType("Empty", 0, null);
         public static readonly BlockType Dirt = new BlockType("Dirt", 3, FillOneTexture("dirt.png"));
         public static readonly BlockType Glass = new BlockType("Glass", 1, FillOneTexture("glass.png"));
         public static readonly BlockType Stone = new BlockType("Stone", 10, FillOneTexture("stone.png"));

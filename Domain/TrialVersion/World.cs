@@ -1,77 +1,69 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using OpenTK;
+using System.Linq;
 
 namespace tmp
 {
     public class World : IEnumerable<Chunk>
     {
         private readonly Chunk[,] chunks;
-        public const int MaxCount = 15;
+        public const int MaxCount = 22;
 
-        public World(IGenerator generator)
+        public World(IGenerator<Chunk> generator)
         {
             chunks = new Chunk[MaxCount, MaxCount];
             for (var x = 0; x < MaxCount; x++)
             for (var z = 0; z < MaxCount; z++)
             {
                 var chunk = generator.Generate(x, z);
-                chunk.Position = new Point3(x, 0, z);
+                chunk.Position = new PointI(x, 0, z);
                 chunks[x, z] = chunk;
             }
         }
 
-        public Dictionary<string[], List<Vector3>> GetVisibleBlock(int x, int z)
+        public ILookup<string[], PointI> GetVisibleBlock(int x, int z)
         {
             var chunk = chunks[x, z];
-            var result = new Dictionary<string[], List<Vector3>>();
-            foreach (var block in chunk)
-            {
-                var position = GetAbsolutPosition(block, x, z);
-                if (block.BlockType == BaseBlocks.Empty || !IsBorderOnEmpty(block, position))
-                    continue;
-
-                var key = block.BlockType.TextureName;
-                if (result.ContainsKey(key))
-                    result[key].Add(position);
-                else
-                    result[key] = new List<Vector3>() {position};
-            }
-
+            var result = chunk
+                .Where(b => b != null)
+                .Where(b => IsBorderOnEmpty(GetAbsolutPosition(b, x, z)))
+                .ToLookup(block => block.BlockType.TextureName,
+                    block => GetAbsolutPosition(block, x, z));
+            //Console.WriteLine(result.Count);
             return result;
         }
 
-        public Dictionary<string[], List<Vector3>> GetVisibleBlock(Chunk chunk)
+        public ILookup<string[], PointI> GetVisibleBlock(Chunk chunk)
         {
             return GetVisibleBlock(chunk.Position.X, chunk.Position.Z);
         }
 
-        private Point3 GetAbsolutPosition(Block block, int x, int z)
+        private PointI GetAbsolutPosition(Block block, int x, int z)
         {
-            return block.Position + new Point3(x * Chunk.XLenght, 0, z * Chunk.ZLength);
+            return new PointI(x * Chunk.XLenght, 0, z * Chunk.ZLength).Add(block.Position);
         }
 
-        private bool IsBorderOnEmpty(Block block, Point3 position)
+        private bool IsBorderOnEmpty(PointI position)
         {
-            var offsets = new Point3[]
+            var offsets = new PointI[]
             {
-                new Point3(-1, 0, 0), new Point3(1, 0, 0),
-                new Point3(0, -1, 0), new Point3(0, 1, 0),
-                new Point3(0, 0, -1), new Point3(0, 0, 1)
+                new PointI(-1, 0, 0), new PointI(1, 0, 0),
+                new PointI(0, -1, 0), new PointI(0, 1, 0),
+                new PointI(0, 0, -1), new PointI(0, 0, 1)
             };
             for (var i = 0; i < offsets.Length; i++)
             {
-                if (!IsCorrectIndex(position + offsets[i]))
+                if (!IsCorrectIndex(position.Add(offsets[i])))
                     return true;
-                if (this[position + offsets[i]].BlockType == BaseBlocks.Empty)
+                if (this[position.Add(offsets[i])] == null)
                     return true;
             }
 
             return false;
         }
 
-        private bool IsCorrectIndex(Point3 position)
+        private bool IsCorrectIndex(PointI position)
         {
             return 0 <= position.X && position.X < MaxCount * Chunk.XLenght && 0 <= position.Y &&
                    position.Y < Chunk.YLength && 0 <= position.Z && position.Z < MaxCount * Chunk.ZLength;
@@ -89,7 +81,7 @@ namespace tmp
             return GetEnumerator();
         }
 
-        private bool CheckChunckBounds(Point3 position)
+        private bool CheckChunckBounds(PointI position)
         {
             var numberX = position.X / Chunk.XLenght;
             var numberZ = position.Z / Chunk.ZLength;
@@ -101,7 +93,7 @@ namespace tmp
             return 0 <= x && x < MaxCount && 0 <= z && z < MaxCount;
         }
 
-        public Block this[Point3 position]
+        public Block this[PointI position]
         {
             get
             {
@@ -111,7 +103,7 @@ namespace tmp
                 var numberZ = position.Z / Chunk.ZLength;
                 var chunckX = position.X % Chunk.XLenght;
                 var chunckZ = position.Z % Chunk.ZLength;
-                return chunks[numberX, numberZ][new Point3(chunckX, position.Y, chunckZ)];
+                return chunks[numberX, numberZ][(PointB) new PointI(chunckX, position.Y, chunckZ)];
             }
             set
             {
@@ -121,7 +113,7 @@ namespace tmp
                 var numberZ = position.Z / Chunk.ZLength;
                 var chunckX = position.X % Chunk.XLenght;
                 var chunckZ = position.Z % Chunk.ZLength;
-                chunks[numberX, numberZ][new Point3(chunckX, position.Y, chunckZ)] = value;
+                chunks[numberX, numberZ][(PointB) new PointI(chunckX, position.Y, chunckZ)] = value;
             }
         }
 

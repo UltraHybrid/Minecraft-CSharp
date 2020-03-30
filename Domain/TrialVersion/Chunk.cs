@@ -8,7 +8,7 @@ namespace tmp
     public class Chunk : IEnumerable<Block>
     {
         private readonly Block[,,] blocks;
-        public Point3 Position { get; set; }
+        public PointI Position { get; set; }
         public const int XLenght = 16;
         public const int YLength = 256;
         public const int ZLength = 16;
@@ -16,17 +16,16 @@ namespace tmp
         public Chunk()
         {
             blocks = new Block[XLenght, YLength, ZLength];
-            FillLayers(BaseBlocks.Empty, YLength);
         }
 
         public void FillLayers(BlockType blockType, int count)
         {
-            if (count < 0 || count > YLength)
+            if (count < 0 || count >= YLength)
                 throw new ArgumentException();
-            for (var j = 0; j < count; j++)
-            for (var i = 0; i < XLenght; i++)
-            for (var k = 0; k < ZLength; k++)
-                blocks[i, j, k] = new Block(blockType, new Point3(i, j, k));
+            for (byte j = 0; j < count; j++)
+            for (byte i = 0; i < XLenght; i++)
+            for (byte k = 0; k < ZLength; k++)
+                blocks[i, j, k] = new Block(blockType, new PointB(i, j, k));
         }
 
         public IEnumerator<Block> GetEnumerator()
@@ -39,14 +38,14 @@ namespace tmp
             return GetEnumerator();
         }
 
-        private bool CheckBounds(Point3 position)
+        private bool CheckBounds(PointB position)
         {
             return 0 <= position.X && position.X < XLenght
                                    && 0 <= position.Y && position.Y < YLength
                                    && 0 <= position.Z && position.Z < ZLength;
         }
 
-        public Block this[Point3 position]
+        public Block this[PointB position]
         {
             get
             {
