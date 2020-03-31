@@ -49,6 +49,8 @@ namespace tmp
         {
             ClearBackground(Color4.White);
 
+            GL.Enable(EnableCap.CullFace);
+            
             RenderWorld();
             RenderSkyBox();
         }

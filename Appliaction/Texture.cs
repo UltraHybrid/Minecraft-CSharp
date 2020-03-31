@@ -72,11 +72,11 @@ namespace tmp
 
         private static void SetTextureParameters(TextureTarget textureTarget, int paramWrap, int paramFilter)
         {
+            GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, paramFilter);
+            GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, paramFilter);
             GL.TexParameter(textureTarget, TextureParameterName.TextureWrapS, paramWrap);
             GL.TexParameter(textureTarget, TextureParameterName.TextureWrapT, paramWrap);
             GL.TexParameter(textureTarget, TextureParameterName.TextureWrapR, paramWrap);
-            GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, paramFilter);
-            GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, paramFilter);
         }
 
         //cubemaparray
@@ -101,7 +101,7 @@ namespace tmp
 
                 cubeIndex++;
             }
-            SetTextureParameters(TextureTarget.TextureCubeMapArray, (int) TextureWrapMode.MirroredRepeat,
+            SetTextureParameters(TextureTarget.TextureCubeMapArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
                 (int) TextureMagFilter.Linear);
             GL.GenerateMipmap(GenerateMipmapTarget.TextureCubeMapArray);
             return cubeMapArray;
@@ -156,7 +156,7 @@ namespace tmp
             
             GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, laysersCount, 0, PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
 
-            SetTextureParameters(TextureTarget.Texture2DArray, (int) TextureWrapMode.ClampToEdge, (int) TextureMagFilter.Nearest);
+            SetTextureParameters(TextureTarget.Texture2DArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
 
             return texturesArray;
