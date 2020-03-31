@@ -20,8 +20,7 @@ namespace tmp
 
             var image = Image.Load(name);
             var pixels = SetImage(image);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width,
-                0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
                 (int) TextureMagFilter.Nearest);
@@ -42,8 +41,7 @@ namespace tmp
             {
                 var image = Image.Load(paths[i]);
                 var pixels = SetImage(image);
-                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
-                    0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             }
 
 
@@ -89,8 +87,7 @@ namespace tmp
             var cubeMapArray = GL.GenTexture();
             GL.BindTexture(TextureTarget.TextureCubeMapArray, cubeMapArray);
 
-            GL.TexImage3D(TextureTarget.TextureCubeMapArray, 0, PixelInternalFormat.Rgba, size, size,
-               layersCount * 6, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+            GL.TexImage3D(TextureTarget.TextureCubeMapArray, 0, PixelInternalFormat.Rgba, size, size, layersCount * 6, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 
             var cubeIndex = 0;
             foreach (var cubeTexInfo in dataTex)
@@ -104,7 +101,7 @@ namespace tmp
 
                 cubeIndex++;
             }
-            SetTextureParameters(TextureTarget.TextureCubeMapArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
+            SetTextureParameters(TextureTarget.TextureCubeMapArray, (int) TextureWrapMode.MirroredRepeat,
                 (int) TextureMagFilter.Linear);
             GL.GenerateMipmap(GenerateMipmapTarget.TextureCubeMapArray);
             return cubeMapArray;
@@ -156,13 +153,11 @@ namespace tmp
                     finalPixels[i, j] = t[j];
                 }
             }
+            
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, laysersCount, 0, PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
 
-            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, laysersCount, 0,
-                PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
+            SetTextureParameters(TextureTarget.Texture2DArray, (int) TextureWrapMode.ClampToEdge, (int) TextureMagFilter.Nearest);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
-
-            SetTextureParameters(TextureTarget.Texture2DArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
-                (int) TextureMagFilter.Nearest);
 
             return texturesArray;
         }
