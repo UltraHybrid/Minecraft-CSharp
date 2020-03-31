@@ -32,6 +32,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Appliaction\Render" />
+      <Folder Include="Appliaction\Shaders" />
       <Folder Include="Textures\skybox" />
     </ItemGroup>
 
