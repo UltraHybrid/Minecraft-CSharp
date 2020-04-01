@@ -9,7 +9,7 @@ namespace tmp
     public class World : IEnumerable<Chunk>
     {
         private readonly Chunk[,] chunks;
-        public const int MaxCount = 3;
+        public const int MaxCount = 50;
 
         public World(IGenerator<Chunk> generator)
         {

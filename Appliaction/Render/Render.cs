@@ -49,6 +49,7 @@ namespace tmp
         {
             ClearBackground(Color4.White);
 
+            GL.Enable(EnableCap.PolygonSmooth);
             GL.Enable(EnableCap.CullFace);
             
             RenderWorld();
@@ -196,18 +197,17 @@ namespace tmp
             indices.AddRange(Cube.GetIndices());
             vertex.AddRange(Cube.GetVertexes());
             texCords.AddRange(Cube.GetTextureCoords());
-           /* foreach (var ch in world)
-                foreach (var blocks in world.GetVisibleBlock(ch))
+            foreach (var ch in world)
+            foreach (var (textures, pos) in world.GetVisibleBlock(ch))
             {
-                var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
-                foreach (var blockCord in blocks)
-                {
-                    positions.Add(blockCord.Convert());
-                    texturesId.AddRange(tmp);
-                    cubesCount++;
-                }
-            }*/
+                var tmp = textures.Select(te => te == null? -1 :Texture.textures[te]).ToList();
+                positions.Add(pos.Convert());
+                texturesId.AddRange(tmp);
+                cubesCount++;
+            }
         }
+        
+        //private List<int> 
 
         private static readonly float[] SkyBoxVertices =
         {

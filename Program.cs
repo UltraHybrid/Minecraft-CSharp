@@ -31,8 +31,8 @@ namespace tmp
             Console.WriteLine("World size: " + memory / (1024 * 1024) + " Mb");
             Console.Beep();
 
-            //using var game = new Window(world, player);
-            //game.Run(200, 200);
+            using var game = new Window(world, player);
+            game.Run(200, 200);
         }
     }
 }

@@ -47,9 +47,12 @@ namespace tmp
 
             void main(void)
             {
+                if(TexCord.z < 0)
+                    discard;
                 vec4 tmp = texture(tarr, TexCord);
                 if(tmp.a < 0.1)
                     discard;
+                
                 outColor = tmp;
             }";
 
