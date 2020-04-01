@@ -12,9 +12,9 @@ namespace tmp
 
             var coreGenerator = new PerlinHighGenerator(0.01f, 0.05f, 3.0f, 8);
             var world = new World(new PerlinChunkGenerator(coreGenerator));
-            var vis = world.GetVisibleBlock(0, 0);
+            /*var vis = world.GetVisibleBlock(0, 2);
             Console.WriteLine(vis.Count());
-            /*foreach (var b in vis)
+            foreach (var b in vis)
             {
                 foreach (var texture in b.Item1)
                 {

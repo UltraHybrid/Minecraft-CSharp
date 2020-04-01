@@ -30,10 +30,4 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Appliaction\Shaders" />
-      <Folder Include="Textures\skybox" />
-    </ItemGroup>
-
 </Project>
