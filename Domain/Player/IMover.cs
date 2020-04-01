@@ -6,7 +6,7 @@ namespace tmp
     {
         Vector Position { get; }
         Vector Front { get; }
-        void Move(List<Direction> directions, float time);
+        void Move(Direction direction, float time);
         void Rotate(float deltaYaw, float deltaPitch);
     }
 }

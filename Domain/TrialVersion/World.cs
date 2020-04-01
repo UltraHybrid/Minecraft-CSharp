@@ -30,7 +30,7 @@ namespace tmp
                 .Where(b => b != null)
                 .Select(b => (b, GetAbsolutPosition(b, x, z)))
                 .Select(p => (p.Item1, IsBorderOnEmpty(p.Item2), p.Item2))
-                .Where(p => p.Item2 != null)
+                .Where(p => p.Item2.Any(x => x))
                 .ToLookup(
                     k => k.Item1.BlockType.TextureName,
                     v => (v.Item2, v.Item3)
@@ -64,7 +64,7 @@ namespace tmp
                 result[i] = (IsCorrectIndex(position.Add(offsets[i])) && this[position.Add(offsets[i])] == null);
             }
 
-            return result.Any(x => x) ? result : null;
+            return result;
         }
 
         private bool IsCorrectIndex(PointI position)

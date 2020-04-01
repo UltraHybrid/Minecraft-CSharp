@@ -30,20 +30,12 @@ namespace tmp
 
         public void Move(float time)
         {
-            var directions = new List<Direction>();
-            if (keys[Key.W])
-                directions.Add(Direction.Forward);
-            if (keys[Key.S])
-                directions.Add(Direction.Back);
-            if (keys[Key.D])
-                directions.Add(Direction.Right);
-            if (keys[Key.A])
-                directions.Add(Direction.Left);
-            if (keys[Key.Space])
-                directions.Add(Direction.Up);
-            if (keys[Key.ShiftLeft])
-                directions.Add(Direction.Down);
-            viewer.Move(directions, time);
+            if (keys[Key.W]) new MoveCommand(viewer, Direction.Forward, time).Execute();
+            if (keys[Key.S]) new MoveCommand(viewer, Direction.Back, time).Execute();
+            if (keys[Key.D]) new MoveCommand(viewer, Direction.Right, time).Execute();
+            if (keys[Key.A]) new MoveCommand(viewer, Direction.Left, time).Execute();
+            if (keys[Key.Space]) new MoveCommand(viewer, Direction.Up, time).Execute();
+            if (keys[Key.ShiftLeft]) new MoveCommand(viewer, Direction.Down, time).Execute();
         }
 
         public void MouseMove()
@@ -54,7 +46,7 @@ namespace tmp
             lastMousePosition = new Vector2(mouse.X, mouse.Y);
             var yaw = deltaX * MouseSensitivity;
             var pitch = deltaY * MouseSensitivity;
-            viewer.Rotate(yaw, pitch);
+            new RotateCommand(viewer, yaw, pitch).Execute();
         }
     }
 

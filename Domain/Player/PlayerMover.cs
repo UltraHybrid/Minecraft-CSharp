@@ -47,36 +47,34 @@ namespace tmp
             Up = Vector.Cross(direction, Right).Normalize();
         }
 
-        public override void Move(List<Direction> directions, float time)
+        public override void Move(Direction direction, float time)
         {
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            foreach (var direction in directions)
+            var cancellation = Vector.Default;
+            switch (direction)
             {
-                switch (direction)
-                {
-                    case Direction.Forward:
-                        resultMove += frontXZ;
-                        break;
-                    case Direction.Back:
-                        resultMove -= frontXZ;
-                        break;
-                    case Direction.Right:
-                        resultMove += Right;
-                        break;
-                    case Direction.Left:
-                        resultMove -= Right;
-                        break;
-                    case Direction.Up:
-                        resultMove += Up;
-                        break;
-                    case Direction.Down:
-                        resultMove -= Up;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                case Direction.Forward:
+                    resultMove += frontXZ;
+                    break;
+                case Direction.Back:
+                    resultMove -= frontXZ;
+                    break;
+                case Direction.Right:
+                    resultMove += Right;
+                    break;
+                case Direction.Left:
+                    resultMove -= Right;
+                    break;
+                case Direction.Up:
+                    resultMove += Up;
+                    break;
+                case Direction.Down:
+                    resultMove -= Up;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             Position += distance * (resultMove.Normalize());

@@ -19,7 +19,7 @@ namespace tmp
             Front = front;
         }
 
-        public abstract void Move(List<Direction> directions, float time);
+        public abstract void Move(Direction direction, float time);
 
         public abstract void Rotate(float deltaYaw, float deltaPitch);
 
