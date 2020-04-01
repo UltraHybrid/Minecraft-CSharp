@@ -196,8 +196,8 @@ namespace tmp
             indices.AddRange(Cube.GetIndices());
             vertex.AddRange(Cube.GetVertexes());
             texCords.AddRange(Cube.GetTextureCoords());
-            foreach (var ch in world)
-            foreach (var blocks in world.GetVisibleBlock(ch))
+           /* foreach (var ch in world)
+                foreach (var blocks in world.GetVisibleBlock(ch))
             {
                 var tmp = blocks.Key.Select(te => Texture.textures[te]).ToList();
                 foreach (var blockCord in blocks)
@@ -206,7 +206,7 @@ namespace tmp
                     texturesId.AddRange(tmp);
                     cubesCount++;
                 }
-            }
+            }*/
         }
 
         private static readonly float[] SkyBoxVertices =

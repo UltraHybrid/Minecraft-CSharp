@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace tmp
 {
@@ -11,6 +12,17 @@ namespace tmp
 
             var coreGenerator = new PerlinHighGenerator(0.01f, 0.05f, 3.0f, 8);
             var world = new World(new PerlinChunkGenerator(coreGenerator));
+            var vis = world.GetVisibleBlock(0, 0);
+            Console.WriteLine(vis.Count());
+            /*foreach (var b in vis)
+            {
+                foreach (var texture in b.Item1)
+                {
+                    Console.Write((texture == null ? "-" : "+") + " ");
+                }
+
+                Console.WriteLine();
+            }*/
 
             Console.Beep();
             GC.Collect();
@@ -19,8 +31,8 @@ namespace tmp
             Console.WriteLine("World size: " + memory / (1024 * 1024) + " Mb");
             Console.Beep();
 
-            using var game = new Window(world, player);
-            game.Run(200, 200);
+            //using var game = new Window(world, player);
+            //game.Run(200, 200);
         }
     }
 }

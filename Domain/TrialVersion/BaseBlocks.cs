@@ -14,8 +14,8 @@ namespace tmp
         public static readonly BlockType Cobblestone =
             new BlockType("Cobblestone", 10, FillOneTexture("cobblestone.png"));
 
-        public static readonly BlockType
-            Bedrock = new BlockType("Bedrock", int.MaxValue, FillOneTexture("bedrock.png"));
+        public static readonly BlockType Bedrock =
+            new BlockType("Bedrock", int.MaxValue, FillOneTexture("bedrock.png"));
 
         public static readonly BlockType GrassPath = new BlockType("GrassPath", 3,
             new[]
@@ -35,6 +35,8 @@ namespace tmp
             "oak_log.png", "oak_log.png", "oak_log.png",
             "oak_log_top.png", "oak_log.png", "oak_log_top.png"
         });
+        
+        public static readonly BlockType Snow = new BlockType("Snow", 2, FillOneTexture("snow.png"));
 
         private static readonly List<BlockType> allBlocks;
 
