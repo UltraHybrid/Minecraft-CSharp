@@ -28,7 +28,7 @@ namespace tmp
                 {
                     layer = float(cubeTex2[id - 3]);
                 }
-                if (id < 3)
+                else
                 {
                     layer = float(cubeTex1[id]);
                 }

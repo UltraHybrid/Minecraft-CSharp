@@ -26,8 +26,8 @@ namespace tmp
 
         public static readonly BlockType Grass = new BlockType("Grass", 3, new[]
         {
-            "grass_block_side.png", "grass_block_side.png", "grass_block_side.png",
-            "snow.png", "grass_block_side.png", "dirt.png"
+            "snow.png", "snow.png", "snow.png",
+            "snow.png", "snow.png", "snow.png"
         });
 
         public static readonly BlockType OakLog = new BlockType("OakLog", 4, new[]

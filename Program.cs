@@ -18,7 +18,6 @@ namespace tmp
             var memory = GC.GetTotalMemory(true);
             Console.WriteLine("World size: " + memory / (1024 * 1024) + " Mb");
             Console.Beep();
-
             using var game = new Window(world, player);
             game.Run(200, 200);
         }

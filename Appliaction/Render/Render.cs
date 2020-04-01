@@ -48,7 +48,7 @@ namespace tmp
         public void RenderFrame()
         {
             ClearBackground(Color4.White);
-
+            GL.Enable(EnableCap.PolygonSmooth);
             GL.Enable(EnableCap.CullFace);
             
             RenderWorld();

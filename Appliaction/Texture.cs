@@ -155,7 +155,6 @@ namespace tmp
             }
             
             GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, laysersCount, 0, PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
-
             SetTextureParameters(TextureTarget.Texture2DArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
 
