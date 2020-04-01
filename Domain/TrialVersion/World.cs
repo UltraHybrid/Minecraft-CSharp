@@ -9,7 +9,7 @@ namespace tmp
     public class World : IEnumerable<Chunk>
     {
         private readonly Chunk[,] chunks;
-        public const int MaxCount = 50;
+        public const int MaxCount = 20;
 
         public World(IGenerator<Chunk> generator)
         {
@@ -23,19 +23,21 @@ namespace tmp
             }
         }
 
-        public IEnumerable<(string[], PointI)> GetVisibleBlock(int x, int z)
+        public ILookup<string[], (bool[], PointI)> GetVisibleBlock(int x, int z)
         {
             var chunk = chunks[x, z];
-
             return chunk
                 .Where(b => b != null)
-                .Select(block => GetAbsolutPosition(block, x, z))
-                .Select(position => (IsBorderOnEmpty(position), position))
-                .Where(p => p.Item1 != null)
-                .ToList();
+                .Select(b => (b, GetAbsolutPosition(b, x, z)))
+                .Select(p => (p.Item1, IsBorderOnEmpty(p.Item2), p.Item2))
+                .Where(p => p.Item2 != null)
+                .ToLookup(
+                    k => k.Item1.BlockType.TextureName,
+                    v => (v.Item2, v.Item3)
+                );
         }
 
-        public IEnumerable<(string[], PointI)> GetVisibleBlock(Chunk chunk)
+        public ILookup<string[], (bool[], PointI)> GetVisibleBlock(Chunk chunk)
         {
             return GetVisibleBlock(chunk.Position.X, chunk.Position.Z);
         }
@@ -45,7 +47,7 @@ namespace tmp
             return new PointI(x * Chunk.XLenght, 0, z * Chunk.ZLength).Add(block.Position);
         }
 
-        private string[] IsBorderOnEmpty(PointI position)
+        private bool[] IsBorderOnEmpty(PointI position)
         {
             var offsets = new[]
             {
@@ -56,23 +58,13 @@ namespace tmp
                 new PointI(-1, 0, 0),
                 new PointI(0, -1, 0)
             };
-            var result = new string[6];
-            var textures = this[position].BlockType.TextureName;
-            var flag = false;
+            var result = new bool[6];
             for (var i = 0; i < offsets.Length; i++)
             {
-                if (IsCorrectIndex(position.Add(offsets[i])) && this[position.Add(offsets[i])] == null)
-                {
-                    result[i] = textures[i];
-                    flag = true;
-                }
-                else
-                {
-                    result[i] = null;
-                }
+                result[i] = (IsCorrectIndex(position.Add(offsets[i])) && this[position.Add(offsets[i])] == null);
             }
 
-            return flag ? result : null;
+            return result.Any(x => x) ? result : null;
         }
 
         private bool IsCorrectIndex(PointI position)
