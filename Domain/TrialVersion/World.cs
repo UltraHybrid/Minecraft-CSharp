@@ -3,19 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 
 namespace tmp
 {
     public class World : IEnumerable<Chunk>
     {
         private readonly Chunk[,] chunks;
-        public const int MaxCount = 20;
+        public readonly int Size;
 
-        public World(IGenerator<Chunk> generator)
+        public World(IGenerator<Chunk> generator, int worldSize)
         {
-            chunks = new Chunk[MaxCount, MaxCount];
-            for (var x = 0; x < MaxCount; x++)
-            for (var z = 0; z < MaxCount; z++)
+            if (worldSize > 40)
+                throw new PingException("Ну куда столько то!?");
+            Size = worldSize;
+            chunks = new Chunk[Size, Size];
+            for (var x = 0; x < Size; x++)
+            for (var z = 0; z < Size; z++)
             {
                 var chunk = generator.Generate(x, z);
                 chunk.Position = new PointI(x, 0, z);
@@ -69,14 +73,14 @@ namespace tmp
 
         private bool IsCorrectIndex(PointI position)
         {
-            return 0 <= position.X && position.X < MaxCount * Chunk.XLenght && 0 <= position.Y &&
-                   position.Y < Chunk.YLength && 0 <= position.Z && position.Z < MaxCount * Chunk.ZLength;
+            return 0 <= position.X && position.X < Size * Chunk.XLenght && 0 <= position.Y &&
+                   position.Y < Chunk.YLength && 0 <= position.Z && position.Z < Size * Chunk.ZLength;
         }
 
         public IEnumerator<Chunk> GetEnumerator()
         {
-            for (var x = 0; x < MaxCount; x++)
-            for (var z = 0; z < MaxCount; z++)
+            for (var x = 0; x < Size; x++)
+            for (var z = 0; z < Size; z++)
                 yield return chunks[x, z];
         }
 
@@ -94,7 +98,7 @@ namespace tmp
 
         private bool CheckChunckBounds(int x, int z)
         {
-            return 0 <= x && x < MaxCount && 0 <= z && z < MaxCount;
+            return 0 <= x && x < Size && 0 <= z && z < Size;
         }
 
         public Block this[PointI position]
