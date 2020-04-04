@@ -5,14 +5,13 @@ namespace tmp
 {
     public static class Shaders
     {
-        private const string VertSrc = 
+        private const string VertSrcCube = 
             @"#version 410 core
 
             layout (location = 0) in vec3 vert;
             layout (location = 1) in vec3 texCord;
             layout (location = 2) in vec3 position;
-            layout (location = 3) in vec3 cubeTex1;
-            layout (location = 4) in vec3 cubeTex2;
+            layout (location = 3) in vec3 cubeTex[2];
 
             uniform mat4 viewProjection;
 
@@ -26,18 +25,18 @@ namespace tmp
 
                 if (id > 2)
                 {
-                    layer = float(cubeTex2[id - 3]);
+                    layer = float(cubeTex[1][id - 3]);
                 }
                 if (id < 3)
                 {
-                    layer = float(cubeTex1[id]);
+                    layer = float(cubeTex[0][id]);
                 }
 
                 gl_Position = viewProjection * vec4(position + vert, 1.0);
                 TexCord = vec3(texCord.st, layer);
             }";
 
-        private const string FragSrc = 
+        private const string FragSrcCube = 
             @"#version 410 core
 
             in vec3 TexCord;
@@ -49,6 +48,42 @@ namespace tmp
             {
                 if(TexCord.z < 0)
                     discard;
+                vec4 tmp = texture(tarr, TexCord);
+                if(tmp.a < 0.1)
+                    discard;
+                
+                outColor = tmp;
+            }";
+        
+        private const string VertSrcSide = 
+            @"#version 410 core
+
+            layout (location = 0) in vec3 position;
+            layout (location = 1) in vec2 sideTex;
+            layout (location = 2) in vec3 vert[6];
+            layout (location = 8) in vec2 texCord[6];
+
+            uniform mat4 viewProjection;
+
+            out vec3 TexCord;
+
+            void main(void)
+            {
+                int sideID = int(sideTex.x);
+                gl_Position = viewProjection * vec4(position + vert[sideID], 1.0);
+                TexCord = vec3(texCord[sideID], sideTex.y);
+            }";
+
+        private const string FragSrcSide = 
+            @"#version 410 core
+
+            in vec3 TexCord;
+            out vec4 outColor;
+
+            uniform sampler2DArray tarr;
+
+            void main(void)
+            {
                 vec4 tmp = texture(tarr, TexCord);
                 if(tmp.a < 0.1)
                     discard;
@@ -85,10 +120,12 @@ namespace tmp
                 FragColor = texture(skybox, TexCoords);
             }";
 
-        public static int GetDefaultShader() => InitShaders(VertSrc, FragSrc);
+        public static int GetDefaultShader() => InitShaders(VertSrcCube, FragSrcCube);
 
         public static int GetSkyBoxShader() => InitShaders(VertSkyBox, FragSkyBox);
-        public static int InitShaders(string vert, string frag)
+        
+        public static int GetSideShader() => InitShaders(VertSrcSide, FragSrcSide);
+        private static int InitShaders(string vert, string frag)
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, vert);

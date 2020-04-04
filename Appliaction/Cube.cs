@@ -13,85 +13,85 @@ namespace tmp
         private static readonly Vector3[] Vertexes =
         {
             //left
-            new Vector3(0f, 0f, 0f),
-            new Vector3(1f, 1f, 0f),
-            new Vector3(1f, 0f, 0f),
-            new Vector3(0f, 1f, 0f),
-
-            //back
             new Vector3(1f, 0f, 0f),
             new Vector3(1f, 1f, 0f),
             new Vector3(1f, 1f, 1f),
+            new Vector3(1f, 0f, 1f),
+
+            //back
+            new Vector3(1f, 1f, 1f),
+            new Vector3(0f, 1f, 1f),
+            new Vector3(0f, 0f, 1f),
             new Vector3(1f, 0f, 1f),
 
             //right
-            new Vector3(0f, 0f, 1f),
-            new Vector3(1f, 0f, 1f),
-            new Vector3(1f, 1f, 1f),
             new Vector3(0f, 1f, 1f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 0f, 1f),
 
             //top
-            new Vector3(1f, 1f, 0f),
             new Vector3(0f, 1f, 0f),
-            new Vector3(1f, 1f, 1f),
             new Vector3(0f, 1f, 1f),
+            new Vector3(1f, 1f, 1f),
+            new Vector3(1f, 1f, 0f),
 
             //front
             new Vector3(0f, 0f, 0f),
-            new Vector3(0f, 1f, 1f),
             new Vector3(0f, 1f, 0f),
-            new Vector3(0f, 0f, 1f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             //bottom
+            new Vector3(1f, 0f, 1f),
+            new Vector3(0f, 0f, 1f),
             new Vector3(0f, 0f, 0f),
             new Vector3(1f, 0f, 0f),
-            new Vector3(1f, 0f, 1f),
-            new Vector3(0f, 0f, 1f)
         };
-        
+
         private static readonly Vector3[] TexCords = {
             // left
-            new Vector3(0.0f, 0.0f, 0f),
-            new Vector3(-1.0f, 1.0f, 0f),
-            new Vector3(-1.0f, 0.0f, 0f),
-            new Vector3(0.0f, 1.0f, 0f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             // back
-            new Vector3(0.0f, 0.0f, 1f),
-            new Vector3(0.0f, 1.0f, 1f),
-            new Vector3(-1.0f, 1.0f, 1f),
-            new Vector3(-1.0f, 0.0f, 1f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             // right
-            new Vector3(-1.0f, 0.0f, 2f),
-            new Vector3(0.0f, 0.0f, 2f),
-            new Vector3(0.0f, 1.0f, 2f),
-            new Vector3(-1.0f, 1.0f, 2f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             // top
-            new Vector3(0.0f, 0.0f, 3f),
-            new Vector3(0.0f, 1.0f, 3f),
-            new Vector3(-1.0f, 0.0f, 3f),
-            new Vector3(-1.0f, 1.0f, 3f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             // front
-            new Vector3(0.0f, 0.0f, 4f),
-            new Vector3(1.0f, 1.0f, 4f),
-            new Vector3(0.0f, 1.0f, 4f),
-            new Vector3(1.0f, 0.0f, 4f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(1f, 1f, 0f),
+            new Vector3(1f, 0f, 0f),
 
             // bottom
-            new Vector3(0.0f, 0.0f, 5f),
-            new Vector3(0.0f, 1.0f, 5f),
-            new Vector3(-1.0f, 1.0f, 5f),
-            new Vector3(-1.0f, 0.0f, 5f)
+            new Vector3(1f, 1f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(0f, 0f, 0f),
+            new Vector3(1f, 0f, 0f),
         };
         
         private static readonly int[] Indices = {
             //left
-            0, 1, 2, 0, 3, 1,
+            0, 1, 2, 0, 2, 3,
             //back
-            4, 5, 6, 4, 6, 7,
+            4, 5, 6, 4, 7, 6,
             //right
             8, 9, 10, 8, 10, 11,
             //top
@@ -102,10 +102,16 @@ namespace tmp
             20, 21, 22, 20, 22, 23
         };
 
+        private static readonly int[] SideIndices = {0, 1, 2, 0, 2, 3};
+
         public static Vector3[] GetTextureCoords() => TexCords;
+        
 
         public static Vector3[] GetVertexes() => Vertexes;
+        
 
         public static int[] GetIndices() => Indices;
+        
+        public static int[] GetSideIndices() => SideIndices;
     }
 }

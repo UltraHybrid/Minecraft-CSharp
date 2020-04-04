@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
@@ -27,13 +28,15 @@ namespace tmp
             {
                 keys[key] = false;
             }
-
+            Location = new Point(100, 100);
             camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
             render = new Render(camera, world);
+            this.player = player;
         }
 
         #region Variables
 
+        private Player player;
         private World world;
         private Camera camera;
         private Render render;
@@ -67,7 +70,7 @@ namespace tmp
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            Title = $"(VSync: {VSync}) FPS: {1f / e.Time}";
+            Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: {player.Mover.Position.X},{ player.Mover.Position.Y},{ player.Mover.Position.Z}";
 
             render.RenderFrame();
 
