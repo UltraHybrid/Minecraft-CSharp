@@ -11,18 +11,7 @@ namespace tmp
                 new Vector(1, 0, 0), 10, 15);
 
             var coreGenerator = new PerlinHighGenerator(0.01f, 0.05f, 3.0f, 8);
-            var world = new World(new PerlinChunkGenerator(coreGenerator));
-            /*var vis = world.GetVisibleBlock(0, 2);
-            Console.WriteLine(vis.Count());
-            foreach (var b in vis)
-            {
-                foreach (var texture in b.Item1)
-                {
-                    Console.Write((texture == null ? "-" : "+") + " ");
-                }
-
-                Console.WriteLine();
-            }*/
+            var world = new World(new PerlinChunkGenerator(coreGenerator), 15);
 
             Console.Beep();
             GC.Collect();
