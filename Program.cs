@@ -7,7 +7,11 @@ namespace tmp
     {
         private static void Main(string[] args)
         {
-            
+            TextureInfo.Order=new[]
+            {
+                TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
+                TextureOrder.Top, TextureOrder.Front, TextureOrder.Bottom
+            };
             
             var player = new Player(new Vector(0, 10, 0),
                 new Vector(0, 0, 1), 10, 15);
@@ -16,7 +20,7 @@ namespace tmp
             var otherGenerator = new PerlinHighGenerator(0.02f, 0.01f, 10.0f, 7);
             var otherGenerator2 = new PerlinHighGenerator(0.43f, (1 / 215.0f), 20.0f, 9);
 
-            var world = new World(new PerlinChunkGenerator(coreGenerator), 3);
+            var world = new World(new PerlinChunkGenerator(coreGenerator), 10);
 
             Console.Beep();
             GC.Collect();

@@ -28,7 +28,6 @@ namespace tmp
         {
             var textures = world[position].BlockType.Textures.GetOrderedTextures();
             var data = new List<(string, int)>();
-            Console.WriteLine(TextureInfo.Order[0]);
             for (var i = 0; i < TextureInfo.Order.Length; i++)
             {
                 var element = TextureInfo.Order[i];
@@ -53,12 +52,12 @@ namespace tmp
 
     public class VisualizerData
     {
-        public readonly PointI position;
+        public readonly PointI Position;
         public readonly List<(string, int)> TextureNumber;
 
         public VisualizerData(PointI position, List<(string, int)> textureNumber)
         {
-            this.position = position;
+            this.Position = position;
             TextureNumber = textureNumber;
         }
     }

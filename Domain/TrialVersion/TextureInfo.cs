@@ -11,7 +11,12 @@ namespace tmp
         public readonly string Front;
         public readonly string Top;
         public readonly string Bottom;
-        public static TextureOrder[] Order;
+
+        public static TextureOrder[] Order =
+        {
+            TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
+            TextureOrder.Front, TextureOrder.Top, TextureOrder.Bottom
+        };
 
         public TextureInfo(string left, string back, string right,
             string front, string top, string bottom)
@@ -22,11 +27,6 @@ namespace tmp
             Front = front;
             Top = top;
             Bottom = bottom;
-            Order = new[]
-            {
-                TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
-                TextureOrder.Top, TextureOrder.Front, TextureOrder.Bottom
-            };
         }
 
         public static TextureInfo CreateWithTopAndBottom(string top, string bottom, string side)

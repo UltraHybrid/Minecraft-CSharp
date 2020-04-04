@@ -238,7 +238,7 @@ namespace tmp
             {
                 foreach (var (name, number) in data.TextureNumber)
                 {
-                    positions.Add(data.position.Convert());
+                    positions.Add(data.Position.Convert());
                     sideTexId.Add(new Vector2(number, Texture.textures[name]));
                     sidesCount++;
                 }
