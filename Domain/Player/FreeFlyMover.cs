@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace tmp
 {
-    public class PlayerMover : EntityMover
+    public class FreeFlyMover : EntityMover
     {
         public override Vector Right { get; set; }
         public override Vector Up { get; set; }
@@ -38,7 +38,7 @@ namespace tmp
             }
         }
 
-        public PlayerMover(Vector position, Vector front, float speed) : base(position, front)
+        public FreeFlyMover(Vector position, Vector front, float speed) : base(position, front)
         {
             Speed = speed;
             Yaw = 90;
@@ -52,30 +52,15 @@ namespace tmp
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            switch (direction)
+            resultMove += direction switch
             {
-                case Direction.Forward:
-                    resultMove += frontXZ;
-                    break;
-                case Direction.Back:
-                    resultMove -= frontXZ;
-                    break;
-                case Direction.Right:
-                    resultMove -= Right;
-                    break;
-                case Direction.Left:
-                    resultMove += Right;
-                    break;
-                case Direction.Up:
-                    resultMove += Up;
-                    break;
-                case Direction.Down:
-                    resultMove -= Up;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+                Direction.Forward => frontXZ,
+                Direction.Back => -frontXZ,
+                Direction.Right => -Right,
+                Direction.Left => Right,
+                Direction.Up => Up,
+                Direction.Down => -Up,
+            };
             Position += distance * (resultMove.Normalize());
         }
 

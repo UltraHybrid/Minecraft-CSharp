@@ -3,12 +3,12 @@
     public class Player
     {
         public int Hardness { get; private set; }
-        public readonly PlayerMover Mover;
+        public readonly FreeFlyMover Mover;
         public float Height { get; }
 
         public Player(Vector position, Vector direction, int hardness, float speed)
         {
-            Mover = new PlayerMover(position, direction, speed);
+            Mover = new FreeFlyMover(position, direction, speed);
             Hardness = hardness;
             Height = 1.8f;
         }
