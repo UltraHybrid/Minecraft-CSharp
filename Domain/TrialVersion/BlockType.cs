@@ -4,14 +4,14 @@
     {
         public readonly string Name;
         public readonly int Hardness;
-        public readonly string[] TextureName;
+        public readonly TextureInfo Textures;
 
 
-        public BlockType(string name, int hardness, string[] textureName)
+        public BlockType(string name, int hardness, TextureInfo textures)
         {
             Name = name;
             Hardness = hardness;
-            TextureName = textureName;
+            Textures = textures;
         }
     }
 }

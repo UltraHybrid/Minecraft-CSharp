@@ -30,7 +30,7 @@ namespace tmp
             }
             Location = new Point(100, 100);
             camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
-            render = new Render(camera, world);
+            render = new Render(camera, new WorldVisualiser(world),  world);
             this.player = player;
         }
 

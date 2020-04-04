@@ -41,10 +41,10 @@ namespace tmp
         public PlayerMover(Vector position, Vector front, float speed) : base(position, front)
         {
             Speed = speed;
-            var direction = new Vector(0, 0, -1);
+            Yaw = 90;
             Front = front;
-            Right = Vector.Cross(new Vector(0, 1, 0), direction).Normalize();
-            Up = Vector.Cross(direction, Right).Normalize();
+            Right = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
+            Up = Vector.Cross(Front, Right).Normalize();
         }
 
         public override void Move(Direction direction, float time)
@@ -52,7 +52,6 @@ namespace tmp
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            var cancellation = Vector.Default;
             switch (direction)
             {
                 case Direction.Forward:
@@ -62,10 +61,10 @@ namespace tmp
                     resultMove -= frontXZ;
                     break;
                 case Direction.Right:
-                    resultMove += Right;
+                    resultMove -= Right;
                     break;
                 case Direction.Left:
-                    resultMove -= Right;
+                    resultMove += Right;
                     break;
                 case Direction.Up:
                     resultMove += Up;
@@ -85,7 +84,7 @@ namespace tmp
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Right = -Vector.Cross(Up, Front).Normalize();
+            Right = Vector.Cross(Up, Front).Normalize();
         }
     }
 }

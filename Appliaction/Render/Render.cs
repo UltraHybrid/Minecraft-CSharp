@@ -36,18 +36,17 @@ namespace tmp
         private readonly List<int> indices = new List<int>();
         private readonly List<Vector2> texCords = new List<Vector2>();
 
+        private readonly IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer;
         private readonly World world;
         private readonly Camera camera;
 
-        private int chunkCount;
-
         #endregion
 
-        public Render(Camera camera, World world)
+        public Render(Camera camera, IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer, World world)
         {
-            this.world = world;
             this.camera = camera;
-            chunkCount = World.MaxCount;
+            this.visualizer = visualizer;
+            this.world = world;
         }
 
         public void RenderFrame()
@@ -125,27 +124,27 @@ namespace tmp
             GL.GenBuffers(1, out position);
             GL.GenBuffers(1, out texId);
             GL.GenBuffers(1, out ebo);
-            
+
             GL.GenVertexArrays(1, out vaoS);
             GL.GenBuffers(1, out ebo);
             GL.GenBuffers(1, out vboS);
         }
-        
+
 
         private void GetDataToBuffer()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, position);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Count,
                 positions.ToArray(), BufferUsageHint.StaticDraw);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, texId);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * sideTexId.Count, sideTexId.ToArray(),
                 BufferUsageHint.StaticDraw);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * vertex.Count, vertex.ToArray(),
                 BufferUsageHint.StaticDraw);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * texCords.Count, texCords.ToArray(),
                 BufferUsageHint.StaticDraw);
@@ -153,7 +152,7 @@ namespace tmp
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Count * sizeof(int), indices.ToArray(),
                 BufferUsageHint.StaticDraw);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboS);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * SkyBoxVertices.Length, SkyBoxVertices,
                 BufferUsageHint.StaticDraw);
@@ -162,22 +161,23 @@ namespace tmp
         private void InstallAttributes()
         {
             GL.BindVertexArray(vao);
-            
+
             //0
             GL.BindBuffer(BufferTarget.ArrayBuffer, position);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
-            
+
             //1
             GL.BindBuffer(BufferTarget.ArrayBuffer, texId);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(1);
-            
+
             //2-7
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             for (var index = 2; index <= 7; index++)
             {
-                GL.VertexAttribPointer(index, 3, VertexAttribPointerType.Float, false, 0, sizeof(float) * (index - 2) * 12);
+                GL.VertexAttribPointer(index, 3, VertexAttribPointerType.Float, false, 0,
+                    sizeof(float) * (index - 2) * 12);
                 GL.EnableVertexAttribArray(index);
             }
 
@@ -185,24 +185,25 @@ namespace tmp
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
             for (var index = 8; index <= 13; index++)
             {
-                GL.VertexAttribPointer(index, 2, VertexAttribPointerType.Float, false, 0, sizeof(float) * (index - 8) * 8);
+                GL.VertexAttribPointer(index, 2, VertexAttribPointerType.Float, false, 0,
+                    sizeof(float) * (index - 8) * 8);
                 GL.EnableVertexAttribArray(index);
             }
-            
+
             GL.VertexAttribDivisor(0, 1);
             GL.VertexAttribDivisor(1, 1);
 
-            
+
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BindVertexArray(0);
 
 
             //sky
-            
+
             GL.BindVertexArray(vaoS);
-            
+
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboS);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
@@ -233,26 +234,19 @@ namespace tmp
             indices.AddRange(Cube.GetSideIndices());
             vertex.AddRange(Cube.GetVertexes());
             texCords.AddRange(Cube.GetTextureCoords().Select(nn => nn.Xy));
-            foreach (var magic in world.SelectMany(x => world.GetVisibleBlock(x)))
+            foreach (var data in world.SelectMany(x => visualizer.GetVisibleFaces(x)))
             {
-                var t = magic.Key;
-                foreach (var (yes, pos) in magic)
+                foreach (var (name, number) in data.TextureNumber)
                 {
-                    for (var i = 0; i < 6; i++)
-                    {
-                        if (yes[i])
-                        {
-                            positions.Add(pos.Convert());
-                            sideTexId.Add(new Vector2(i, Texture.textures[t[i]]));
-                            sidesCount++;
-                        }
-                    }
+                    positions.Add(data.position.Convert());
+                    sideTexId.Add(new Vector2(number, Texture.textures[name]));
+                    sidesCount++;
                 }
             }
         }
-        
+
         private static readonly float[] SkyBoxVertices =
-        {    
+        {
             -1.0f, 1.0f, -1.0f,
             -1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,

@@ -61,5 +61,10 @@ namespace tmp
             var z = v.Z * coefficient;
             return new Vector(x, y, z);
         }
+
+        public override string ToString()
+        {
+            return $"({X}, {Y}, {Z})";
+        }
     }
 }
