@@ -42,7 +42,7 @@ namespace tmp
                     _ => throw new ArgumentOutOfRangeException()
                 };
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                if (world.IsCorrectIndex(position.Add(offset)) && world[position.Add(offset)] == null)
+                if (!world.IsCorrectIndex(position.Add(offset)) || world[position.Add(offset)] == null)
                     data.Add((textures[i], i));
             }
 
