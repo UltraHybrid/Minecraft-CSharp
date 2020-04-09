@@ -2,11 +2,11 @@ using System;
 
 namespace tmp
 {
-    public class PerlinChunkGenerator : IGenerator<Chunk>
+    public class PerlinChunkGenerator : IGenerator<int, Chunk>
     {
-        private readonly IGenerator<byte> highGenerator;
+        private readonly IGenerator<float, float> highGenerator;
 
-        public PerlinChunkGenerator(IGenerator<byte> highGenerator)
+        public PerlinChunkGenerator(IGenerator<float, float> highGenerator)
         {
             this.highGenerator = highGenerator;
         }
@@ -18,10 +18,16 @@ namespace tmp
             {
                 for (byte k = 0; k < Chunk.ZLength; k++)
                 {
-                    var value = highGenerator.Generate(x * Chunk.XLenght + i, z * Chunk.ZLength + k);
-                    for (int j = value; j>=0; j--)
+                    var value = (int) (highGenerator.Generate(x * Chunk.XLenght + i, z * Chunk.ZLength + k) * 22f + 22);
+                    if (value < 0)
                     {
-                        var position = new PointB(i, (byte)j, k);
+                        var position = new PointB(i, 0, k);
+                        chunk[position] = new Block(BaseBlocks.Grass, position);
+                    }
+
+                    for (var j = value; j >= 0; j--)
+                    {
+                        var position = new PointB(i, (byte) j, k);
                         chunk[position] = new Block(j == value ? BaseBlocks.Grass : BaseBlocks.Dirt, position);
                     }
                 }

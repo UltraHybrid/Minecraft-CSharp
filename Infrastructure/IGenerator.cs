@@ -1,7 +1,7 @@
 namespace tmp
 {
-    public interface IGenerator<T>
+    public interface IGenerator<TSource, TResult>
     {
-        T Generate(int x, int z);
+        TResult Generate(TSource x, TSource z);
     }
 }

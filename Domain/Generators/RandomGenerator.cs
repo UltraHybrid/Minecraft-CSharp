@@ -2,7 +2,7 @@ using System;
 
 namespace tmp
 {
-    public class RandomGenerator : IGenerator<Chunk>
+    public class RandomGenerator : IGenerator<int, Chunk>
     {
         private readonly Random rnd = new Random();
 

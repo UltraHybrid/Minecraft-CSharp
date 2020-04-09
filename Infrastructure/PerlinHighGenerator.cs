@@ -2,13 +2,14 @@ using System;
 
 namespace tmp
 {
-    public class PerlinHighGenerator : IGenerator<byte>
+    public class
+        PerlinHighGenerator : IGenerator<float, float>
     {
-        private readonly float rndParameter;
         private readonly float persistence;
         private readonly float frequency;
         private readonly float amplitude;
         private readonly int amountOctaves;
+        public float Seed { get; set; }
 
         public PerlinHighGenerator(float persistence, float frequency,
             float amplitude, int amountOctaves)
@@ -17,15 +18,15 @@ namespace tmp
             this.frequency = frequency;
             this.amplitude = amplitude;
             this.amountOctaves = amountOctaves;
-            rndParameter = (float) (20 * Math.PI + new Random().NextDouble() * 30 * Math.PI);
+            Seed = (float) (20 * Math.PI + new Random().NextDouble() * 30 * Math.PI);
         }
 
-        public byte Generate(int x, int z)
+        public float Generate(float x, float z)
         {
-            return GetPerlinNoise(x, z, rndParameter);
+            return GetPerlinNoise(x, z, Seed);
         }
 
-        private byte GetPerlinNoise(float x, float z, float factor)
+        private float GetPerlinNoise(float x, float z, float factor)
         {
             var total = 0f;
             var persistence = this.persistence; //неизменность
@@ -40,9 +41,7 @@ namespace tmp
                 frequency *= 2;
             }
 
-            total = Math.Abs(total);
-            var res = (byte) (total * 22.0f); //значение 0-255
-            return res;
+            return total;
         }
 
         private float Get2DNoise(float x, float z)

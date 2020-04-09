@@ -1,6 +1,6 @@
 namespace tmp
 {
-    public class FlatGenerator : IGenerator<Chunk>
+    public class FlatGenerator : IGenerator<int, Chunk>
     {
         public Chunk Generate(int x, int z)
         {

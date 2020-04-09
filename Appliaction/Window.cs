@@ -29,7 +29,7 @@ namespace tmp
                 keys[key] = false;
             }
             Location = new Point(100, 100);
-            playerControl = new PlayerControl(keys, new Player(Vector.Default, Vector.Default, Int32.MaxValue , Single.NaN).Mover);
+            playerControl = new PlayerControl(keys, player.Mover);
             camera = new Camera(player.Mover, new Vector3(0, player.Height, 0));
             render = new Render(camera, new WorldVisualiser(world), world);
             this.player = player;

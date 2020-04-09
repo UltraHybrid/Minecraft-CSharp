@@ -5,12 +5,12 @@ namespace tmp
 {
     public class ChunkManager : IChunkManager
     {
-        private readonly IGenerator<Chunk> generator;
+        private readonly IGenerator<int, Chunk> generator;
         private readonly Queue<PointI> queue;
 
         public event Action Notify;
 
-        public ChunkManager(IGenerator<Chunk> generator)
+        public ChunkManager(IGenerator<int, Chunk> generator)
         {
             this.generator = generator;
             this.queue = new Queue<PointI>();

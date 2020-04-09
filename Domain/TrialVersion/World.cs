@@ -10,7 +10,7 @@ namespace tmp
         private readonly Chunk[,] chunks;
         public readonly int Size;
 
-        public World(IGenerator<Chunk> generator, int worldSize)
+        public World(IGenerator<int, Chunk> generator, int worldSize)
         {
             Size = worldSize;
             chunks = new Chunk[Size, Size];
