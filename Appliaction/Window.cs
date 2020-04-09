@@ -29,13 +29,15 @@ namespace tmp
                 keys[key] = false;
             }
             Location = new Point(100, 100);
-            camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
-            render = new Render(camera, new WorldVisualiser(world),  world);
+            playerControl = new PlayerControl(keys, new Player(Vector.Default, Vector.Default, Int32.MaxValue , Single.NaN).Mover);
+            camera = new Camera(player.Mover, new Vector3(0, player.Height, 0));
+            render = new Render(camera, new WorldVisualiser(world), world);
             this.player = player;
         }
 
         #region Variables
 
+        private PlayerControl playerControl;
         private Player player;
         private World world;
         private Camera camera;
@@ -59,7 +61,7 @@ namespace tmp
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            camera.Move((float) e.Time);
+            playerControl.Move((float) e.Time);
             render.UpdateFrame();
         }
 
@@ -92,7 +94,7 @@ namespace tmp
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
-            camera.MouseMove();
+            playerControl.MouseMove();
         }
     }
 }
