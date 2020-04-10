@@ -12,7 +12,7 @@
         public Chunk Generate(int x, int z)
         {
             const float coeff = 0.9f;
-            var chunk = new Chunk {Position = new PointI(x, 0, z)};
+            var chunk = new Chunk ();
             for (var i = 0; i < Chunk.XLenght; i++)
             for (var j = 0; j < Chunk.YLength; j++)
             for (var k = 0; k < Chunk.ZLength; k++)

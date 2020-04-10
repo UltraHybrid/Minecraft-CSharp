@@ -6,6 +6,7 @@ namespace tmp
     public class ChunkManager : IChunkManager
     {
         private readonly IGenerator<int, Chunk> generator;
+        private World world;
         private readonly Queue<PointI> queue;
 
         public event Action Notify;
@@ -13,8 +14,9 @@ namespace tmp
         public ChunkManager(IGenerator<int, Chunk> generator)
         {
             this.generator = generator;
-            this.queue = new Queue<PointI>();
         }
+
+        public void SetWorld(World world) => this.world = world;
 
         public Chunk Load(int x, int z)
         {
@@ -23,8 +25,12 @@ namespace tmp
 
         public Chunk Create(int x, int z)
         {
-            OnNotify();
-            return null;
+            if (world == null)
+                throw new InvalidOperationException("The world is not defined");
+            var chunk = generator.Generate(x + world.gloabalOffset.X, z + world.gloabalOffset.Z);
+            chunk.Position = new PointI(x, 0, z).Add(world.gloabalOffset);
+            world[x, z] = chunk;
+            return chunk;
         }
 
         public void Save(Chunk chunk)

@@ -31,6 +31,11 @@ namespace tmp
             return new PointB((byte) point.X, (byte) point.Y, (byte) point.Z);
         }
 
+        public static explicit operator Vector(PointI point)
+        {
+            return new Vector(point.X, point.Y, point.Z);
+        }
+
         public override string ToString()
         {
             return "(" + X + ", " + Y + ", " + Z + ")";

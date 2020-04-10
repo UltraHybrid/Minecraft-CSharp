@@ -15,11 +15,9 @@ namespace tmp
 
         public IEnumerable<VisualizerData> GetVisibleFaces(Chunk chunk)
         {
-            var x = chunk.Position.X;
-            var z = chunk.Position.Z;
             return chunk
                 .Where(b => b != null)
-                .Select(b => world.GetAbsolutPosition(b, x, z))
+                .Select(b => world.GetAbsolutPosition(b, chunk.Position))
                 .Select(GetVisibleFaces)
                 .Where(v => v != null);
         }
