@@ -20,14 +20,19 @@ namespace tmp
                 manager.Create(x, z);
             }
 
-            var halfSize = worldSize / 2;
+            Player = InitPlayer();
+        }
+
+        private Player InitPlayer()
+        {
+            var halfSize = World.Size / 2;
             var empty = World[halfSize, halfSize].First(b =>
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 b != null && World[halfSize, halfSize][b.Position.Add(new PointB(0, 1, 0))] == null &&
                 World[halfSize, halfSize][b.Position.Add(new PointB(0, 2, 0))] == null);
             var playerSpawn = (Vector) World.GetAbsolutPosition(empty, World[halfSize, halfSize].Position) +
                               new Vector(0.5f, 1, 0.5f);
-            Player = new Player(playerSpawn,
+            return new Player(playerSpawn,
                 new Vector(0, 0, 1), 10, 15);
         }
     }
