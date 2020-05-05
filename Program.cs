@@ -20,7 +20,7 @@ namespace tmp
                 new PerlinHighGenerator(0.06f, 0.4f, 3.5f, 3) {Seed = 114.78f}
             );
 
-            var game = new Game(10, new ChunkManager(new PerlinChunkGenerator(coreGenerator)));
+            var game = new Game(50, new ChunkManager(new FlatGenerator()));
 
             Console.Beep();
             GC.Collect();
