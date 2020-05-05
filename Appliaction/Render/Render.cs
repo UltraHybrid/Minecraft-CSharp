@@ -85,7 +85,7 @@ namespace tmp
             texture = Texture.GetCubeMap(Directory.GetFiles(Path.Combine("Textures", "skybox"), "*.png").ToList());
             arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
             InitCubes();
-            GetDataToBuffer();
+            UpdateBuffersData();
         }
 
         private static void ClearBackground(Color4 backgroundColor)
@@ -94,7 +94,7 @@ namespace tmp
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
-        private void GetDataToBuffer()
+        private void UpdateBuffersData()
         {
             blocksShader.SendData(indices.ToArray(), positions, sideTexId, vertex, texCords);
             skyBoxShader.SendData(indices.ToArray());
