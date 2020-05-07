@@ -246,6 +246,8 @@ namespace tmp
             while (!visualMap.Ready.IsEmpty)
             {
                 var tmp = visualMap.Ready.TryDequeue(out var point);
+                if (!visualMap.Data.ContainsKey(point))
+                    continue;
                 foreach (var data in visualMap.Data[point])
                 {
                     foreach (var (name, number) in data.TextureNumber)
