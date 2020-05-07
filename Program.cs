@@ -12,17 +12,10 @@ namespace tmp
                 TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
                 TextureOrder.Top, TextureOrder.Front, TextureOrder.Bottom
             };
-
-            var coreGenerator = new PerlinHighGenerator(0.01f, 0.05f, 3.0f, 8);
-            var otherGenerator = new PerlinHighGenerator(0.02f, 0.01f, 10.0f, 7);
-            var otherGenerator2 = new PerlinHighGenerator(0.43f, (1 / 215.0f), 20.0f, 9);
-            var uGenerator = new Perlin3DChunkGenerator(
-                new PerlinHighGenerator(0.06f, 0.4f, 3.5f, 3) {Seed = 114.78f}
-            );
-
+            
             var startPoint = new PointI(300, 0, 300);
             var world = new World(10, startPoint);
-            var manager = new ChunkManager(new PerlinChunkGenerator(coreGenerator));
+            var manager = new ChunkManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             manager.SetWorld(world);
             manager.Notify += (ch) =>
             {

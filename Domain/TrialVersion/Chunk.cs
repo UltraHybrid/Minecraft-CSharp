@@ -18,16 +18,6 @@ namespace tmp
             blocks = new Block[XLength, YLength, ZLength];
         }
 
-        public void FillLayers(BlockType blockType, int count)
-        {
-            if (count < 0 || count >= YLength)
-                throw new ArgumentException();
-            for (byte j = 0; j < count; j++)
-            for (byte i = 0; i < XLength; i++)
-            for (byte k = 0; k < ZLength; k++)
-                blocks[i, j, k] = new Block(blockType, new PointB(i, j, k));
-        }
-
         public IEnumerator<Block> GetEnumerator()
         {
             return blocks.Cast<Block>().GetEnumerator();
@@ -38,7 +28,7 @@ namespace tmp
             return GetEnumerator();
         }
 
-        private bool CheckBounds(PointB position)
+        private static bool CheckBounds(PointB position)
         {
             return position.X < XLength && position.Y < YLength && position.Z < ZLength;
         }
@@ -55,7 +45,7 @@ namespace tmp
             set
             {
                 if (!CheckBounds(position))
-                    throw new ArgumentException();
+                    throw new ArgumentException("Значение не попадает в диапазон чанка: " + position);
                 blocks[position.X, position.Y, position.Z] = value;
             }
         }
