@@ -7,7 +7,7 @@ namespace tmp
     {
         public Vector Position { get; protected set; }
         public Vector Front { get; protected set; }
-        public abstract Vector Right { get; set; }
+        public abstract Vector Left { get; set; }
         public abstract Vector Up { get; set; }
         public abstract float Speed { get; set; }
         public abstract float Pitch { get; set; }
@@ -25,9 +25,9 @@ namespace tmp
 
         protected Vector Convert2Cartesian(float alpha, float betta)
         {
-            var x = (float) (Math.Cos(alpha * Math.PI / 180) * Math.Cos(betta * Math.PI / 180));
+            var z = (float) (Math.Cos(alpha * Math.PI / 180) * Math.Cos(betta * Math.PI / 180));
             var y = (float) Math.Sin(betta * Math.PI / 180);
-            var z = (float) (Math.Sin(alpha * Math.PI / 180) * Math.Cos(betta * Math.PI / 180));
+            var x = (float) (-Math.Sin(alpha * Math.PI / 180) * Math.Cos(betta * Math.PI / 180));
             return new Vector(x, y, z);
         }
     }

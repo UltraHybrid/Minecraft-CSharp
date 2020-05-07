@@ -20,7 +20,20 @@ namespace tmp
                 new PerlinHighGenerator(0.06f, 0.4f, 3.5f, 3) {Seed = 114.78f}
             );
 
-            var game = new Game(10, new ChunkManager(new PerlinChunkGenerator(coreGenerator)));
+            var startPoint = new PointI(300, 0, 300);
+            var world = new World(10, startPoint);
+            var manager = new ChunkManager(new PerlinChunkGenerator(coreGenerator));
+            manager.SetWorld(world);
+            manager.Notify += (ch) =>
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("Was Create: " + ch.Position);
+                Console.ForegroundColor = ConsoleColor.White;
+            };
+            var visualMap = new VisualMap(world.Size, world.globalOffset, new WorldVisualiser(world));
+            manager.Notify += (ch) => visualMap.Offset = world.globalOffset;
+            manager.Notify += visualMap.HandleNewChunk;
+            var game = new Game(manager, world);
 
             Console.Beep();
             GC.Collect();
@@ -29,7 +42,7 @@ namespace tmp
             Console.WriteLine("World size: " + memory / (1024 * 1024) + " Mb");
             Console.Beep();
 
-            using var painter = new Window(game.World, game.Player);
+            using var painter = new Window(game, visualMap);
             painter.Run(200, 200);
         }
     }

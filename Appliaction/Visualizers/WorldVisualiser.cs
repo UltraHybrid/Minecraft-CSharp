@@ -13,18 +13,22 @@ namespace tmp
             this.world = world;
         }
 
-        public IEnumerable<VisualizerData> GetVisibleFaces(Chunk chunk)
+        public IReadOnlyList<VisualizerData> GetVisibleFaces(Chunk chunk)
         {
             return chunk
                 .Where(b => b != null)
-                .Select(b => world.GetAbsolutPosition(b, chunk.Position))
+                .Select(b => world.GetAbsolutePosition(b, chunk.Position))
                 .Select(GetVisibleFaces)
-                .Where(v => v != null);
+                .Where(v => v != null)
+                .ToList();
         }
 
         private VisualizerData GetVisibleFaces(PointI position)
         {
             var textures = world[position].BlockType.Textures.GetOrderedTextures();
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            var isSeeTop = world.IsCorrectIndex(position.Add(new PointI(0, 1, 0))) &&
+                           world[position.Add(new PointI(0, 1, 0))] == null;
             var data = new List<(string, int)>();
             for (var i = 0; i < TextureInfo.Order.Length; i++)
             {
@@ -39,12 +43,14 @@ namespace tmp
                     TextureOrder.Bottom => new PointI(0, -1, 0),
                     _ => throw new ArgumentOutOfRangeException()
                 };
+
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                if (!world.IsCorrectIndex(position.Add(offset)) || world[position.Add(offset)] == null)
+                if ((isSeeTop && !world.IsCorrectIndex(position.Add(offset))) ||
+                    (world.IsCorrectIndex(position.Add(offset)) && world[position.Add(offset)] == null))
                     data.Add((textures[i], i));
             }
 
-            return data.Count!=0?new VisualizerData(position, data): null;
+            return data.Count != 0 ? new VisualizerData(position, data) : null;
         }
     }
 

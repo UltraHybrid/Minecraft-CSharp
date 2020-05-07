@@ -5,7 +5,7 @@ namespace tmp
         public Chunk Generate(int x, int z)
         {
             var chunk = new Chunk();
-            for (byte i = 0; i < Chunk.XLenght; i++)
+            for (byte i = 0; i < Chunk.XLength; i++)
             for (byte j = 0; j < 5; j++)
             for (byte k = 0; k < Chunk.ZLength; k++)
             {

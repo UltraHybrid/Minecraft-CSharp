@@ -26,6 +26,11 @@ namespace tmp
             return new PointI(X + other.X, Y + other.Y, Z + other.Z);
         }
 
+        public static PointI operator -(PointI point)
+        {
+            return new PointI(-point.X, -point.Y, -point.Z);
+        }
+
         public static explicit operator PointB(PointI point)
         {
             return new PointB((byte) point.X, (byte) point.Y, (byte) point.Z);

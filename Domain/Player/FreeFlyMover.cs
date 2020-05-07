@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace tmp
 {
-    public class FreeFlyMover : EntityMover
+    public sealed class FreeFlyMover : EntityMover
     {
-        public override Vector Right { get; set; }
+        public override Vector Left { get; set; }
         public override Vector Up { get; set; }
         public override float Speed { get; set; }
         private float pitch;
@@ -41,10 +41,9 @@ namespace tmp
         public FreeFlyMover(Vector position, Vector front, float speed) : base(position, front)
         {
             Speed = speed;
-            Yaw = 90;
             Front = front;
-            Right = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
-            Up = Vector.Cross(Front, Right).Normalize();
+            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
+            Up = Vector.Cross(Front, Left).Normalize();
         }
 
         public override void Move(Direction direction, float time)
@@ -56,8 +55,8 @@ namespace tmp
             {
                 Direction.Forward => frontXZ,
                 Direction.Back => -frontXZ,
-                Direction.Right => -Right,
-                Direction.Left => Right,
+                Direction.Right => -Left,
+                Direction.Left => Left,
                 Direction.Up => Up,
                 Direction.Down => -Up,
             };
@@ -69,7 +68,7 @@ namespace tmp
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Right = Vector.Cross(Up, Front).Normalize();
+            Left = Vector.Cross(Up, Front).Normalize();
         }
     }
 }

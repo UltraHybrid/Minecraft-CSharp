@@ -62,6 +62,11 @@ namespace tmp
             return new Vector(x, y, z);
         }
 
+        public static explicit operator PointI(Vector v)
+        {
+            return new PointI((int)v.X, (int)v.Y, (int)v.Z);
+        }
+
         public override string ToString()
         {
             return $"({X}, {Y}, {Z})";

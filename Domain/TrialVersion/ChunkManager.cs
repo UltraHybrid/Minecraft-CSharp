@@ -1,15 +1,19 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace tmp
 {
-    public class ChunkManager : IChunkManager
+    public sealed class ChunkManager : IChunkManager
     {
         private readonly IGenerator<int, Chunk> generator;
         private World world;
         private readonly Queue<PointI> queue;
 
-        public event Action Notify;
+        public event Action<Chunk> Notify;
 
         public ChunkManager(IGenerator<int, Chunk> generator)
         {
@@ -27,10 +31,69 @@ namespace tmp
         {
             if (world == null)
                 throw new InvalidOperationException("The world is not defined");
-            var chunk = generator.Generate(x + world.gloabalOffset.X, z + world.gloabalOffset.Z);
-            chunk.Position = new PointI(x, 0, z).Add(world.gloabalOffset);
-            world[x, z] = chunk;
+            var chunk = generator.Generate(x + world.globalOffset.X, z + world.globalOffset.Z);
+            var position = new PointI(x, 0, z).Add(world.globalOffset);
+            chunk.Position = position;
             return chunk;
+        }
+
+        public void MakeShift(PointI shift, PointI playerPoint)
+        {
+            var futureWorld = new Chunk[world.Size, world.Size];
+            var needGenerate = new List<PointI>();
+            for (var i = 0; i < world.Size; i++)
+            {
+                for (var k = 0; k < world.Size; k++)
+                {
+                    var futurePoint = new PointI(i, 0, k);
+                    var oldPoint = futurePoint.Add(shift);
+                    if (oldPoint.X >= 0 && oldPoint.X < world.Size &&
+                        oldPoint.Z >= 0 && oldPoint.Z < world.Size)
+                    {
+                        futureWorld[i, k] = world[oldPoint.X, oldPoint.Z];
+                        if (futureWorld[i, k] == null)
+                            needGenerate.Add(futurePoint);
+                    }
+                    else needGenerate.Add(futurePoint);
+                }
+            }
+
+            world.globalOffset = world.globalOffset.Add(shift);
+            var dictLock = new object();
+            var dict = new Dictionary<PointI, Chunk>();
+            var newChunks = Parallel.ForEach(needGenerate, p =>
+            {
+                var data = Create(p.X, p.Z);
+                lock (dictLock)
+                {
+                    dict[p] = data;
+                }
+            });
+            for (var i = 0; i < world.Size; i++)
+            {
+                for (var k = 0; k < world.Size; k++)
+                {
+                    if (futureWorld[i, k] != null)
+                        world[i, k] = futureWorld[i, k];
+                }
+            }
+
+            while (!newChunks.IsCompleted)
+            {
+            }
+
+            Console.WriteLine("Generate new chunks " + dict.Count);
+            foreach (var pair in dict)
+            {
+                world[pair.Key.X, pair.Key.Z] = pair.Value;
+            }
+
+            dict.Select(p => p.Value)
+                .OrderByDescending(p => p.Position.GetDistance(playerPoint))
+                .ToList()
+                .ForEach(NotifyAll);
+
+            Console.WriteLine("World Update ");
         }
 
         public void Save(Chunk chunk)
@@ -38,9 +101,9 @@ namespace tmp
             throw new NotImplementedException();
         }
 
-        protected virtual void OnNotify()
+        private void NotifyAll(Chunk chunk)
         {
-            Notify?.Invoke();
+            Notify?.Invoke(chunk);
         }
     }
 }

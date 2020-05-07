@@ -10,7 +10,7 @@ namespace tmp
         {
             var chunk = new Chunk();
             var allBlocks = BaseBlocks.AllBlocks;
-            for (byte i = 0; i < Chunk.XLenght; i++)
+            for (byte i = 0; i < Chunk.XLength; i++)
             for (byte j = 0; j < Chunk.YLength - 1; j++)
             for (byte k = 0; k < Chunk.ZLength; k++)
             {

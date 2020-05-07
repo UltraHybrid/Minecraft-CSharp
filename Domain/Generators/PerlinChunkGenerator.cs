@@ -14,11 +14,11 @@ namespace tmp
         public Chunk Generate(int x, int z)
         {
             var chunk = new Chunk();
-            for (byte i = 0; i < Chunk.XLenght; i++)
+            for (byte i = 0; i < Chunk.XLength; i++)
             {
                 for (byte k = 0; k < Chunk.ZLength; k++)
                 {
-                    var value = (int) (highGenerator.Generate(x * Chunk.XLenght + i, z * Chunk.ZLength + k) * 22f + 22);
+                    var value = (int) (highGenerator.Generate(x * Chunk.XLength + i, z * Chunk.ZLength + k) * 22f + 22);
                     if (value < 0)
                     {
                         var position = new PointB(i, 0, k);

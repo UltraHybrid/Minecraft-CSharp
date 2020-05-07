@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace tmp
 {
@@ -6,34 +7,47 @@ namespace tmp
     {
         public readonly World World;
         public readonly Player Player;
-        public readonly ChunkManager manager;
+        public readonly ChunkManager Manager;
+        public PointI Previous;
 
-        public Game(int worldSize, ChunkManager manager)
+        public Game(ChunkManager manager, World world)
         {
-            this.manager = manager;
-            var startOffset = new PointI(100 * worldSize, 0, 100 * worldSize);
-            World = new World(worldSize, startOffset);
-            manager.SetWorld(World);
-            for (var x = 0; x < World.Size; x++)
-            for (var z = 0; z < World.Size; z++)
-            {
-                manager.Create(x, z);
-            }
+            Manager = manager;
+            World = world;
+            var rnd = new Random();
+            var number = rnd.Next(world.globalOffset.X * Chunk.XLength,
+                (world.globalOffset.X + world.Size - 1) * Chunk.XLength);
+            var playerPosition = new PointI(number, 0, number);
+            manager.MakeShift(PointI.Default, playerPosition);
 
-            Player = InitPlayer();
+            Player = InitPlayer(playerPosition);
+            Previous = world.Convert2ChunkPoint((PointI) Player.Mover.Position);
         }
 
-        private Player InitPlayer()
+        private Player InitPlayer(PointI playerPosition)
         {
-            var halfSize = World.Size / 2;
-            var empty = World[halfSize, halfSize].First(b =>
+            Console.WriteLine(playerPosition);
+            var empty = Enumerable.Range(-252, 252)
+                .Select(Math.Abs)
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                b != null && World[halfSize, halfSize][b.Position.Add(new PointB(0, 1, 0))] == null &&
-                World[halfSize, halfSize][b.Position.Add(new PointB(0, 2, 0))] == null);
-            var playerSpawn = (Vector) World.GetAbsolutPosition(empty, World[halfSize, halfSize].Position) +
-                              new Vector(0.5f, 1, 0.5f);
+                .First(p => World[playerPosition.Add(new PointI(0, p, 0))] != null &&
+                            World[playerPosition.Add(new PointI(0, p + 1, 0))] == null &&
+                            World[playerPosition.Add(new PointI(0, p + 2, 0))] == null);
+            var playerSpawn = (Vector) playerPosition + new Vector(0.5f, empty + 1, 0.5f);
             return new Player(playerSpawn,
                 new Vector(0, 0, 1), 10, 15);
+        }
+
+        public void Update()
+        {
+            var currentChunk = World.Convert2ChunkPoint((PointI) Player.Mover.Position);
+            var shift = currentChunk.Add(-Previous);
+            if (!Equals(shift, PointI.Default))
+            {
+                Manager.MakeShift(shift, currentChunk);
+                Console.WriteLine("!!!!!!!" + shift);
+                Previous = currentChunk;
+            }
         }
     }
 }

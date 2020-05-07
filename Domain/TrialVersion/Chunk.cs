@@ -9,13 +9,13 @@ namespace tmp
     {
         private readonly Block[,,] blocks;
         public PointI Position { get; set; }
-        public const int XLenght = 16;
+        public const int XLength = 16;
         public const int YLength = 256;
         public const int ZLength = 16;
 
         public Chunk()
         {
-            blocks = new Block[XLenght, YLength, ZLength];
+            blocks = new Block[XLength, YLength, ZLength];
         }
 
         public void FillLayers(BlockType blockType, int count)
@@ -23,7 +23,7 @@ namespace tmp
             if (count < 0 || count >= YLength)
                 throw new ArgumentException();
             for (byte j = 0; j < count; j++)
-            for (byte i = 0; i < XLenght; i++)
+            for (byte i = 0; i < XLength; i++)
             for (byte k = 0; k < ZLength; k++)
                 blocks[i, j, k] = new Block(blockType, new PointB(i, j, k));
         }
@@ -40,9 +40,7 @@ namespace tmp
 
         private bool CheckBounds(PointB position)
         {
-            return 0 <= position.X && position.X < XLenght
-                                   && 0 <= position.Y && position.Y < YLength
-                                   && 0 <= position.Z && position.Z < ZLength;
+            return position.X < XLength && position.Y < YLength && position.Z < ZLength;
         }
 
         public Block this[PointB position]
@@ -50,7 +48,7 @@ namespace tmp
             get
             {
                 if (!CheckBounds(position))
-                    throw new ArgumentException();
+                    throw new ArgumentException("Значение не попадает в диапазон чанка: " + position);
                 return blocks[position.X, position.Y, position.Z];
             }
 

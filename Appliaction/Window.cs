@@ -13,7 +13,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(World world, Player player) : base(
+        public Window(Game game, VisualMap visualMap) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -28,21 +28,23 @@ namespace tmp
             {
                 keys[key] = false;
             }
+
+            this.game = game;
+            this.player = game.Player;
+            this.world = game.World;
             Location = new Point(100, 100);
-            playerControl = new PlayerControl(keys, player.Mover);
-            camera = new Camera(player.Mover, new Vector3(0, player.Height, 0));
-            render = new Render(camera, new WorldVisualiser(world), world);
-            this.player = player;
+            camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
+            render = new Render(camera, visualMap, world);
         }
 
         #region Variables
 
-        private PlayerControl playerControl;
         private Player player;
         private World world;
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
+        private Game game;
 
         #endregion
 
@@ -55,14 +57,15 @@ namespace tmp
         protected override void OnLoad(EventArgs e)
         {
             GL.Enable(EnableCap.DepthTest);
+
             CursorVisible = false;
             render.Initialise(Width, Height);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            playerControl.Move((float) e.Time);
-            render.UpdateFrame();
+            camera.Move((float) e.Time);
+            game.Update();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -72,7 +75,7 @@ namespace tmp
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: {player.Mover.Position.X},{ player.Mover.Position.Y},{ player.Mover.Position.Z}";
+            Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: " + player.Mover.Position;
 
             render.RenderFrame();
 
@@ -84,6 +87,10 @@ namespace tmp
             keys[e.Key] = true;
             if (e.Key == Key.Escape)
                 Close();
+            if (e.Key == Key.U)
+                render.UpdateFrame();
+            if (e.Key == Key.E)
+                game.Manager.MakeShift(new PointI(0, 0, 1), (PointI)player.Mover.Position);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs e)
@@ -94,7 +101,7 @@ namespace tmp
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
-            playerControl.MouseMove();
+            camera.MouseMove();
         }
     }
 }

@@ -36,16 +36,16 @@ namespace tmp
         private readonly List<int> indices = new List<int>();
         private readonly List<Vector2> texCords = new List<Vector2>();
 
-        private readonly IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer;
+        private readonly VisualMap visualMap;
         private readonly World world;
         private readonly Camera camera;
 
         #endregion
 
-        public Render(Camera camera, IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer, World world)
+        public Render(Camera camera, VisualMap visualMap, World world)
         {
             this.camera = camera;
-            this.visualizer = visualizer;
+            this.visualMap = visualMap;
             this.world = world;
         }
 
@@ -92,6 +92,8 @@ namespace tmp
 
         public void UpdateFrame()
         {
+            InitCubes();
+            GetDataToBuffer();
         }
 
         public void Initialise(int width, int height)
@@ -231,18 +233,48 @@ namespace tmp
 
         private void InitCubes()
         {
+            indices.Clear();
+            vertex.Clear();
+            texCords.Clear();
+            positions.Clear();
+            sideTexId.Clear();
+            sidesCount = 0;
             indices.AddRange(Cube.GetSideIndices());
             vertex.AddRange(Cube.GetVertexes());
             texCords.AddRange(Cube.GetTextureCoords().Select(nn => nn.Xy));
-            foreach (var data in world.SelectMany(x => visualizer.GetVisibleFaces(x)))
+            Console.WriteLine(visualMap.Ready.Count);
+            while (!visualMap.Ready.IsEmpty)
             {
-                foreach (var (name, number) in data.TextureNumber)
+                var tmp = visualMap.Ready.TryDequeue(out var point);
+                foreach (var data in visualMap.Data[point])
                 {
-                    positions.Add(data.Position.Convert());
-                    sideTexId.Add(new Vector2(number, Texture.textures[name]));
-                    sidesCount++;
+                    foreach (var (name, number) in data.TextureNumber)
+                    {
+                        positions.Add(data.Position.Convert());
+                        sideTexId.Add(new Vector2(number, Texture.textures[name]));
+                        sidesCount++;
+                    }
                 }
+
+                visualMap.Data.TryRemove(point, out var any);
             }
+
+            /*for (var i = 0; i < visualMap.Size; i++)
+            {
+                for (var k = 0; k < visualMap.Size; k++)
+                {
+                    if (visualMap.ChunksFaces[i, k] != null)
+                        foreach (var data in visualMap.ChunksFaces[i, k])
+                        {
+                            foreach (var (name, number) in data.TextureNumber)
+                            {
+                                positions.Add(data.Position.Convert());
+                                sideTexId.Add(new Vector2(number, Texture.textures[name]));
+                                sidesCount++;
+                            }
+                        }
+                }
+            }*/
         }
 
         private static readonly float[] SkyBoxVertices =

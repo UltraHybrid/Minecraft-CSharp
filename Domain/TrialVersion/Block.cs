@@ -6,7 +6,7 @@
         public int Hardness { get; set; }
         public PointB Position { get; set; }
 
-        public Block(BlockType blockType)
+        private Block(BlockType blockType)
         {
             BlockType = blockType;
             Hardness = blockType.Hardness;

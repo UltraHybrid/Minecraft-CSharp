@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace tmp
 {
     public interface IVisualizer<TSource, TResult>
     {
-        TResult GetVisibleFaces(TSource data);
+        IReadOnlyList<VisualizerData> GetVisibleFaces(TSource data);
     }
 }
