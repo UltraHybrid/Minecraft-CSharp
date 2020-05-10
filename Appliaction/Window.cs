@@ -66,6 +66,7 @@ namespace tmp
         {
             camera.Move((float) e.Time);
             game.Update();
+            render.UpdateFrame();
         }
 
         protected override void OnClosed(EventArgs e)

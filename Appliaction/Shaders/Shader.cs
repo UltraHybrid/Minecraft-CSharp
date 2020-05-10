@@ -1,11 +1,10 @@
-﻿using System.IO;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 
 namespace tmp
 {
     public static class Shaders
     {
-        private const string VertSrcCube = 
+        private const string VertSrcCube =
             @"#version 410 core
 
             layout (location = 0) in vec3 vert;
@@ -36,7 +35,7 @@ namespace tmp
                 TexCord = vec3(texCord.st, layer);
             }";
 
-        private const string FragSrcCube = 
+        private const string FragSrcCube =
             @"#version 410 core
 
             in vec3 TexCord;
@@ -46,16 +45,14 @@ namespace tmp
 
             void main(void)
             {
-                if(TexCord.z < 0)
-                    discard;
                 vec4 tmp = texture(tarr, TexCord);
                 if(tmp.a < 0.1)
                     discard;
                 
                 outColor = tmp;
             }";
-        
-        private const string VertSrcSide = 
+
+        private const string VertSrcSide =
             @"#version 410 core
 
             layout (location = 0) in vec3 position;
@@ -65,51 +62,48 @@ namespace tmp
 
             uniform mat4 viewProjection;
 
-            out vec3 TexCord;
+            out vec3 color;
 
             void main(void)
             {
                 int sideID = int(sideTex.x);
                 gl_Position = viewProjection * vec4(position + vert[sideID], 1.0);
-                TexCord = vec3(texCord[sideID], sideTex.y);
+                color = vec3(texCord[sideID], sideTex.y);
             }";
 
-        private const string FragSrcSide = 
+        private const string FragSrcSide =
             @"#version 410 core
 
-            in vec3 TexCord;
-            out vec4 outColor;
+            in vec3 color;
 
             uniform sampler2DArray tarr;
 
             void main(void)
             {
-                vec4 tmp = texture(tarr, TexCord);
+                vec4 tmp = texture(tarr, color);
                 if(tmp.a < 0.1)
                     discard;
                 
-                outColor = tmp;
+                gl_FragColor = tmp;
             }";
 
-        private const string VertSkyBox = 
+        private const string VertSkyBox =
             @"#version 410 core
 
             layout (location = 0) in vec3 aPos;
             out vec3 TexCoords;
 
             uniform mat4 projection;
-            uniform mat4 view;
 
             void main()
             {
                 TexCoords = aPos;
-                vec4 pos = projection * view * vec4(aPos, 1.0);
+                vec4 pos = projection * vec4(aPos, 1.0);
                 gl_Position = pos.xyww;
             }";
 
         private const string FragSkyBox =
             @"#version 410 core
-            out vec4 FragColor;
 
             in vec3 TexCoords;
 
@@ -117,14 +111,15 @@ namespace tmp
 
             void main()
             {    
-                FragColor = texture(skybox, TexCoords);
+                gl_FragColor = texture(skybox, TexCoords);
             }";
 
         public static int GetDefaultShader() => InitShaders(VertSrcCube, FragSrcCube);
 
         public static int GetSkyBoxShader() => InitShaders(VertSkyBox, FragSkyBox);
-        
+
         public static int GetSideShader() => InitShaders(VertSrcSide, FragSrcSide);
+
         private static int InitShaders(string vert, string frag)
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);

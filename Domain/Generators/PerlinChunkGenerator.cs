@@ -18,7 +18,7 @@ namespace tmp
             {
                 for (byte k = 0; k < Chunk.ZLength; k++)
                 {
-                    var value = (int) (highGenerator.Generate(x * Chunk.XLength + i, z * Chunk.ZLength + k) * 22f + 22);
+                    var value = (int) (highGenerator.Generate(x * Chunk.XLength + i, z * Chunk.ZLength + k) * 22f + 100);
                     if (value < 0)
                     {
                         var position = new PointB(i, 0, k);
