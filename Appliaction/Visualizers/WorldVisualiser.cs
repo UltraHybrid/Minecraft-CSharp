@@ -29,25 +29,25 @@ namespace tmp
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             var isSeeTop = world.IsCorrectIndex(position.Add(new PointI(0, 1, 0))) &&
                            world[position.Add(new PointI(0, 1, 0))] == null;
-            var data = new List<(string, int)>();
+            var data = new List<FaceData>();
             for (var i = 0; i < TextureInfo.Order.Length; i++)
             {
                 var element = TextureInfo.Order[i];
                 var offset = element switch
                 {
-                    TextureOrder.Left => new PointI(1, 0, 0),
-                    TextureOrder.Back => new PointI(0, 0, 1),
-                    TextureOrder.Right => new PointI(-1, 0, 0),
-                    TextureOrder.Front => new PointI(0, 0, -1),
-                    TextureOrder.Top => new PointI(0, 1, 0),
-                    TextureOrder.Bottom => new PointI(0, -1, 0),
+                    TextureSide.Left => new PointI(1, 0, 0),
+                    TextureSide.Back => new PointI(0, 0, 1),
+                    TextureSide.Right => new PointI(-1, 0, 0),
+                    TextureSide.Front => new PointI(0, 0, -1),
+                    TextureSide.Top => new PointI(0, 1, 0),
+                    TextureSide.Bottom => new PointI(0, -1, 0),
                     _ => throw new ArgumentOutOfRangeException()
                 };
 
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if ((isSeeTop && !world.IsCorrectIndex(position.Add(offset))) ||
                     (world.IsCorrectIndex(position.Add(offset)) && world[position.Add(offset)] == null))
-                    data.Add((textures[i], i));
+                    data.Add(new FaceData(textures[i], i, 15));
             }
 
             return data.Count != 0 ? new VisualizerData(position, data) : null;
@@ -57,12 +57,26 @@ namespace tmp
     public class VisualizerData
     {
         public readonly PointI Position;
-        public readonly List<(string, int)> TextureNumber;
+        public readonly List<FaceData> Faces;
 
-        public VisualizerData(PointI position, List<(string, int)> textureNumber)
+        public VisualizerData(PointI position, List<FaceData> faces)
         {
             this.Position = position;
-            TextureNumber = textureNumber;
+            Faces = faces;
+        }
+    }
+
+    public class FaceData
+    {
+        public string Name { get; }
+        public int Number { get; }
+        public float Luminosity { get; }
+
+        public FaceData(string name, int number, float luminosity)
+        {
+            Name = name;
+            Number = number;
+            Luminosity = luminosity;
         }
     }
 }

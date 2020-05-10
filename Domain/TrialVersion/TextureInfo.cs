@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SharpDX;
 
 namespace tmp
@@ -12,10 +13,20 @@ namespace tmp
         public readonly string Top;
         public readonly string Bottom;
 
-        public static TextureOrder[] Order =
+        public static TextureSide[] Order =
         {
-            TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
-            TextureOrder.Front, TextureOrder.Top, TextureOrder.Bottom
+            TextureSide.Left, TextureSide.Back, TextureSide.Right,
+            TextureSide.Front, TextureSide.Top, TextureSide.Bottom
+        };
+
+        public static Dictionary<TextureSide, float> Brightness = new Dictionary<TextureSide, float>()
+        {
+            {TextureSide.Left, 0.6f},
+            {TextureSide.Right, 0.6f},
+            {TextureSide.Top, 1.0f},
+            {TextureSide.Bottom, 1.0f},
+            {TextureSide.Front, 0.8f},
+            {TextureSide.Back, 0.8f},
         };
 
         public TextureInfo(string left, string back, string right,
@@ -48,12 +59,12 @@ namespace tmp
             {
                 result[i] = Order[i] switch
                 {
-                    TextureOrder.Left => Left,
-                    TextureOrder.Back => Back,
-                    TextureOrder.Right => Right,
-                    TextureOrder.Front => Front,
-                    TextureOrder.Top => Top,
-                    TextureOrder.Bottom => Bottom,
+                    TextureSide.Left => Left,
+                    TextureSide.Back => Back,
+                    TextureSide.Right => Right,
+                    TextureSide.Front => Front,
+                    TextureSide.Top => Top,
+                    TextureSide.Bottom => Bottom,
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -62,7 +73,7 @@ namespace tmp
         }
     }
 
-    public enum TextureOrder
+    public enum TextureSide
     {
         Left,
         Back,

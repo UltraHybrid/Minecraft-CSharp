@@ -31,8 +31,8 @@ namespace tmp
         {
             if (world == null)
                 throw new InvalidOperationException("The world is not defined");
-            var chunk = generator.Generate(x + world.globalOffset.X, z + world.globalOffset.Z);
-            var position = new PointI(x, 0, z).Add(world.globalOffset);
+            var chunk = generator.Generate(x + world.GlobalOffset.X, z + world.GlobalOffset.Z);
+            var position = new PointI(x, 0, z).Add(world.GlobalOffset);
             chunk.Position = position;
             return chunk;
         }
@@ -60,7 +60,7 @@ namespace tmp
                 }
             }
 
-            world.globalOffset = world.globalOffset.Add(shift);
+            world.GlobalOffset = world.GlobalOffset.Add(shift);
             var dictLock = new object();
             var dict = new Dictionary<PointI, Chunk>();
             var newChunks = Parallel.ForEach(needGenerate, p =>

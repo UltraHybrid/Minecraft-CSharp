@@ -13,7 +13,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(Game game, VisualMap visualMap) : base(
+        public Window(Game2 game, VisualMap visualMap) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -40,11 +40,11 @@ namespace tmp
         #region Variables
 
         private Player player;
-        private World world;
+        private World2 world;
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
-        private Game game;
+        private Game2 game;
 
         #endregion
 
@@ -90,8 +90,6 @@ namespace tmp
                 Close();
             if (e.Key == Key.U)
                 render.UpdateFrame();
-            if (e.Key == Key.E)
-                game.Manager.MakeShift(new PointI(0, 0, 1), (PointI)player.Mover.Position);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs e)

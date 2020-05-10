@@ -16,6 +16,11 @@ namespace tmp
             Z = z;
         }
 
+        public static PointI CreateXZ(int x, int z)
+        {
+            return new PointI(x, 0, z);
+        }
+
         public int GetDistance(PointI other)
         {
             return Math.Max(Math.Max(Math.Abs(X - other.X), Math.Abs(Y - other.Y)), Math.Abs(Z - other.Z));

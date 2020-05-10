@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace tmp
 {
-    public class World : IEnumerable<Chunk>
+    public class World : IEnumerable<Chunk>, IWorld
     {
-        public PointI globalOffset { get; set; }
+        public PointI GlobalOffset { get; set; }
         private readonly Chunk[,] chunks;
-        public readonly int Size;
+        public int Size { get; }
 
         public World(int worldSize, PointI startOffset)
         {
             Size = worldSize;
-            globalOffset = startOffset;
+            GlobalOffset = startOffset;
             chunks = new Chunk[Size, Size];
         }
 
@@ -25,11 +25,11 @@ namespace tmp
 
         public bool IsCorrectIndex(PointI position)
         {
-            return globalOffset.X * Chunk.XLength <= position.X
-                   && position.X < (globalOffset.X + Size) * Chunk.XLength
+            return GlobalOffset.X * Chunk.XLength <= position.X
+                   && position.X < (GlobalOffset.X + Size) * Chunk.XLength
                    && 0 <= position.Y && position.Y < Chunk.YLength
-                   && globalOffset.Z * Chunk.ZLength <= position.Z
-                   && position.Z < (globalOffset.Z + Size) * Chunk.ZLength;
+                   && GlobalOffset.Z * Chunk.ZLength <= position.Z
+                   && position.Z < (GlobalOffset.Z + Size) * Chunk.ZLength;
         }
 
         public IEnumerator<Chunk> GetEnumerator()
@@ -46,8 +46,8 @@ namespace tmp
 
         private bool CheckChunkBounds(PointI position)
         {
-            var numberX = position.X / Chunk.XLength - globalOffset.X;
-            var numberZ = position.Z / Chunk.ZLength - globalOffset.Z;
+            var numberX = position.X / Chunk.XLength - GlobalOffset.X;
+            var numberZ = position.Z / Chunk.ZLength - GlobalOffset.Z;
             return CheckChunkBounds(numberX, numberZ);
         }
 
@@ -68,8 +68,8 @@ namespace tmp
                 if (!CheckChunkBounds(position))
                     throw new ArgumentException("Was get PointI " + position);
                 //Console.WriteLine(position);
-                var numberX = position.X / Chunk.XLength - globalOffset.X;
-                var numberZ = position.Z / Chunk.ZLength - globalOffset.Z;
+                var numberX = position.X / Chunk.XLength - GlobalOffset.X;
+                var numberZ = position.Z / Chunk.ZLength - GlobalOffset.Z;
                 var chunckX = position.X % Chunk.XLength;
                 var chunckZ = position.Z % Chunk.ZLength;
                 //if (chunks[numberX, numberZ] == null)
@@ -81,8 +81,8 @@ namespace tmp
             {
                 if (!CheckChunkBounds(position))
                     throw new ArgumentException();
-                var numberX = position.X / Chunk.XLength - globalOffset.X;
-                var numberZ = position.Z / Chunk.ZLength - globalOffset.Z;
+                var numberX = position.X / Chunk.XLength - GlobalOffset.X;
+                var numberZ = position.Z / Chunk.ZLength - GlobalOffset.Z;
                 var chunkX = position.X % Chunk.XLength;
                 var chunkZ = position.Z % Chunk.ZLength;
                 chunks[numberX, numberZ][(PointB) new PointI(chunkX, position.Y, chunkZ)] = value;

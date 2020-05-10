@@ -11,6 +11,7 @@ namespace tmp
     public class Render
     {
         #region Variables
+
         private int texture, arrayTex;
         private readonly List<PointI> chunksCords = new List<PointI>();
         private readonly List<int> chunkSidesCount = new List<int>();
@@ -22,12 +23,12 @@ namespace tmp
         private readonly BlocksShader blocksShader;
 
         private readonly VisualMap visualMap;
-        private readonly World world;
+        private readonly World2 world;
         private readonly Camera camera;
 
         #endregion
 
-        public Render(Camera camera, VisualMap visualMap, World world)
+        public Render(Camera camera, VisualMap visualMap, World2 world)
         {
             this.camera = camera;
             this.visualMap = visualMap;
@@ -53,7 +54,7 @@ namespace tmp
             viewMatrix = camera.GetViewMatrix();
             viewProjectionMatrix = viewMatrix * projectionMatrix;
             blocksShader.SetVPMatrix(viewProjectionMatrix);
-            
+
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
 
             for (var i = 0; i < chunksCords.Count; i++)
@@ -91,7 +92,7 @@ namespace tmp
                 {
                     int index;
                     var sidesCount = visualMap.Data[point.Item1].Count;
-                    if (point.Item2 == point.Item1)
+                    if (Equals(point.Item2, point.Item1))
                     {
                         chunksCords.Add(point.Item1);
                         chunkSidesCount.Add(sidesCount);
@@ -103,8 +104,21 @@ namespace tmp
                         chunksCords[index] = point.Item1;
                         chunkSidesCount[index] = sidesCount;
                     }
-                    
-                    blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
+
+                    var data = visualMap.Data[point.Item1];
+                    var positions = new List<Vector3>();
+                    var texId = new List<Vector2>();
+                    foreach (var d in data)
+                    {
+                        foreach (var f in d.Faces)
+                        {
+                            positions.Add(d.Position.Convert());
+                            texId.Add(new Vector2(f.Number, Texture.textures[f.Name]));
+                        }
+                    }
+
+                    //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
+                    blocksShader.SendData(index, positions, texId);
                 }
             }
         }

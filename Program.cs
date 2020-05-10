@@ -5,12 +5,12 @@ namespace tmp
 {
     public static class Program
     {
-        private static void Main(string[] args)
+        private static void Main1(string[] args)
         {
             TextureInfo.Order = new[]
             {
-                TextureOrder.Left, TextureOrder.Back, TextureOrder.Right,
-                TextureOrder.Top, TextureOrder.Front, TextureOrder.Bottom
+                TextureSide.Left, TextureSide.Back, TextureSide.Right,
+                TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
             
             var startPoint = new PointI(300, 0, 300);
@@ -23,8 +23,8 @@ namespace tmp
                 Console.WriteLine("Was Create: " + ch.Position);
                 Console.ForegroundColor = ConsoleColor.White;
             };
-            var visualMap = new VisualMap(world.Size, world.globalOffset, new WorldVisualiser(world));
-            manager.Notify += (ch) => visualMap.Offset = world.globalOffset;
+            var visualMap = new VisualMap(world.Size, world.GlobalOffset, new WorldVisualiser(world));
+            manager.Notify += (ch) => visualMap.Offset = world.GlobalOffset;
             manager.Notify += visualMap.HandleNewChunk;
             var game = new Game(manager, world);
 
@@ -35,8 +35,8 @@ namespace tmp
             Console.WriteLine("World size: " + memory / (1024 * 1024) + " Mb");
             Console.Beep();
 
-            using var painter = new Window(game, visualMap);
-            painter.Run(200, 200);
+            //using var painter = new Window(game, visualMap);
+            //painter.Run(200, 200);
         }
     }
 }

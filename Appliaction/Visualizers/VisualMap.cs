@@ -21,7 +21,7 @@ namespace tmp
             Offset = startOffset;
             this.visualizer = visualizer;
             Data = new ConcurrentDictionary<PointI, IReadOnlyList<VisualizerData>>();
-            Ready = new ConcurrentQueue<PointI>();
+            Ready = new ConcurrentQueue<(PointI, PointI)>();
         }
 
         public void HandleNewChunk(Chunk chunk)
@@ -32,7 +32,7 @@ namespace tmp
                 {
                     var data = visualizer.GetVisibleFaces(chunk);
                     Data[chunk.Position] = data;
-                    Ready.Enqueue(chunk.Position);
+                    Ready.Enqueue((chunk.Position,chunk.Position));
                     //Extensions.Print("Calculate" + chunk.Position, ConsoleColor.Blue);
                 }
                 catch (Exception e)
