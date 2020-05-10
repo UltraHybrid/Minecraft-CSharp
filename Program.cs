@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace tmp
 {
@@ -21,14 +20,14 @@ namespace tmp
             );
 
             var startPoint = new PointI(300, 0, 300);
-            var world = new World(10, startPoint);
+            var world = new World(30, startPoint);
             var manager = new ChunkManager(new PerlinChunkGenerator(coreGenerator));
             manager.SetWorld(world);
             manager.Notify += (ch) =>
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("Was Create: " + ch.Position);
-                Console.ForegroundColor = ConsoleColor.White;
+                //Console.ForegroundColor = ConsoleColor.DarkGreen;
+                //Console.WriteLine("Was Create: " + ch.Position);
+                //Console.ForegroundColor = ConsoleColor.White;
             };
             var visualMap = new VisualMap(world.Size, world.globalOffset, new WorldVisualiser(world));
             manager.Notify += (ch) => visualMap.Offset = world.globalOffset;

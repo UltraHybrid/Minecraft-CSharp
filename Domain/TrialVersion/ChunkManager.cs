@@ -39,6 +39,8 @@ namespace tmp
 
         public void MakeShift(PointI shift, PointI playerPoint)
         {
+            var t = new Stopwatch();
+            t.Start();
             var futureWorld = new Chunk[world.Size, world.Size];
             var needGenerate = new List<PointI>();
             for (var i = 0; i < world.Size; i++)
@@ -78,10 +80,6 @@ namespace tmp
                 }
             }
 
-            while (!newChunks.IsCompleted)
-            {
-            }
-
             Console.WriteLine("Generate new chunks " + dict.Count);
             foreach (var pair in dict)
             {
@@ -93,7 +91,8 @@ namespace tmp
                 .ToList()
                 .ForEach(NotifyAll);
 
-            Console.WriteLine("World Update ");
+            t.Stop();
+            Console.WriteLine($"World Update {t.ElapsedMilliseconds}");
         }
 
         public void Save(Chunk chunk)

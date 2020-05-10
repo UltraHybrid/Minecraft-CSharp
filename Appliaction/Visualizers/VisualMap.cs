@@ -11,7 +11,7 @@ namespace tmp
         public PointI Offset;
         public ConcurrentDictionary<PointI, IReadOnlyList<VisualizerData>> Data;
         public int Size;
-        public ConcurrentQueue<PointI> Ready;
+        public ConcurrentQueue<(PointI, PointI)> Ready;
         public readonly IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer;
 
         public VisualMap(int size, PointI startOffset,
