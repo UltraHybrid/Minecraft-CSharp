@@ -58,9 +58,12 @@ namespace tmp
 
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                blocksShader.BindVao(i);
-                GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
-                    chunkSidesCount[i]);
+                if (Vector3.Dot(chunksCords[i].Convert(), camera.viewer.Front.Convert()) > 0)
+                {
+                    blocksShader.BindVao(i);
+                    GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
+                        chunkSidesCount[i]);
+                }
             }
 
             GL.BindVertexArray(0);

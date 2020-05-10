@@ -11,7 +11,7 @@ namespace tmp
         private Dictionary<Key, bool> keys;
         private Vector2 lastMousePosition;
         private float MouseSensitivity { get; set; }
-        private readonly IMover viewer;
+        public readonly IMover viewer;
         private readonly Vector3 offset;
 
         public Camera(Dictionary<Key, bool> keys, IMover viewer, Vector3 offset)
