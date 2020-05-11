@@ -7,18 +7,18 @@ namespace tmp
 {
     public class ChunkManager2
     {
-        private readonly IGenerator<int, Chunk> landscapeGenerator;
+        private readonly IGenerator<int, Chunk<Block>> landscapeGenerator;
         private World2 world;
         private const int TaskCount = 4;
-        private readonly Task<Chunk>[] tasks;
+        private readonly Task<Chunk<Block>>[] tasks;
         private Queue<PointI> futureChunks;
 
-        public event Action<Chunk> Notify;
+        public event Action<Chunk<Block>> Notify;
 
-        public ChunkManager2(IGenerator<int, Chunk> landscapeGenerator)
+        public ChunkManager2(IGenerator<int, Chunk<Block>> landscapeGenerator)
         {
             this.landscapeGenerator = landscapeGenerator;
-            tasks = new Task<Chunk>[TaskCount];
+            tasks = new Task<Chunk<Block>>[TaskCount];
             futureChunks = new Queue<PointI>();
         }
 
@@ -27,7 +27,7 @@ namespace tmp
             world = gameWorld;
         }
 
-        private Chunk Generate(PointI point)
+        private Chunk<Block> Generate(PointI point)
         {
             var chunk = landscapeGenerator.Generate(point.X, point.Z);
             chunk.Position = point;
@@ -97,7 +97,7 @@ namespace tmp
             }
         }
 
-        protected virtual void NotifyAll(Chunk chunk)
+        protected virtual void NotifyAll(Chunk<Block> chunk)
         {
             Notify?.Invoke(chunk);
         }

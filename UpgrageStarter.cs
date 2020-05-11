@@ -12,9 +12,9 @@ namespace tmp
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
 
-            var startOffset = PointI.CreateXZ(300, 300);
-            var worldSize = 40;
-            var manager = new ChunkManager2(UsageGenerators.OreGenerator);
+            var startOffset = PointI.CreateXZ(0, 0);
+            var worldSize = 30;
+            var manager = new ChunkManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             var game = new Game2(worldSize, startOffset, manager);
             var visualMap = new VisualMap(worldSize, startOffset, new WorldVisualizer3(game.World));
             manager.Notify += (ch) => Console.WriteLine("Generate " + ch.Position);

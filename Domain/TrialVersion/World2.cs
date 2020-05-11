@@ -8,28 +8,29 @@ namespace tmp
     {
         public PointI GlobalOffset { get; set; }
         public readonly int Size;
-        private readonly Dictionary<PointI, Chunk> chunks;
+        private readonly Dictionary<PointI, Chunk<Block>> chunks;
         public int Count => chunks.Count;
 
         public World2(PointI startOffset, int size)
         {
             Size = size;
             GlobalOffset = startOffset;
-            chunks = new Dictionary<PointI, Chunk>();
+            chunks = new Dictionary<PointI, Chunk<Block>>();
         }
 
         public static PointI GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
         {
-            return PointI.CreateXZ(chunkPosition.X * Chunk.XLength, chunkPosition.Z * Chunk.ZLength).Add(blockPosition);
+            return PointI.CreateXZ(chunkPosition.X * Chunk<Block>.XLength, chunkPosition.Z * Chunk<Block>.ZLength)
+                .Add(blockPosition);
         }
 
         public (PointI cPosition, PointI bPosition) Translate2LocalNotation(PointI point)
         {
-            var blockX = point.X % Chunk.XLength;
-            var blockZ = point.Z % Chunk.ZLength;
-            var chunkX = point.X / Chunk.XLength;
-            var chunkZ = point.Z / Chunk.ZLength;
-            return (new PointI(chunkX, 0, chunkZ), new PointI(blockX, point.Y, blockZ));
+            var blockX = point.X % Chunk<Block>.XLength;
+            var blockZ = point.Z % Chunk<Block>.ZLength;
+            var chunkX = point.X / Chunk<Block>.XLength;
+            var chunkZ = point.Z / Chunk<Block>.ZLength;
+            return (PointI.CreateXZ(chunkX, chunkZ), new PointI(blockX, point.Y, blockZ));
         }
 
         public bool TryDeleteChunk(PointI point)
@@ -84,7 +85,7 @@ namespace tmp
                 chunks[cPosition][(PointB) bPosition] = value;
         }
 
-        public Chunk this[PointI point]
+        public Chunk<Block> this[PointI point]
         {
             get => chunks.ContainsKey(point) ? chunks[point] : null;
             set => chunks[point] = value;

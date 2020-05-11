@@ -2,6 +2,7 @@
 {
     public class Block
     {
+        public static Block Either = new Block(BaseBlocks.Bedrock);
         public readonly BlockType BlockType;
         public int Hardness { get; set; }
         public PointB Position { get; set; }

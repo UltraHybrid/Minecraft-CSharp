@@ -1,13 +1,13 @@
 namespace tmp
 {
-    public class FlatGenerator : IGenerator<int, Chunk>
+    public class FlatGenerator : IGenerator<int, Chunk<Block>>
     {
-        public Chunk Generate(int x, int z)
+        public Chunk<Block> Generate(int x, int z)
         {
-            var chunk = new Chunk();
-            for (byte i = 0; i < Chunk.XLength; i++)
+            var chunk = new Chunk<Block>();
+            for (byte i = 0; i < Chunk<Block>.XLength; i++)
             for (byte j = 0; j < 5; j++)
-            for (byte k = 0; k < Chunk.ZLength; k++)
+            for (byte k = 0; k < Chunk<Block>.ZLength; k++)
             {
                 var position = new PointB(i, j, k);
                 chunk[position] = j switch

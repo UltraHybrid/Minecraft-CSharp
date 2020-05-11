@@ -2,8 +2,8 @@ namespace tmp
 {
     public interface IChunkManager
     {
-        Chunk Load(int x, int z);
-        Chunk Create(int x, int z);
-        void Save(Chunk chunk);
+        Chunk<Block> Load(int x, int z);
+        Chunk<Block> Create(int x, int z);
+        void Save(Chunk<Block> chunk);
     }
 }

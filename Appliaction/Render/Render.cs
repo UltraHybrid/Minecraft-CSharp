@@ -56,17 +56,20 @@ namespace tmp
             blocksShader.SetVPMatrix(viewProjectionMatrix);
 
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
-
+            
+            var n = 0;
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                if (Vector3.Dot(chunksCords[i].Convert(), camera.viewer.Front.Convert()) > 0)
+                if (Vector2.Dot(camera.viewer.Front.Convert().Xz,
+                    chunksCords[i].Convert().Xz * 16 - camera.viewer.Position.Convert().Xz) >= 0)
                 {
                     blocksShader.BindVao(i);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
                         chunkSidesCount[i]);
                 }
+                else n++;
             }
-
+            //Console.WriteLine(n);
             GL.BindVertexArray(0);
         }
 

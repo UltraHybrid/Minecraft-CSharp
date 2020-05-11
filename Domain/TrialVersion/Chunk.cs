@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace tmp
 {
-    public class Chunk : IEnumerable<Block>
+    public class Chunk<T> : IEnumerable<T>
     {
-        private readonly Block[,,] blocks;
+        private readonly T[,,] blocks;
         public PointI Position { get; set; }
         public const int XLength = 16;
         public const int YLength = 256;
@@ -15,12 +15,12 @@ namespace tmp
 
         public Chunk()
         {
-            blocks = new Block[XLength, YLength, ZLength];
+            blocks = new T[XLength, YLength, ZLength];
         }
 
-        public IEnumerator<Block> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            return blocks.Cast<Block>().GetEnumerator();
+            return blocks.Cast<T>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -33,7 +33,7 @@ namespace tmp
             return position.X < XLength && position.Y < YLength && position.Z < ZLength;
         }
 
-        public Block this[PointB position]
+        public T this[PointB position]
         {
             get
             {

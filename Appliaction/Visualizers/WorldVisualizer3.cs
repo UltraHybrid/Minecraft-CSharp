@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace tmp
 {
-    public class WorldVisualizer3 : IVisualizer<Chunk, IEnumerable<VisualizerData>>
+    public class WorldVisualizer3 : IVisualizer<Chunk<Block>, IEnumerable<VisualizerData>>
     {
         private readonly World2 world;
 
@@ -13,7 +13,7 @@ namespace tmp
             this.world = world;
         }
 
-        public IReadOnlyList<VisualizerData> GetVisibleFaces(Chunk data)
+        public IReadOnlyList<VisualizerData> GetVisibleFaces(Chunk<Block> data)
         {
             return data.Where(b => b != null)
                 .Select(b => World2.GetAbsolutePosition(b.Position, data.Position))
@@ -47,6 +47,32 @@ namespace tmp
             }
 
             return result.Count != 0 ? new VisualizerData(position, result) : null;
+        }
+    }
+    
+    public class VisualizerData
+    {
+        public readonly PointI Position;
+        public readonly List<FaceData> Faces;
+
+        public VisualizerData(PointI position, List<FaceData> faces)
+        {
+            this.Position = position;
+            Faces = faces;
+        }
+    }
+
+    public class FaceData
+    {
+        public string Name { get; }
+        public int Number { get; }
+        public float Luminosity { get; }
+
+        public FaceData(string name, int number, float luminosity)
+        {
+            Name = name;
+            Number = number;
+            Luminosity = luminosity;
         }
     }
 }

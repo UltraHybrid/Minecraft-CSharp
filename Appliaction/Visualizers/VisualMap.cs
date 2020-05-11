@@ -12,10 +12,10 @@ namespace tmp
         public ConcurrentDictionary<PointI, IReadOnlyList<VisualizerData>> Data;
         public int Size;
         public ConcurrentQueue<(PointI, PointI)> Ready;
-        public readonly IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer;
+        public readonly IVisualizer<Chunk<Block>, IEnumerable<VisualizerData>> visualizer;
 
         public VisualMap(int size, PointI startOffset,
-            IVisualizer<Chunk, IEnumerable<VisualizerData>> visualizer)
+            IVisualizer<Chunk<Block>, IEnumerable<VisualizerData>> visualizer)
         {
             Size = size;
             Offset = startOffset;
@@ -24,7 +24,7 @@ namespace tmp
             Ready = new ConcurrentQueue<(PointI, PointI)>();
         }
 
-        public void HandleNewChunk(Chunk chunk)
+        public void HandleNewChunk(Chunk<Block> chunk)
         {
             var task = Task.Run(() =>
             {
@@ -32,13 +32,14 @@ namespace tmp
                 {
                     var data = visualizer.GetVisibleFaces(chunk);
                     Data[chunk.Position] = data;
-                    Ready.Enqueue((chunk.Position,chunk.Position));
-                    //Extensions.Print("Calculate" + chunk.Position, ConsoleColor.Blue);
+                    Ready.Enqueue((chunk.Position, chunk.Position));
+                    Extensions.Print("Calculate" + chunk.Position, ConsoleColor.Blue);
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine("Fatal: " + chunk.Position);
                     //Extensions.Print("Calculate" + chunk.Position, ConsoleColor.Red);
-                    Console.WriteLine(e);
+                    //Console.WriteLine(e);
                 }
             });
             /*while (!task.IsCompleted)

@@ -2,7 +2,7 @@ using System;
 
 namespace tmp
 {
-    public class PerlinChunkGenerator : IGenerator<int, Chunk>
+    public class PerlinChunkGenerator : IGenerator<int, Chunk<Block>>
     {
         private readonly IGenerator<float, float> highGenerator;
 
@@ -11,19 +11,21 @@ namespace tmp
             this.highGenerator = highGenerator;
         }
 
-        public Chunk Generate(int x, int z)
+        public Chunk<Block> Generate(int x, int z)
         {
-            var chunk = new Chunk();
-            for (byte i = 0; i < Chunk.XLength; i++)
+            var chunk = new Chunk<Block>();
+            for (byte i = 0; i < Chunk<Block>.XLength; i++)
             {
-                for (byte k = 0; k < Chunk.ZLength; k++)
+                for (byte k = 0; k < Chunk<Block>.ZLength; k++)
                 {
-                    var value = (int) (highGenerator.Generate(x * Chunk.XLength + i, z * Chunk.ZLength + k) * 22f + 100);
-                    if (value < 0)
+                    var value = (int) (highGenerator.Generate(x * Chunk<Block>.XLength + i,
+                        z * Chunk<Block>.ZLength + k) * 22f + 100);
+                    /*if (value < 0)
                     {
+                        Console.WriteLine("?????????");
                         var position = new PointB(i, 0, k);
                         chunk[position] = new Block(BaseBlocks.Grass, position);
-                    }
+                    }*/
 
                     for (var j = value; j >= 0; j--)
                     {

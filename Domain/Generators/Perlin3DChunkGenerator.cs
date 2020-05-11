@@ -1,6 +1,6 @@
 ﻿namespace tmp
 {
-    public class Perlin3DChunkGenerator : IGenerator<int, Chunk>
+    public class Perlin3DChunkGenerator : IGenerator<int, Chunk<Block>>
     {
         private readonly IGenerator<float, float> highGenerator;
 
@@ -9,15 +9,15 @@
             this.highGenerator = highGenerator;
         }
 
-        public Chunk Generate(int x, int z)
+        public Chunk<Block> Generate(int x, int z)
         {
             const float coeff = 0.9f;
-            var chunk = new Chunk ();
-            for (var i = 0; i < Chunk.XLength; i++)
-            for (var j = 0; j < Chunk.YLength; j++)
-            for (var k = 0; k < Chunk.ZLength; k++)
+            var chunk = new Chunk<Block> ();
+            for (var i = 0; i < Chunk<Block>.XLength; i++)
+            for (var j = 0; j < Chunk<Block>.YLength; j++)
+            for (var k = 0; k < Chunk<Block>.ZLength; k++)
             {
-                if (Get3DNoise(i * coeff + x * Chunk.XLength, j * coeff, k * coeff + z * Chunk.ZLength) >= 0.2)
+                if (Get3DNoise(i * coeff + x * Chunk<Block>.XLength, j * coeff, k * coeff + z * Chunk<Block>.ZLength) >= 0.2)
                 {
                     var position = new PointB((byte) i, (byte) j, (byte) k);
                     chunk[position] = new Block(BaseBlocks.Grass, position);
