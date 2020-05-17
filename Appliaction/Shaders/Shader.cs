@@ -113,7 +113,36 @@ namespace tmp
             {    
                 gl_FragColor = texture(skybox, TexCoords);
             }";
+        
+        private const string VertLine =
+            @"#version 410 core
 
+            layout (location = 0) in vec3 position;
+            layout (location = 1) in vec3 color;
+
+            out vec4 Color;
+
+            uniform mat4 viewProjection;
+
+            void main()
+            {
+                Color = vec4(color, 1.0);
+                vec4 pos = viewProjection * vec4(position, 1.0);
+                gl_Position = pos;
+            }";
+
+        private const string FragLine =
+            @"#version 410 core
+
+            in vec4 Color;
+
+            void main()
+            {    
+                gl_FragColor = Color;
+            }";
+
+        public static int GetLineShader() => InitShaders(VertLine, FragLine);
+        
         public static int GetDefaultShader() => InitShaders(VertSrcCube, FragSrcCube);
 
         public static int GetSkyBoxShader() => InitShaders(VertSkyBox, FragSkyBox);

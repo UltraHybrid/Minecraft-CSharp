@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using OpenTK;
@@ -22,6 +23,7 @@ namespace tmp
 
         private readonly SkyBoxShader skyBoxShader;
         private readonly BlocksShader blocksShader;
+        private readonly LineShader lineShader;
 
         private readonly VisualManager visualManager;
         private readonly Camera camera;
@@ -34,26 +36,41 @@ namespace tmp
             this.visualManager = visualManager;
             skyBoxShader = new SkyBoxShader();
             blocksShader = new BlocksShader(visualManager.World.Size);
+            lineShader = new LineShader();
         }
 
         public void RenderFrame()
         {
             ClearBackground(Color4.White);
             GL.Enable(EnableCap.Multisample);
-            GL.Enable(EnableCap.CullFace);
+            GL.Enable(EnableCap.DepthTest);
 
+            RenderLines();
             RenderWorld();
             RenderSkyBox();
+            
         }
+
+        private void RenderLines()
+        {
+            lineShader.Use();
+            var aa = Matrix4.CreateTranslation(new Vector3(-0.8f, 0.5f, 0f));
+            var front = camera.viewer.Front.Convert();
+            var position = camera.viewer.Position.Convert();
+            lineShader.SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, 1.7f, 0)) * viewMatrix * projectionMatrix);
+            GL.DrawArrays(PrimitiveType.Lines, 0, 6);
+        } 
 
         private void RenderWorld()
         {
+            GL.Enable(EnableCap.CullFace);
             blocksShader.Use();
 
             viewMatrix = camera.GetViewMatrix();
             viewProjectionMatrix = viewMatrix * projectionMatrix;
+            
             blocksShader.SetVPMatrix(viewProjectionMatrix);
-
+            
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
 
             var n = 0;
@@ -71,6 +88,7 @@ namespace tmp
 
             //Console.WriteLine(n);
             GL.BindVertexArray(0);
+            GL.Disable(EnableCap.CullFace);
         }
 
         private void RenderSkyBox()
@@ -78,12 +96,11 @@ namespace tmp
             GL.DepthFunc(DepthFunction.Lequal);
             skyBoxShader.Use();
 
-            viewMatrix = new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix;
-            skyBoxShader.SetVPMatrix(viewMatrix);
+            var viewMatrixx = new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix;
+            skyBoxShader.SetVPMatrix(viewMatrixx);
 
             GL.BindTexture(TextureTarget.TextureCubeMap, texture);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            GL.BindVertexArray(0);
             GL.DepthFunc(DepthFunction.Less);
         }
 
@@ -96,7 +113,6 @@ namespace tmp
                 var chunk = visualManager.World[pair.Item1];
                 if (chunk == null)
                     continue;
-                //var data = chunk.AdaptToStupidData();
                 var data = chunk.SimpleData;
                 int index;
                 var sidesCount = data.TexturesData.Count;

@@ -6,9 +6,11 @@ namespace tmp
 {
     public class SkyBoxShader
     {
-        private int shaderProgram, vao, vbo, ebo, vPMatrixLocation;
-        private int[] Indices => Cube.GetSideIndices();
-        
+        private readonly int shaderProgram;
+        private int vao, vbo, ebo;
+        private readonly int vPMatrixLocation;
+        private static int[] Indices => Cube.GetSideIndices();
+
         public SkyBoxShader()
         {
             shaderProgram = Shaders.GetSkyBoxShader();
@@ -53,11 +55,11 @@ namespace tmp
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
-            
+
             GL.BindVertexArray(0);
         }
-        
-        
+
+
         private static readonly float[] SkyBoxVertices =
         {
             -1.0f, 1.0f, -1.0f,
