@@ -1,6 +1,6 @@
 ﻿namespace tmp.Logic
 {
-    public class VisualWorld : World<VisualizerData>
+    public class VisualWorld : World<VisualChunk, VisualizerData>
     {
         public VisualWorld(PointI startOffset, int size) : base(startOffset, size)
         {

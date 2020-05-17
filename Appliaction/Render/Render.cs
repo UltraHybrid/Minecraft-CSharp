@@ -90,16 +90,16 @@ namespace tmp
         public void UpdateFrame()
         {
             var counter = 0;
-            while (visualManager.Ready.Count != 0 && counter!=1)
+            while (visualManager.Ready.Count != 0 && counter != 1)
             {
                 var pair = visualManager.Ready.Dequeue();
                 var chunk = visualManager.World[pair.Item1];
                 if (chunk == null)
                     continue;
-                var data = chunk.AdaptToStupidData();
-
+                //var data = chunk.AdaptToStupidData();
+                var data = chunk.SimpleData;
                 int index;
-                var sidesCount = data.textureData.Count;
+                var sidesCount = data.TexturesData.Count;
                 if (Equals(pair.Item2, pair.Item1))
                 {
                     chunksCords.Add(pair.Item1);
@@ -114,7 +114,7 @@ namespace tmp
                 }
 
                 //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
-                blocksShader.SendData(index, data.positions, data.textureData);
+                blocksShader.SendData(index, data.Positions, data.TexturesData);
                 counter++;
             }
         }

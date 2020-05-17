@@ -2,7 +2,7 @@
 {
     public interface IGame
     {
-        IWorld<Block> World { get; }
+        World<Chunk<Block>, Block> World { get; }
         Player Player { get; }
         void Start();
         void Update();

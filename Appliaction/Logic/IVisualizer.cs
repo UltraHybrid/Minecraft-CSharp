@@ -1,8 +1,8 @@
 ﻿namespace tmp.Logic
 {
-    public interface IVisualizer<TSource, TResult>
+    public interface IVisualizer<TSource>
     {
-        Chunk<TResult> Visualize(Chunk<TSource> worldChunk);
+        VisualChunk Visualize(Chunk<TSource> worldChunk);
         void UpdateOne(PointI position);
     }
 }

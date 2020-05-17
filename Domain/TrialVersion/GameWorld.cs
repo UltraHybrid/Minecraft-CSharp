@@ -2,7 +2,7 @@
 
 namespace tmp
 {
-    public class GameWorld : World<Block>
+    public class GameWorld : World<Chunk<Block>, Block>
     {
         public GameWorld(PointI startOffset, int size) : base(startOffset, size)
         {

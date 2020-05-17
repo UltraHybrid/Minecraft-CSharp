@@ -15,7 +15,8 @@ namespace tmp
 
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 30;
-            var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            //var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            var manager = new WorldManager(new FlatGenerator());
             var game = new Game(worldSize, startOffset, manager);
             
             var visualWorld = new VisualWorld(startOffset, worldSize);

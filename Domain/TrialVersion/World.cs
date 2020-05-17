@@ -4,39 +4,39 @@ using tmp.Interfaces;
 
 namespace tmp
 {
-    public abstract class World<T> : IWorld<T>
+    public abstract class World<TContainer,TItem> : IWorld<TContainer, TItem> where TContainer: Chunk<TItem>
     {
         public PointI Offset { get; set; }
         public int Size { get; }
         public int Count => chunks.Count;
 
-        protected readonly Dictionary<PointI, Chunk<T>> chunks;
+        protected readonly Dictionary<PointI, TContainer> chunks;
 
         protected World(PointI startOffset, int size)
         {
             Size = size;
             Offset = startOffset;
-            chunks = new Dictionary<PointI, Chunk<T>>();
+            chunks = new Dictionary<PointI, TContainer>();
         }
 
         public static PointI GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
         {
-            return PointI.CreateXZ(chunkPosition.X * Chunk<Block>.XLength, chunkPosition.Z * Chunk<Block>.ZLength)
+            return PointI.CreateXZ(chunkPosition.X * Chunk<TItem>.XLength, chunkPosition.Z * Chunk<TItem>.ZLength)
                 .Add(blockPosition);
         }
 
         public (PointI cPosition, PointI elementPosition) Translate2LocalNotation(PointI point)
         {
-            var elementX = point.X % Chunk<Block>.XLength;
-            var elementZ = point.Z % Chunk<Block>.ZLength;
-            var chunkX = point.X / Chunk<Block>.XLength;
-            var chunkZ = point.Z / Chunk<Block>.ZLength;
+            var elementX = point.X % Chunk<TItem>.XLength;
+            var elementZ = point.Z % Chunk<TItem>.ZLength;
+            var chunkX = point.X / Chunk<TItem>.XLength;
+            var chunkZ = point.Z / Chunk<TItem>.ZLength;
             return (PointI.CreateXZ(chunkX, chunkZ), new PointI(elementX, point.Y, elementZ));
         }
 
-        public abstract T GetItem(PointI position);
+        public abstract TItem GetItem(PointI position);
 
-        public abstract bool TrySetItem(PointI position, T value);
+        public abstract bool TrySetItem(PointI position, TItem value);
 
         public bool IsChunkInBounds(PointI point)
         {
@@ -76,7 +76,7 @@ namespace tmp
         }
         
 
-        public Chunk<T> this[PointI position]
+        public TContainer this[PointI position]
         {
             get => chunks.ContainsKey(position) ? chunks[position] : null;
             set => chunks[position] = value;

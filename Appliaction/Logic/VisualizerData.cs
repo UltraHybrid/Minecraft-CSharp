@@ -1,6 +1,7 @@
 ﻿﻿using System.Collections.Generic;
+ using OpenTK;
 
-namespace tmp
+ namespace tmp
 {
     public class VisualizerData
     {
@@ -25,6 +26,18 @@ namespace tmp
             Name = name;
             Number = number;
             Luminosity = luminosity;
+        }
+    }
+
+    public class RevisedData
+    {
+        public List<Vector3> Positions { get; }
+        public List<Vector2> TexturesData { get; }
+
+        public RevisedData(List<Vector3> positions, List<Vector2> texturesData)
+        {
+            Positions = positions;
+            TexturesData = texturesData;
         }
     }
 }

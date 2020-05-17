@@ -5,29 +5,30 @@ using tmp.Interfaces;
 
 namespace tmp.Logic
 {
-    public class Visualizer : IVisualizer<Block, VisualizerData>
+    public class Visualizer : IVisualizer<Block>
     {
-        private readonly IWorld<Block> gameWorld;
+        private readonly World<Chunk<Block>, Block> gameWorld;
 
-        public Visualizer(IWorld<Block> gameWorld)
+        public Visualizer(World<Chunk<Block>, Block> gameWorld)
         {
             this.gameWorld = gameWorld;
         }
 
-        public Chunk<VisualizerData> Visualize(Chunk<Block> worldChunk)
+        public VisualChunk Visualize(Chunk<Block> worldChunk)
         {
-            var result = new Chunk<VisualizerData>(worldChunk.Position);
+            var result = new VisualChunk(worldChunk.Position);
             for (byte i = 0; i < Chunk<Block>.XLength; i++)
             {
                 for (int j = 0; j < Chunk<Block>.YLength; j++)
                 {
                     for (byte k = 0; k < Chunk<Block>.ZLength; k++)
                     {
-                        var point = new PointB(i, (byte)j, k);
+                        var point = new PointB(i, (byte) j, k);
                         var block = worldChunk[point];
                         if (block != null)
                             result[point] =
-                                ChooseBordersWithEmpty(World<Block>.GetAbsolutePosition(point, worldChunk.Position));
+                                ChooseBordersWithEmpty(
+                                    World<Chunk<Block>, Block>.GetAbsolutePosition(point, worldChunk.Position));
                     }
                 }
             }

@@ -7,20 +7,20 @@ namespace tmp.Logic
 {
     public class VisualManager : IChunkManager<VisualizerData>
     {
-        private readonly IVisualizer<Block, VisualizerData> visualizer;
+        private readonly IVisualizer<Block> visualizer;
         private readonly VisualWorld visualWorld;
         private const int TaskCount = 4;
-        private readonly Task<Chunk<VisualizerData>>[] tasks;
+        private readonly Task<VisualChunk>[] tasks;
         private readonly Queue<Chunk<Block>> needVisualize;
         public readonly Queue<(PointI, PointI)> Ready;
 
-        public IWorld<VisualizerData> World => visualWorld;
+        public World<VisualChunk, VisualizerData> World => visualWorld;
 
-        public VisualManager(IVisualizer<Block, VisualizerData> visualizer, VisualWorld visualWorld)
+        public VisualManager(IVisualizer<Block> visualizer, VisualWorld visualWorld)
         {
             this.visualizer = visualizer;
             this.visualWorld = visualWorld;
-            tasks = new Task<Chunk<VisualizerData>>[TaskCount];
+            tasks = new Task<VisualChunk>[TaskCount];
             needVisualize = new Queue<Chunk<Block>>();
             Ready = new Queue<(PointI, PointI)>();
         }
@@ -32,7 +32,13 @@ namespace tmp.Logic
                 if (tasks[i] == null && needVisualize.Count > 0)
                 {
                     var nextChunk = needVisualize.Dequeue();
-                    tasks[i] = Task.Run(() => visualizer.Visualize(nextChunk));
+                    tasks[i] = Task.Run(() =>
+                    {
+                        var chunk = visualizer.Visualize(nextChunk);
+                        var (positions, textureData) = chunk.AdaptToStupidData();
+                        chunk.SimpleData = new RevisedData(positions, textureData);
+                        return chunk;
+                    });
                 }
             }
         }

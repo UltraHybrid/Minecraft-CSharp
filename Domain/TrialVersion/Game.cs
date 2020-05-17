@@ -6,7 +6,7 @@ namespace tmp
 {
     public class Game : IGame
     {
-        public IWorld<Block> World { get; }
+        public World<Chunk<Block>, Block> World { get; }
         public Player Player { get; private set; }
 
         private readonly WorldManager manager;
@@ -38,11 +38,15 @@ namespace tmp
                 .Select(Math.Abs)
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 .First(p =>
-                    World.GetItem(World<Block>.GetAbsolutePosition(new PointB(0, (byte) p, 0), ready)) != null &&
-                    World.GetItem(World<Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 1), 0), ready)) ==
+                    World.GetItem(World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) p, 0), ready)) !=
                     null &&
-                    World.GetItem(World<Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 2), 0), ready)) == null);
-            return (Vector) World<Block>.GetAbsolutePosition(PointB.Default, ready) +
+                    World.GetItem(
+                        World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 1), 0), ready)) ==
+                    null &&
+                    World.GetItem(
+                        World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 2), 0), ready)) ==
+                    null);
+            return (Vector) World<Chunk<Block>, Block>.GetAbsolutePosition(PointB.Default, ready) +
                    new Vector(0.5f, empty + 1, 0.5f);
         }
     }
