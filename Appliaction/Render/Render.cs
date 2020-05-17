@@ -5,6 +5,7 @@ using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using tmp.Logic;
 
 namespace tmp
 {
@@ -22,19 +23,17 @@ namespace tmp
         private readonly SkyBoxShader skyBoxShader;
         private readonly BlocksShader blocksShader;
 
-        private readonly VisualMap visualMap;
-        private readonly World2 world;
+        private readonly VisualManager visualManager;
         private readonly Camera camera;
 
         #endregion
 
-        public Render(Camera camera, VisualMap visualMap, World2 world)
+        public Render(Camera camera, VisualManager visualManager)
         {
             this.camera = camera;
-            this.visualMap = visualMap;
-            this.world = world;
+            this.visualManager = visualManager;
             skyBoxShader = new SkyBoxShader();
-            blocksShader = new BlocksShader(world.Size);
+            blocksShader = new BlocksShader(visualManager.World.Size);
         }
 
         public void RenderFrame()
@@ -56,7 +55,7 @@ namespace tmp
             blocksShader.SetVPMatrix(viewProjectionMatrix);
 
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
-            
+
             var n = 0;
             for (var i = 0; i < chunksCords.Count; i++)
             {
@@ -69,6 +68,7 @@ namespace tmp
                 }
                 else n++;
             }
+
             //Console.WriteLine(n);
             GL.BindVertexArray(0);
         }
@@ -89,40 +89,33 @@ namespace tmp
 
         public void UpdateFrame()
         {
-            while (!visualMap.Ready.IsEmpty)
+            var counter = 0;
+            while (visualManager.Ready.Count != 0 && counter!=1)
             {
-                if (visualMap.Ready.TryDequeue(out var point))
+                var pair = visualManager.Ready.Dequeue();
+                var chunk = visualManager.World[pair.Item1];
+                if (chunk == null)
+                    continue;
+                var data = chunk.AdaptToStupidData();
+
+                int index;
+                var sidesCount = data.textureData.Count;
+                if (Equals(pair.Item2, pair.Item1))
                 {
-                    int index;
-                    var sidesCount = visualMap.Data[point.Item1].Count;
-                    if (Equals(point.Item2, point.Item1))
-                    {
-                        chunksCords.Add(point.Item1);
-                        chunkSidesCount.Add(sidesCount);
-                        index = chunksCords.Count - 1;
-                    }
-                    else
-                    {
-                        index = chunksCords.IndexOf(point.Item2);
-                        chunksCords[index] = point.Item1;
-                        chunkSidesCount[index] = sidesCount;
-                    }
-
-                    var data = visualMap.Data[point.Item1];
-                    var positions = new List<Vector3>();
-                    var texId = new List<Vector2>();
-                    foreach (var d in data)
-                    {
-                        foreach (var f in d.Faces)
-                        {
-                            positions.Add(d.Position.Convert());
-                            texId.Add(new Vector2(f.Number, Texture.textures[f.Name]));
-                        }
-                    }
-
-                    //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
-                    blocksShader.SendData(index, positions, texId);
+                    chunksCords.Add(pair.Item1);
+                    chunkSidesCount.Add(sidesCount);
+                    index = chunksCords.Count - 1;
                 }
+                else
+                {
+                    index = chunksCords.IndexOf(pair.Item2);
+                    chunksCords[index] = pair.Item1;
+                    chunkSidesCount[index] = sidesCount;
+                }
+
+                //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
+                blocksShader.SendData(index, data.positions, data.textureData);
+                counter++;
             }
         }
 

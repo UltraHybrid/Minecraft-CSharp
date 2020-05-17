@@ -8,7 +8,7 @@ namespace tmp
 
         public Chunk<Block> Generate(int x, int z)
         {
-            var chunk = new Chunk<Block>();
+            var chunk = new Chunk<Block>(PointI.CreateXZ(x, z));
             var allBlocks = BaseBlocks.AllBlocks;
             for (byte i = 0; i < Chunk<Block>.XLength; i++)
             for (byte j = 0; j < Chunk<Block>.YLength - 1; j++)

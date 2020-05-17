@@ -2,19 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using tmp.Interfaces;
 
 namespace tmp
 {
-    public class Chunk<T> : IEnumerable<T>
+    public class Chunk<T> : IChunk<T>
     {
-        private readonly T[,,] blocks;
-        public PointI Position { get; set; }
         public const int XLength = 16;
         public const int YLength = 256;
         public const int ZLength = 16;
+        public PointI Position { get; }
 
-        public Chunk()
+        private readonly T[,,] blocks;
+
+        public Chunk(PointI position)
         {
+            Position = position;
             blocks = new T[XLength, YLength, ZLength];
         }
 
@@ -28,7 +31,7 @@ namespace tmp
             return GetEnumerator();
         }
 
-        private static bool CheckBounds(PointB position)
+        public static bool CheckBounds(PointB position)
         {
             return position.X < XLength && position.Y < YLength && position.Z < ZLength;
         }

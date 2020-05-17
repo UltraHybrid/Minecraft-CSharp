@@ -6,6 +6,8 @@ using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
+using tmp.Interfaces;
+using tmp.Logic;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
 using Vector3 = OpenTK.Vector3;
 
@@ -13,7 +15,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(Game2 game, VisualMap visualMap) : base(
+        public Window(Game game, VisualManager manager) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -31,20 +33,20 @@ namespace tmp
 
             this.game = game;
             this.player = game.Player;
-            this.world = game.World;
+            this.manager = manager;
             Location = new Point(100, 100);
             camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
-            render = new Render(camera, visualMap, world);
+            render = new Render(camera, manager);
         }
 
         #region Variables
 
         private Player player;
-        private World2 world;
+        private VisualManager manager;
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
-        private Game2 game;
+        private Game game;
 
         #endregion
 
@@ -66,6 +68,7 @@ namespace tmp
         {
             camera.Move((float) e.Time);
             game.Update();
+            manager.Update();
             render.UpdateFrame();
         }
 

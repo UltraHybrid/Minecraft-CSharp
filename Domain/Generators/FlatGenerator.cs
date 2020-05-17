@@ -4,7 +4,7 @@ namespace tmp
     {
         public Chunk<Block> Generate(int x, int z)
         {
-            var chunk = new Chunk<Block>();
+            var chunk = new Chunk<Block>(PointI.CreateXZ(x, z));
             for (byte i = 0; i < Chunk<Block>.XLength; i++)
             for (byte j = 0; j < 5; j++)
             for (byte k = 0; k < Chunk<Block>.ZLength; k++)

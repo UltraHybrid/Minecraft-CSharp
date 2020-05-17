@@ -1,8 +1,8 @@
-﻿namespace tmp
+﻿namespace tmp.Interfaces
 {
     public interface IGame
     {
-        IWorld World { get; }
+        IWorld<Block> World { get; }
         Player Player { get; }
         void Start();
         void Update();

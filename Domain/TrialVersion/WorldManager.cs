@@ -2,39 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmp.Interfaces;
 
 namespace tmp
 {
-    public class ChunkManager2
+    public class WorldManager : IChunkManager<Block>
     {
         private readonly IGenerator<int, Chunk<Block>> landscapeGenerator;
-        private World2 world;
-        private const int TaskCount = 4;
+        private GameWorld world;
+        private const int TaskCount = 2;
         private readonly Task<Chunk<Block>>[] tasks;
         private Queue<PointI> futureChunks;
 
-        public event Action<Chunk<Block>> Notify;
+        public event Action<Chunk<Block>> AddAlert;
+        public event Action<Chunk<Block>> DeleteAlert;
+        public event Action<Chunk<Block>> UpdateAlert;
 
-        public ChunkManager2(IGenerator<int, Chunk<Block>> landscapeGenerator)
+        public WorldManager(IGenerator<int, Chunk<Block>> landscapeGenerator)
         {
             this.landscapeGenerator = landscapeGenerator;
             tasks = new Task<Chunk<Block>>[TaskCount];
             futureChunks = new Queue<PointI>();
         }
 
-        public void SetWorld(World2 gameWorld)
+        public void SetWorld(GameWorld gameWorld)
         {
             world = gameWorld;
         }
 
-        private Chunk<Block> Generate(PointI point)
+        private Chunk<Block> Generate(PointI position)
         {
-            var chunk = landscapeGenerator.Generate(point.X, point.Z);
-            chunk.Position = point;
-            return chunk;
+            return landscapeGenerator.Generate(position.X, position.Z);
         }
 
-        public void Update()
+        private void AssignTasks()
+        {
+            for (var i = 0; i < TaskCount; i++)
+            {
+                if (tasks[i] == null && futureChunks.Count > 0)
+                {
+                    var nextChunk = futureChunks.Dequeue();
+                    tasks[i] = Task.Run(() => Generate(nextChunk));
+                }
+            }
+        }
+
+        private void CheckStatusOfTasks()
         {
             for (var i = 0; i < TaskCount; i++)
             {
@@ -46,7 +59,7 @@ namespace tmp
                             var result = tasks[i].Result;
                             world[result.Position] = result;
                             tasks[i] = null;
-                            NotifyAll(result);
+                            AddNotifyAll(result);
                             break;
                         }
                         case TaskStatus.Faulted:
@@ -57,31 +70,28 @@ namespace tmp
                         }
                     }
             }
-
-            for (var i = 0; i < TaskCount; i++)
-            {
-                if (tasks[i] == null && futureChunks.Count > 0)
-                {
-                    var nextChunk = futureChunks.Dequeue();
-                    tasks[i] = Task.Run(() => Generate(nextChunk));
-                }
-            }
         }
 
-        public PointI FirstGeneration()
+        public PointI MakeFirstLunch()
         {
-            MakeShift(PointI.Default, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.GlobalOffset));
-            Update();
+            MakeShift(PointI.Default, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
+            AssignTasks();
             Task.WaitAll(tasks);
             var answer = tasks.First(x => x.Status == TaskStatus.RanToCompletion).Result.Position;
-            Update();
+            CheckStatusOfTasks();
             return answer;
+        }
+
+        public void Update()
+        {
+            CheckStatusOfTasks();
+            AssignTasks();
         }
 
         public void MakeShift(PointI offset, PointI playerPosition)
         {
             futureChunks = new Queue<PointI>();
-            world.GlobalOffset = world.GlobalOffset.Add(offset);
+            world.Offset = world.Offset.Add(offset);
             var necessaryChunks = world.GetPointOfGaps();
             if (necessaryChunks.Count == 0)
                 // ReSharper disable once RedundantJumpStatement
@@ -97,9 +107,19 @@ namespace tmp
             }
         }
 
-        protected virtual void NotifyAll(Chunk<Block> chunk)
+        protected virtual void AddNotifyAll(Chunk<Block> chunk)
         {
-            Notify?.Invoke(chunk);
+            AddAlert?.Invoke(chunk);
+        }
+
+        protected virtual void DeleteAlertAll(Chunk<Block> chunk)
+        {
+            DeleteAlert?.Invoke(chunk);
+        }
+
+        protected virtual void UpdateAlertAll(Chunk<Block> chunk)
+        {
+            UpdateAlert?.Invoke(chunk);
         }
     }
 }
