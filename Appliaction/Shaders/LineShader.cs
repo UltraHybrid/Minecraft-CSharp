@@ -22,7 +22,7 @@ namespace tmp
         {
             GL.UseProgram(shaderProgram);
             GL.BindVertexArray(vao);
-            GL.LineWidth(5);
+            GL.LineWidth(1);
         }
 
         public void SetVPMatrix(Matrix4 vPMatrix) => GL.UniformMatrix4(vPMatrixLocation, false, ref vPMatrix);

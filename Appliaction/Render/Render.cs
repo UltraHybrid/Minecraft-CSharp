@@ -106,32 +106,31 @@ namespace tmp
 
         public void UpdateFrame()
         {
-            var counter = 0;
-            while (visualManager.Ready.Count != 0 && counter != 1)
+            if (visualManager.Ready.Count != 0)
             {
                 var pair = visualManager.Ready.Dequeue();
                 var chunk = visualManager.World[pair.Item1];
-                if (chunk == null)
-                    continue;
-                var data = chunk.SimpleData;
-                int index;
-                var sidesCount = data.TexturesData.Count;
-                if (Equals(pair.Item2, pair.Item1))
+                if (chunk != null)
                 {
-                    chunksCords.Add(pair.Item1);
-                    chunkSidesCount.Add(sidesCount);
-                    index = chunksCords.Count - 1;
-                }
-                else
-                {
-                    index = chunksCords.IndexOf(pair.Item2);
-                    chunksCords[index] = pair.Item1;
-                    chunkSidesCount[index] = sidesCount;
-                }
+                    var data = chunk.SimpleData;
+                    int index;
+                    var sidesCount = data.TexturesData.Count;
+                    if (Equals(pair.Item2, pair.Item1))
+                    {
+                        chunksCords.Add(pair.Item1);
+                        chunkSidesCount.Add(sidesCount);
+                        index = chunksCords.Count - 1;
+                    }
+                    else
+                    {
+                        index = chunksCords.IndexOf(pair.Item2);
+                        chunksCords[index] = pair.Item1;
+                        chunkSidesCount[index] = sidesCount;
+                    }
 
-                //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
-                blocksShader.SendData(index, data.Positions, data.TexturesData);
-                counter++;
+                    //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
+                    blocksShader.SendData(index, data.Positions, data.TexturesData);
+                }
             }
         }
 
