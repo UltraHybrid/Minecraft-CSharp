@@ -14,9 +14,9 @@ namespace tmp
             };
 
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 5;
-            //var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
-            var manager = new WorldManager(new RandomGenerator());
+            var worldSize = 30;
+            var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            //var manager = new WorldManager(new RandomGenerator());
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager(new Visualizer(game.World), visualWorld);

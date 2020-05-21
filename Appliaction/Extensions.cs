@@ -35,5 +35,11 @@ namespace tmp
 
             return (positions, textureData);
         }
+
+
+        public static Vector3 Convert(this Vector vector)
+        {
+            return new Vector3(vector.X, vector.Y, vector.Z);
+        }
     }
 }

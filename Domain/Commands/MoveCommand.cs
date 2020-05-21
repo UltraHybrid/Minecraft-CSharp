@@ -1,3 +1,5 @@
+using tmp.Interfaces;
+
 namespace tmp
 {
     public class MoveCommand : ICommand
@@ -5,17 +7,19 @@ namespace tmp
         private readonly IMover entity;
         private readonly Direction direction;
         private readonly float time;
+        private readonly IWorld<Chunk<Block>, Block> world;
 
-        public MoveCommand(IMover entity, Direction direction, float time)
+        public MoveCommand(IMover entity, IWorld<Chunk<Block>, Block> world, Direction direction, float time)
         {
             this.entity = entity;
+            this.world = world;
             this.direction = direction;
             this.time = time;
         }
 
         public void Execute()
         {
-            entity.Move(direction, time);
+            entity.Move(new Piece(world, (PointI) entity.Position, 1), direction, time);
         }
     }
 

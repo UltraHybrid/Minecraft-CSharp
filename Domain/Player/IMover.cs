@@ -8,7 +8,7 @@ namespace tmp
         Vector Front { get; }
         Vector Left { get; }
         Vector Up { get; }
-        void Move(Direction direction, float time);
+        void Move(Piece piece, Direction direction, float time);
         void Rotate(float deltaYaw, float deltaPitch);
     }
 }

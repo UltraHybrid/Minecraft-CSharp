@@ -32,21 +32,21 @@ namespace tmp
             }
 
             this.game = game;
-            this.player = game.Player;
             this.manager = manager;
             Location = new Point(100, 100);
-            camera = new Camera(keys, player.Mover, new Vector3(0, player.Height, 0));
+            camera = new Camera(game.Player.Mover, new Vector3(0, game.Player.Height, 0));
+            playerControl = new PlayerControl(keys, game.Player.Mover, game.World);
             render = new Render(camera, manager);
         }
 
         #region Variables
 
-        private Player player;
         private VisualManager manager;
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
         private Game game;
+        private PlayerControl playerControl;
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace tmp
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            camera.Move((float) e.Time);
+            playerControl.Move((float) e.Time);
             game.Update();
             manager.Update();
             render.UpdateFrame();
@@ -79,7 +79,7 @@ namespace tmp
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: " + player.Mover.Position;
+            Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: " + game.Player.Mover.Position;
 
             render.RenderFrame();
 
@@ -103,7 +103,7 @@ namespace tmp
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
-            camera.MouseMove();
+            playerControl.MouseMove();
         }
     }
 }

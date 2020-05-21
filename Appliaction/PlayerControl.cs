@@ -1,31 +1,34 @@
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
+using tmp.Interfaces;
 
 namespace tmp
 {
     public class PlayerControl : IControl
     {
         public float MouseSensitivity { get; set; } = 0.05f;
-        
+
         private Vector2 lastMousePosition;
-        private Dictionary<Key, bool> keys;
-        private EntityMover entity;
-        
-        public PlayerControl(Dictionary<Key, bool> keys, EntityMover entity)
+        private readonly Dictionary<Key, bool> keys;
+        private readonly EntityMover entity;
+        private readonly IWorld<Chunk<Block>, Block> world;
+
+        public PlayerControl(Dictionary<Key, bool> keys, EntityMover entity, IWorld<Chunk<Block>, Block> world)
         {
             this.keys = keys;
             this.entity = entity;
+            this.world = world;
         }
 
         public void Move(float time)
         {
-            if (keys[Key.W]) new MoveCommand(entity, Direction.Forward, time).Execute();
-            if (keys[Key.S]) new MoveCommand(entity, Direction.Back, time).Execute();
-            if (keys[Key.D]) new MoveCommand(entity, Direction.Right, time).Execute();
-            if (keys[Key.A]) new MoveCommand(entity, Direction.Left, time).Execute();
-            if (keys[Key.Space]) new MoveCommand(entity, Direction.Up, time).Execute();
-            if (keys[Key.ShiftLeft]) new MoveCommand(entity, Direction.Down, time).Execute();
+            if (keys[Key.W]) new MoveCommand(entity, world, Direction.Forward, time).Execute();
+            if (keys[Key.S]) new MoveCommand(entity, world, Direction.Back, time).Execute();
+            if (keys[Key.D]) new MoveCommand(entity, world, Direction.Right, time).Execute();
+            if (keys[Key.A]) new MoveCommand(entity, world, Direction.Left, time).Execute();
+            if (keys[Key.Space]) new MoveCommand(entity, world, Direction.Up, time).Execute();
+            if (keys[Key.ShiftLeft]) new MoveCommand(entity, world, Direction.Down, time).Execute();
         }
 
         public void MouseMove()

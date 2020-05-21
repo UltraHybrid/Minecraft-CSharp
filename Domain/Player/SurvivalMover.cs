@@ -43,7 +43,7 @@
             Up = Vector.Cross(Front, Left).Normalize();
         }
 
-        public override void Move(Direction direction, float time)
+        public override void Move(Piece piece,Direction direction, float time)
         {
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
