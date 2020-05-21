@@ -21,7 +21,7 @@ namespace tmp
             TextureInfo.CreateWithTopAndBottom("grass_path_top.png", "dirt.png", "grass_path_side.png"));
 
         public static readonly BlockType Grass = new BlockType("Grass", 3,
-            TextureInfo.CreateWithTopAndBottom("snow.png", "dirt.png", "grass_block_side.png"));
+            TextureInfo.CreateWithTopAndBottom("grass_top.png", "dirt.png", "grass_block_side.png"));
 
         public static readonly BlockType OakLog = new BlockType("OakLog", 4,
             TextureInfo.CreateWithTopAndBottom("oak_log_top.png", "oak_log_top.png", "oak_log.png"));
