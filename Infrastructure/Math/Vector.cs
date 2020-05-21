@@ -9,6 +9,7 @@ namespace tmp
         public float Z { get; set; }
 
         public static readonly Vector Default = new Vector(0, 0, 0);
+        public static readonly Vector Unit = new Vector(1, 1, 1);
 
         public float Length => (float) Math.Sqrt(X * X + Y * Y + Z * Z);
 

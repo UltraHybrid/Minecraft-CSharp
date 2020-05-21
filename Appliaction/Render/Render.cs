@@ -76,8 +76,10 @@ namespace tmp
             var n = 0;
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                if (Vector2.Dot(camera.viewer.Front.Convert().Xz,
-                    chunksCords[i].Convert().Xz * 16 - camera.viewer.Position.Convert().Xz) >= 0)
+                
+                //if (Vector2.Dot(camera.viewer.Front.Convert().Xz,
+                //    chunksCords[i].Convert().Xz * 16 - camera.viewer.Position.Convert().Xz) >= 0)
+                if (true)
                 {
                     blocksShader.BindVao(i);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,

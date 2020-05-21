@@ -3,7 +3,7 @@
     public class Player
     {
         public int Hardness { get; private set; }
-        public readonly FreeFlyMover Mover;
+        public readonly EntityMover Mover;
         public float Height { get; }
 
         public Player(Vector position, Vector direction, int hardness, float speed)
