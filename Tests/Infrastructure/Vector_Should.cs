@@ -7,20 +7,10 @@ namespace tmp.Tests.Infrastructure
     [TestFixture]
     public class Vector_Should
     {
-        [TestCase(1, 2, 3)]
-        public void Init_Should(float x, float y, float z)
-        {
-            var vector = new Vector(x, y, z);
-            
-            Assert.AreEqual(new [] { x, y, z }, GetCoordinates(vector));
-        }
-
         [Test]
         public void DefaultVector_Should()
         {
-            Assert.AreEqual(
-                Enumerable.Repeat(0f, 3), 
-                GetCoordinates(Vector.Default));
+            Assert.AreEqual(new Vector(0, 0, 0), Vector.Default);
         }
 
         [TestCase(0, 0, 0)]
@@ -55,10 +45,10 @@ namespace tmp.Tests.Infrastructure
             var vector1 = new Vector(1, 1, 1);
             var vector123 = new Vector(1, 2, 3);
 
-            Assert.AreEqual(new[] { 3, 3, 3 }, GetCoordinates(3 * vector1));
-            Assert.AreEqual(new[] { 2, 4, 6 }, GetCoordinates(2 * vector123));
+            Assert.AreEqual(new Vector(3, 3, 3), 3 * vector1);
+            Assert.AreEqual(new Vector(2, 4, 6), 2 * vector123);
 
-            Assert.AreEqual(GetCoordinates(4 * vector123), GetCoordinates(vector123 * 4));
+            Assert.AreEqual(4 * vector123, vector123 * 4);
         }
 
         [Test]
@@ -70,21 +60,21 @@ namespace tmp.Tests.Infrastructure
         [Test]
         public void Minus_Should()
         {
-            Assert.AreEqual(
-                new[] { -1, -2, 3 }, 
-                GetCoordinates(-new Vector(1, 2, -3)));
+            Assert.AreEqual(new Vector(-1, -2, 3), -new Vector(1, 2, -3));
 
             Assert.AreEqual(
-                new[] { -1, 1, 6 },
-                GetCoordinates(new Vector(5, 5, 5) - new Vector(6, 4, -1)));
+                new Vector(-1, 1, 6),
+                new Vector(5, 5, 5) - new Vector(6, 4, -1)
+                );
         }
 
         [Test]
         public void Add_Should()
         {
             Assert.AreEqual(
-                new[] { -2, 4, 19 }, 
-                GetCoordinates(new Vector(1, 4, 6) + new Vector(-3, 0, 13)));
+                new Vector(-2, 4, 19), 
+                new Vector(1, 4, 6) + new Vector(-3, 0, 13)
+                );
         }
 
         [Test]
@@ -94,11 +84,6 @@ namespace tmp.Tests.Infrastructure
 
             PointI point = (PointI)v;
             Assert.AreEqual(new PointI(0, 434, 6), point);
-        }
-
-        private float[] GetCoordinates(Vector v)
-        {
-            return new [] { v.X, v.Y, v.Z }; 
         }
     }
 }

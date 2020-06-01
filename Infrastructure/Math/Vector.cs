@@ -54,6 +54,11 @@ namespace tmp
             return new Vector(x, y, z);
         }
 
+        public static Vector operator *(Vector v, float coefficient) 
+        {
+            return coefficient* v;
+        }
+
         public static Vector operator *(float coefficient, Vector v)
         {
             var x = v.X * coefficient;
@@ -65,6 +70,20 @@ namespace tmp
         public static explicit operator PointI(Vector v)
         {
             return new PointI((int)v.X, (int)v.Y, (int)v.Z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Vector);
+        }
+
+        public bool Equals(Vector other) 
+        {
+            if (other is null)
+                return false;
+
+            return ReferenceEquals(other, this) ||
+                other.X == X && other.Y == Y && other.Z == Z;       
         }
 
         public override string ToString()
