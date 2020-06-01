@@ -2,7 +2,7 @@
 
 namespace tmp.Interfaces
 {
-    public interface IWorld<out TContainer, TItem>
+    public interface IWorld<TContainer, TItem>
     {
         PointI Offset { get; set; }
         int Size { get; }
@@ -12,6 +12,6 @@ namespace tmp.Interfaces
         IReadOnlyList<PointI> GetNeedlessChunks();
         bool TryDeleteChunk(PointI position);
         IReadOnlyList<PointI> GetPointOfGaps();
-        //TContainer this[PointI position] { get; set; }
+        TContainer this[PointI position] { get; set; }
     }
 }

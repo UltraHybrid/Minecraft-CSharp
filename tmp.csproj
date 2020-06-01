@@ -16,6 +16,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Assimp" Version="3.0.0" />
+      <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
       <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
       <PackageReference Include="OpenTK" Version="3.1.0" />
       <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
@@ -23,10 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Textures\*">
+      <None Update="models\**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Textures\skybox\*">
+      <None Update="Textures\**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

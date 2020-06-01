@@ -56,7 +56,7 @@ namespace tmp.Logic
                             visualWorld[result.Position] = result;
                             tasks[i] = null;
                             Ready.Enqueue((result.Position, result.Position));
-                            Console.WriteLine("Faces!!!!!!!!!!!!!!!!!");
+                            //Console.WriteLine("Faces!!!!!!!!!!!!!!!!!");
                             break;
                         }
                         case TaskStatus.Faulted:

@@ -13,15 +13,15 @@ namespace tmp
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
 
-            var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 30;
-            //var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
-            var manager = new WorldManager(new FlatGenerator());
+            var startOffset = PointI.CreateXZ(16, 16);
+            var worldSize = 50;
+            var manager = new WorldManager(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            //var manager = new WorldManager(new RandomGenerator());
             var game = new Game(worldSize, startOffset, manager);
             
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager(new Visualizer(game.World), visualWorld);
-            manager.AddAlert += (ch) => Console.WriteLine("Generate " + ch.Position);
+            //manager.AddAlert += (ch) => Console.WriteLine("Generate " + ch.Position);
             manager.AddAlert += visualManager.HandlerForAdd;
             
             game.Start();

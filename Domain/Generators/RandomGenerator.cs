@@ -4,10 +4,9 @@ namespace tmp
 {
     public class RandomGenerator : IGenerator<int, Chunk<Block>>
     {
-        private readonly Random rnd = new Random();
-
         public Chunk<Block> Generate(int x, int z)
         {
+            var rnd = new Random();
             var chunk = new Chunk<Block>(PointI.CreateXZ(x, z));
             var allBlocks = BaseBlocks.AllBlocks;
             for (byte i = 0; i < Chunk<Block>.XLength; i++)

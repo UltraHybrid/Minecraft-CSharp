@@ -13,14 +13,14 @@ namespace tmp
     {
         public static Dictionary<string, int> textures = new Dictionary<string, int>();
 
-        public static int GetTexture(string name)
+        public static int InitTextureFromFile(string name)
         {
-            var texture = GL.GenTexture();
+            GL.GenTextures(1, out int texture);
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
             var image = Image.Load(name);
             var pixels = SetImage(image);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
                 (int) TextureMagFilter.Nearest);

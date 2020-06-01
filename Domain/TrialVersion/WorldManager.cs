@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using tmp.Interfaces;
 
@@ -42,7 +43,11 @@ namespace tmp
                 if (tasks[i] == null && futureChunks.Count > 0)
                 {
                     var nextChunk = futureChunks.Dequeue();
-                    tasks[i] = Task.Run(() => Generate(nextChunk));
+                    tasks[i] = Task.Run(() =>
+                    {
+                        Thread.Sleep(150);
+                        return Generate(nextChunk);
+                    });
                 }
             }
         }

@@ -23,10 +23,15 @@ namespace tmp
 
         private readonly SkyBoxShader skyBoxShader;
         private readonly BlocksShader blocksShader;
+        private readonly DefaultShader defaultShader;
         private readonly LineShader lineShader;
 
         private readonly VisualManager visualManager;
         private readonly Camera camera;
+
+        private readonly Mesh mesh;
+        
+        private Stopwatch sw = new Stopwatch();
 
         #endregion
 
@@ -37,6 +42,9 @@ namespace tmp
             skyBoxShader = new SkyBoxShader();
             blocksShader = new BlocksShader(visualManager.World.Size);
             lineShader = new LineShader();
+            defaultShader = new DefaultShader();
+            mesh = new Mesh("./models/walk-robot/source/Animation_END.fbx", defaultShader);
+            sw.Start();
         }
 
         public void RenderFrame()
@@ -45,48 +53,49 @@ namespace tmp
             GL.Enable(EnableCap.Multisample);
             GL.Enable(EnableCap.DepthTest);
 
-            RenderLines();
+            UpdateMatrix();
+            //RenderLines();
             RenderWorld();
+            mesh.Render(viewProjectionMatrix);
             RenderSkyBox();
-            
         }
 
         private void RenderLines()
         {
             lineShader.Use();
             var aa = Matrix4.CreateTranslation(new Vector3(-0.8f, 0.5f, 0f));
-            var front = camera.viewer.Front.Convert();
             var position = camera.viewer.Position.Convert();
-            lineShader.SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, 1.7f, 0)) * viewMatrix * projectionMatrix);
+            lineShader.SetVPMatrix(Matrix4.CreateTranslation(position + new Vector3(0, 1.8f, 0)) * viewMatrix *
+                                   projectionMatrix);
             GL.DrawArrays(PrimitiveType.Lines, 0, 6);
-        } 
+        }
+
+        private void UpdateMatrix()
+        {
+            viewMatrix = camera.GetViewMatrix();
+            viewProjectionMatrix = viewMatrix * projectionMatrix;
+        }
 
         private void RenderWorld()
         {
             GL.Enable(EnableCap.CullFace);
             blocksShader.Use();
 
-            viewMatrix = camera.GetViewMatrix();
-            viewProjectionMatrix = viewMatrix * projectionMatrix;
-            
             blocksShader.SetVPMatrix(viewProjectionMatrix);
-            
+
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
 
-            var n = 0;
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                if (Vector2.Dot(camera.viewer.Front.Convert().Xz,
-                    chunksCords[i].Convert().Xz * 16 - camera.viewer.Position.Convert().Xz) >= 0)
+                if (Vector3.Dot(camera.viewer.Front.Convert(),
+                chunksCords[i].Convert() * 16 - camera.viewer.Position.Convert()) >= 0)
                 {
                     blocksShader.BindVao(i);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
                         chunkSidesCount[i]);
                 }
-                else n++;
             }
 
-            //Console.WriteLine(n);
             GL.BindVertexArray(0);
             GL.Disable(EnableCap.CullFace);
         }
@@ -96,8 +105,7 @@ namespace tmp
             GL.DepthFunc(DepthFunction.Lequal);
             skyBoxShader.Use();
 
-            var viewMatrixx = new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix;
-            skyBoxShader.SetVPMatrix(viewMatrixx);
+            skyBoxShader.SetVPMatrix(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
 
             GL.BindTexture(TextureTarget.TextureCubeMap, texture);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
@@ -108,29 +116,35 @@ namespace tmp
         {
             if (visualManager.Ready.Count != 0)
             {
-                var pair = visualManager.Ready.Dequeue();
-                var chunk = visualManager.World[pair.Item1];
+                var (chunkForRender, chunkForSwap) = visualManager.Ready.Dequeue();
+                var chunk = visualManager.World[chunkForRender];
                 if (chunk != null)
                 {
                     var data = chunk.SimpleData;
                     int index;
                     var sidesCount = data.TexturesData.Count;
-                    if (Equals(pair.Item2, pair.Item1))
+                    if (Equals(chunkForSwap, chunkForRender))
                     {
-                        chunksCords.Add(pair.Item1);
+                        chunksCords.Add(chunkForRender);
                         chunkSidesCount.Add(sidesCount);
                         index = chunksCords.Count - 1;
                     }
                     else
                     {
-                        index = chunksCords.IndexOf(pair.Item2);
-                        chunksCords[index] = pair.Item1;
+                        index = chunksCords.IndexOf(chunkForSwap);
+                        chunksCords[index] = chunkForRender;
                         chunkSidesCount[index] = sidesCount;
                     }
 
-                    //blocksShader.SendData(index, visualMap.Data[point.Item1].positions.ToArray(), visualMap.Data[point.Item1].texId.ToArray());
                     blocksShader.SendData(index, data.Positions, data.TexturesData);
                 }
+
+                timer++;
+                if (timer == 2500 || timer == 1600)
+                {
+                    Console.WriteLine(timer + $": {sw.ElapsedMilliseconds}");
+                }
+                    
             }
         }
 
@@ -142,6 +156,9 @@ namespace tmp
             UpdateBuffersData();
         }
 
+        private int timer = 0;
+        
+        
         private static void ClearBackground(Color4 backgroundColor)
         {
             GL.ClearColor(backgroundColor);
