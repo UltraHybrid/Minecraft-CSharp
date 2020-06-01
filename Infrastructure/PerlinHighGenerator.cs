@@ -2,8 +2,7 @@ using System;
 
 namespace tmp
 {
-    public class
-        PerlinHighGenerator : IGenerator<float, float>
+    public class PerlinHighGenerator : IGenerator<float, float>
     {
         private readonly float persistence;
         private readonly float frequency;
