@@ -20,7 +20,7 @@ namespace tmp
 
         public void Execute()
         {
-            entity.Move(new Piece(world, (PointI) entity.Position, 1), directions, time);
+            entity.Move(new Piece(world, (PointI) entity.Position, 3), directions, time);
         }
     }
 

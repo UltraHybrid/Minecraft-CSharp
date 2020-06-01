@@ -12,6 +12,8 @@ namespace tmp
         private float pitch;
         private Vector vertical_speed = new Vector(0, 0, 0);
         private const float Gravity = 0.05f;
+        private readonly float boxRadius;
+        private readonly float boxHeight;
 
         public override float Pitch
         {
@@ -41,10 +43,12 @@ namespace tmp
             }
         }
 
-        public SurvivalMover(Vector position, Vector front) : base(position, front)
+        public SurvivalMover(Vector position, Vector front, float hitBotRadius, float hitBoxHeight) : base(position, front)
         {
             Speed = 5f;
             Front = front;
+            boxHeight = hitBoxHeight;
+            boxRadius = hitBotRadius;
             Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
             Up = Vector.Cross(Front, Left).Normalize();
         }
@@ -78,9 +82,10 @@ namespace tmp
                         break;
                 }
             }
-            Position += vertical_speed;
-            Position += distance * (resultMove.Normalize());
-            
+
+            var move = vertical_speed + distance * (resultMove.Normalize());
+            Position += CropMove(move, piece);
+
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
@@ -91,11 +96,17 @@ namespace tmp
             Left = Vector.Cross(Up, Front).Normalize();
         }
 
-        private Vector CropMove(Vector move, Vector currentPosition, double safeRadius, double height) 
+        private Vector CropMove(Vector move, Piece piece)
         {
-            // TODO: Добыть Piece здесь
-            // TODO: Узнать инфорацию о соседних блоках и обрезать перемещение
-            return move;
+            var newPosition = Position + move;
+            var coords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
+            if (piece.GetItem(coords) != null)
+            {
+                newPosition.Y = coords.Y + 1;
+                vertical_speed.Y = 0;
+            }
+
+            return newPosition - Position;
         }
     }
 }
