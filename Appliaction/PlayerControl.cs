@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
 using tmp.Interfaces;
+using Veldrid;
 
 namespace tmp
 {
@@ -23,12 +24,14 @@ namespace tmp
 
         public void Move(float time)
         {
-            if (keys[Key.W]) new MoveCommand(entity, world, Direction.Forward, time).Execute();
-            if (keys[Key.S]) new MoveCommand(entity, world, Direction.Back, time).Execute();
-            if (keys[Key.D]) new MoveCommand(entity, world, Direction.Right, time).Execute();
-            if (keys[Key.A]) new MoveCommand(entity, world, Direction.Left, time).Execute();
-            if (keys[Key.Space]) new MoveCommand(entity, world, Direction.Up, time).Execute();
-            if (keys[Key.ShiftLeft]) new MoveCommand(entity, world, Direction.Down, time).Execute();
+            var directions = new List<Direction>();
+            if (keys[Key.W]) directions.Add(Direction.Forward);
+            if (keys[Key.S]) directions.Add(Direction.Back);
+            if (keys[Key.D]) directions.Add(Direction.Right);
+            if (keys[Key.A]) directions.Add(Direction.Left);
+            if (keys[Key.Space]) directions.Add(Direction.Up);
+            if (keys[Key.ShiftLeft]) directions.Add(Direction.Down);
+            new MoveCommand(entity, world, directions, time).Execute();
         }
 
         public void MouseMove()

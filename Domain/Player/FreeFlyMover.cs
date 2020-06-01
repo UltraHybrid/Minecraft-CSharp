@@ -38,28 +38,32 @@ namespace tmp
             }
         }
 
-        public FreeFlyMover(Vector position, Vector front, float speed) : base(position, front)
+        public FreeFlyMover(Vector position, Vector front) : base(position, front)
         {
-            Speed = speed;
+            Speed = 15f;
             Front = front;
             Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
             Up = Vector.Cross(Front, Left).Normalize();
         }
 
-        public override void Move(Piece piece, Direction direction, float time)
+        public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            resultMove += direction switch
+            foreach (var direction in directions)
             {
-                Direction.Forward => frontXZ,
-                Direction.Back => -frontXZ,
-                Direction.Right => -Left,
-                Direction.Left => Left,
-                Direction.Up => Up,
-                Direction.Down => -Up,
-            };
+                resultMove += direction switch
+                {
+                    Direction.Forward => frontXZ,
+                    Direction.Back => -frontXZ,
+                    Direction.Right => -Left,
+                    Direction.Left => Left,
+                    Direction.Up => Up,
+                    Direction.Down => -Up,
+                };
+            }
+            
             Position += distance * (resultMove.Normalize());
         }
 

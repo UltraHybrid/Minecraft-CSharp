@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using tmp.Interfaces;
 
 namespace tmp
@@ -5,21 +6,21 @@ namespace tmp
     public class MoveCommand : ICommand
     {
         private readonly IMover entity;
-        private readonly Direction direction;
+        private readonly IEnumerable<Direction> directions;
         private readonly float time;
         private readonly IWorld<Chunk<Block>, Block> world;
 
-        public MoveCommand(IMover entity, IWorld<Chunk<Block>, Block> world, Direction direction, float time)
+        public MoveCommand(IMover entity, IWorld<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
         {
             this.entity = entity;
             this.world = world;
-            this.direction = direction;
+            this.directions = directions;
             this.time = time;
         }
 
         public void Execute()
         {
-            entity.Move(new Piece(world, (PointI) entity.Position, 1), direction, time);
+            entity.Move(new Piece(world, (PointI) entity.Position, 1), directions, time);
         }
     }
 

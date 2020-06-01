@@ -31,4 +31,8 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="obj\project.nuget.cache" />
+    </ItemGroup>
 </Project>

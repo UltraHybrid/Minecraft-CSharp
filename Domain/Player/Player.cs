@@ -6,9 +6,10 @@
         public readonly EntityMover Mover;
         public float Height { get; }
 
-        public Player(Vector position, Vector direction, int hardness, float speed)
+        public Player(Vector position, Vector direction, int hardness)
         {
-            Mover = new FreeFlyMover(position, direction, speed);
+            //Mover = new FreeFlyMover(position, direction);
+            Mover = new SurvivalMover(position, direction);
             Hardness = hardness;
             Height = 1.8f;
         }

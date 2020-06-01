@@ -1,11 +1,17 @@
-﻿namespace tmp
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace tmp
 {
-    public class SurvivalMover : EntityMover
+    public sealed class SurvivalMover : EntityMover
     {
         public override Vector Left { get; set; }
         public override Vector Up { get; set; }
         public override float Speed { get; set; }
         private float pitch;
+        private Vector vertical_speed = new Vector(0, 0, 0);
+        private const float Gravity = 0.05f;
 
         public override float Pitch
         {
@@ -35,29 +41,46 @@
             }
         }
 
-        public SurvivalMover(Vector position, Vector front, float speed) : base(position, front)
+        public SurvivalMover(Vector position, Vector front) : base(position, front)
         {
-            Speed = speed;
+            Speed = 5f;
             Front = front;
             Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
             Up = Vector.Cross(Front, Left).Normalize();
         }
 
-        public override void Move(Piece piece,Direction direction, float time)
+        public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            resultMove += direction switch
+            vertical_speed -= new Vector(0,Gravity * time, 0);
+            foreach (var direction in directions)
             {
-                Direction.Forward => frontXZ,
-                Direction.Back => -frontXZ,
-                Direction.Right => -Left,
-                Direction.Left => Left,
-                Direction.Up => Up,
-                Direction.Down => -Up,
-            };
+                switch (direction)
+                {
+                    case Direction.Forward:
+                        resultMove += frontXZ;
+                        break;
+                    case Direction.Back:
+                        resultMove -= frontXZ;
+                        break;
+                    case Direction.Right:
+                        resultMove -= Left;
+                        break;
+                    case Direction.Left:
+                        resultMove += Left;
+                        break;
+                    case Direction.Up:
+                        vertical_speed = new Vector(0, Gravity / 2, 0);
+                        break;
+                    case Direction.Down:
+                        break;
+                }
+            }
+            Position += vertical_speed;
             Position += distance * (resultMove.Normalize());
+            
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)

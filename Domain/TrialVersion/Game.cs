@@ -24,7 +24,7 @@ namespace tmp
             var ready = manager.MakeFirstLunch();
             Console.WriteLine("Ready ");
             Console.WriteLine("World " + World.Count);
-            Player = new Player(DefineSpawn(ready), new Vector(0, 0, 1), 10, 15);
+            Player = new Player(DefineSpawn(ready), new Vector(0, 0, 1), 10);
         }
 
         public void Update()
