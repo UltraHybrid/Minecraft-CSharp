@@ -99,10 +99,17 @@ namespace tmp
         private Vector CropMove(Vector move, Piece piece)
         {
             var newPosition = Position + move;
-            var coords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
-            if (piece.GetItem(coords) != null)
+            var bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
+            var upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
+
+            if (move.Y > 0 && piece.GetItem(upperCoords) != null)
             {
-                newPosition.Y = coords.Y + 1;
+                newPosition.Y = upperCoords.Y - boxHeight;
+                vertical_speed.Y = 0;
+            }
+            else if (move.Y < 0 && piece.GetItem(bottomCoords) != null)
+            {
+                newPosition.Y = bottomCoords.Y + 1;
                 vertical_speed.Y = 0;
             }
 
