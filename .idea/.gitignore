@@ -1,5 +1,4 @@
-﻿
-# Created by https://www.gitignore.io/api/rider
+﻿# Created by https://www.gitignore.io/api/rider
 # Edit at https://www.gitignore.io/?templates=rider
 
 ### Rider ###
@@ -75,11 +74,3 @@ fabric.properties
 # End of https://www.gitignore.io/api/rider
 # Default ignored files
 /.idea.tmp.dir/.idea/workspace.xml
-
-# Build results
-
-[Dd]ebug/
-[Rr]elease/
-x64/
-[Bb]in/
-[Oo]bj/
