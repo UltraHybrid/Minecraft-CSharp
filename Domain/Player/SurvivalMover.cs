@@ -10,8 +10,8 @@ namespace tmp
         public override Vector Up { get; set; }
         public override float Speed { get; set; }
         private float pitch;
-        private Vector vertical_speed = new Vector(0, 0, 0);
-        private const float Gravity = 0.05f;
+        private Vector verticalSpeed = new Vector(0, 0, 0);
+        private readonly float gravity;
         private readonly float boxRadius;
         private readonly float boxHeight;
 
@@ -43,8 +43,9 @@ namespace tmp
             }
         }
 
-        public SurvivalMover(Vector position, Vector front, float hitBotRadius, float hitBoxHeight) : base(position, front)
+        public SurvivalMover(Vector position, Vector front, float hitBotRadius, float hitBoxHeight, float gravity) : base(position, front)
         {
+            this.gravity = gravity;
             Speed = 5f;
             Front = front;
             boxHeight = hitBoxHeight;
@@ -58,7 +59,7 @@ namespace tmp
             var distance = Speed * time;
             var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
             var resultMove = Vector.Default;
-            vertical_speed -= new Vector(0,Gravity * time, 0);
+            verticalSpeed -= new Vector(0,gravity * time, 0);
             foreach (var direction in directions)
             {
                 switch (direction)
@@ -76,14 +77,16 @@ namespace tmp
                         resultMove += Left;
                         break;
                     case Direction.Up:
-                        vertical_speed = new Vector(0, Gravity / 2, 0);
+                        // TODO: Доделать возможность прыжка
+                        if (verticalSpeed.Y < 0)
+                            verticalSpeed = new Vector(0, 0.035f, 0);
                         break;
                     case Direction.Down:
                         break;
                 }
             }
 
-            var move = vertical_speed + distance * (resultMove.Normalize());
+            var move = verticalSpeed + distance * (resultMove.Normalize());
             Position += CropMove(move, piece);
 
         }
@@ -104,16 +107,68 @@ namespace tmp
 
             if (move.Y > 0 && piece.GetItem(upperCoords) != null)
             {
-                newPosition.Y = upperCoords.Y - boxHeight;
-                vertical_speed.Y = 0;
+                if (!HaveVerticalAccess(newPosition, upperCoords, piece))
+                {
+                    newPosition.Y = upperCoords.Y - boxHeight;
+                    verticalSpeed.Y = 0;
+                }
             }
-            else if (move.Y < 0 && piece.GetItem(bottomCoords) != null)
+            else if (move.Y < 0)
             {
-                newPosition.Y = bottomCoords.Y + 1;
-                vertical_speed.Y = 0;
+                if (!HaveVerticalAccess(newPosition, bottomCoords, piece))
+                {
+                    newPosition.Y = bottomCoords.Y + 1;
+                    verticalSpeed.Y = 0; 
+                }
+                
             }
 
+            // bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
+            // upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
+            //
+            // for (var y = bottomCoords.Y; y <= upperCoords.Y; y++)
+            // {
+            //     var pos = new PointI(bottomCoords.X, y, bottomCoords.Z);
+            //     foreach (var neighbour in pos.GetNeighbours())
+            //     {
+            //         if (piece.GetItem(neighbour) == null) continue;
+            //         var blockPos = new Vector(neighbour.X, neighbour.Y, neighbour.Z) + new Vector(0.5f, 0.5f, 0.5f);
+            //         for (var i = 0; i < 2; i++)
+            //         {
+            //             var xDiff = blockPos.X - newPosition.X;
+            //             var zDiff = blockPos.Z - newPosition.Z;
+            //             var maxDiff = Math.Max(Math.Abs(xDiff), Math.Abs(zDiff));
+            //             if (maxDiff >= 0.5 + boxRadius) break;
+            //             if (maxDiff == Math.Abs(xDiff))
+            //             {
+            //                 newPosition.X = blockPos.X - Math.Sign(xDiff) * (float) (0.5 + boxRadius);
+            //             }
+            //             else
+            //             {
+            //                 newPosition.Z = blockPos.Z - Math.Sign(zDiff) * (float) (0.5 + boxRadius);
+            //             }
+            //         }
+            //         
+            //         
+            //     }
+            // }
+
             return newPosition - Position;
+        }
+
+        private bool HaveVerticalAccess(Vector newPosition, PointI accessBlockPosition, Piece piece)
+        {
+            if (piece.GetItem(accessBlockPosition) != null) return false;
+            foreach (var neighbour in accessBlockPosition.GetNeighbours())
+            {
+                if (piece.GetItem(neighbour) == null) continue;
+                var blockPos = new Vector(neighbour.X + 0.5f, neighbour.Y + 0.5f, neighbour.Z + 0.5f);
+                var distance = Math.Max(Math.Abs(newPosition.X - blockPos.X),
+                    Math.Abs(newPosition.Z - blockPos.Z));
+                if (distance >= 0.5 + boxRadius) continue;
+                return false;
+            }
+            return true;
         }
     }
 }
