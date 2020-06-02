@@ -78,8 +78,12 @@ namespace tmp
                         break;
                     case Direction.Up:
                         // TODO: Доделать возможность прыжка
-                        if (verticalSpeed.Y < 0)
-                            verticalSpeed = new Vector(0, 0.035f, 0);
+                        if (Position.Y - (int) Position.Y < 0.01)
+                        {
+                            var underPoint = new PointI((int) Position.X, (int) Position.Y - 1, (int) Position.Z);
+                            if (!HaveVerticalAccess(Position, underPoint, piece))
+                                verticalSpeed = new Vector(0, 0.035f, 0);
+                        }
                         break;
                     case Direction.Down:
                         break;
