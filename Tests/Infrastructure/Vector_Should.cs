@@ -54,7 +54,38 @@ namespace tmp.Tests.Infrastructure
         [Test]
         public void Cross_Should()
         {
-            //TODO: выяснить что такое крос и написать тест
+            var v1 = new Vector(1, -1, 1);
+            var v2 = new Vector(2, 1, -1);
+
+            var result = Vector.Cross(v1, v2);
+
+            Assert.AreEqual(0, (result - new Vector(0, 3, 3)).Length, 1e-5);
+
+            v1 = new Vector(0.5f , 1, -2);
+            v2 = new Vector(0.77f, 33, 0);
+
+            result = Vector.Cross(v1, v2);
+
+            Assert.AreEqual(0, (result - new Vector(66, -1.54f, 15.73f)).Length, 1e-5);
+        }
+
+        [Test]
+        public void Cross_Should_BePerpendicular()
+        { 
+            var random = new Random();
+            Func<float> getCoordinate = () => (float) (random.NextDouble() - 0.5) * 100;
+            Func<Vector, Vector, float> scalar = (v1, v2) => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+            var delta = 1e-1;
+
+            for (int i = 0; i < 1e4; i++)
+            {
+                var v1 = new Vector(getCoordinate(), getCoordinate(), getCoordinate());
+                var v2 = new Vector(getCoordinate(), getCoordinate(), getCoordinate());
+
+                var v3 = Vector.Cross(v1, v2);
+                Assert.AreEqual(0, scalar(v1, v3), delta);
+                Assert.AreEqual(0, scalar(v2, v3), delta);
+            }
         }
 
         [Test]
