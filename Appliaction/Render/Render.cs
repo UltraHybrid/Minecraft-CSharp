@@ -21,12 +21,12 @@ namespace tmp
         private readonly World world;
         private readonly Lines lines;
 
-        private readonly VisualManager visualManager;
+        private readonly VisualManager2 visualManager;
         private readonly Camera camera;
 
         #endregion
 
-        public Render(Camera camera, VisualManager visualManager)
+        public Render(Camera camera, VisualManager2 visualManager)
         {
             this.camera = camera;
             this.visualManager = visualManager;

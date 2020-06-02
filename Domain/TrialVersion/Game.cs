@@ -9,9 +9,9 @@ namespace tmp
         public World<Chunk<Block>, Block> World { get; }
         public Player Player { get; private set; }
 
-        private readonly WorldManager manager;
+        private readonly WorldManager2 manager;
 
-        public Game(int worldSize, PointI worldOffset, WorldManager manager)
+        public Game(int worldSize, PointI worldOffset, WorldManager2 manager)
         {
             var world = new GameWorld(worldOffset, worldSize);
             this.manager = manager;

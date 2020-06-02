@@ -15,7 +15,7 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(Game game, VisualManager manager) : base(
+        public Window(Game game, VisualManager2 manager) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -41,7 +41,7 @@ namespace tmp
 
         #region Variables
 
-        private VisualManager manager;
+        private VisualManager2 manager;
         private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;

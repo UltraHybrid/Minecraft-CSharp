@@ -19,11 +19,11 @@ namespace tmp
 
         private readonly List<PointI> chunksCords = new List<PointI>();
         private readonly List<int> chunkSidesCount = new List<int>();
-        private readonly VisualManager visualManager;
+        private readonly VisualManager2 visualManager;
         private readonly IMover viewer;
         private int Size { get; }
 
-        public World(VisualManager visualManager, IMover viewer)
+        public World(VisualManager2 visualManager, IMover viewer)
         {
             this.viewer = viewer;
             this.visualManager = visualManager;
@@ -72,6 +72,7 @@ namespace tmp
                 if (chunk != null)
                 {
                     var data = chunk.SimpleData;
+                    Console.WriteLine(data==null);
                     int index;
                     var sidesCount = data.TexturesData.Count;
                     if (Equals(chunkForDelete, newChunk))
