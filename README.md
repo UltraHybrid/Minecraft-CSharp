@@ -26,6 +26,9 @@ Classes which used to visualize logical objects, in addition. Also updates curre
 
 ## Authors
 [@UltraHybrid](https://github.com/UltraHybrid)
+
 [@LobachevDanil](https://github.com/LobachevDanil)
+
 [@SavelevMatthew](https://github.com/SavelevMatthew)
+
 [@DmitriuSsS](https://github.com/DmitriuSsS)
