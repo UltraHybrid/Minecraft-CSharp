@@ -10,7 +10,6 @@ namespace tmp.Logic
     {
         private readonly IVisualizer<Block> visualizer;
         private readonly VisualWorld visualWorld;
-        private readonly Queue<Chunk<Block>> needVisualize;
         public readonly Queue<(PointI, PointI)> Ready;
 
         public World<VisualChunk, VisualizerData> World => visualWorld;
@@ -19,32 +18,10 @@ namespace tmp.Logic
         {
             this.visualizer = visualizer;
             this.visualWorld = visualWorld;
-            needVisualize = new Queue<Chunk<Block>>();
             Ready = new Queue<(PointI, PointI)>();
         }
 
         private object locker = new object();
-
-        private void AssignTasks()
-        {
-            if (needVisualize.Count != 0)
-                ThreadPool.QueueUserWorkItem((chunk) =>
-                {
-                    var ch = (Chunk<Block>) chunk;
-                    var result = visualizer.Visualize(ch);
-                    var (positions, textureData) = result.AdaptToStupidData();
-                    result.SimpleData = new RevisedData(positions, textureData);
-                    lock (locker)
-                    {
-                        visualWorld[result.Position] = result;
-                        Ready.Enqueue((result.Position, result.Position));
-                    }
-                }, needVisualize.Dequeue());
-        }
-
-        private void CheckStatusOfTasks()
-        {
-        }
 
         public PointI MakeFirstLunch()
         {
@@ -53,8 +30,6 @@ namespace tmp.Logic
 
         public void Update()
         {
-            //Console.WriteLine(needVisualize.Count);
-            AssignTasks();
         }
 
         public void MakeShift(PointI offset, PointI playerPosition)
@@ -64,7 +39,16 @@ namespace tmp.Logic
 
         public void HandlerForAdd(Chunk<Block> chunk)
         {
-            needVisualize.Enqueue(chunk);
+            ThreadPool.QueueUserWorkItem((c) =>
+            {
+                var ch = (Chunk<Block>) c;
+                var result = visualizer.Visualize(ch);
+                var (positions, textureData) = result.AdaptToStupidData();
+                result.SimpleData = new RevisedData(positions, textureData);
+
+                visualWorld[result.Position] = result;
+                Ready.Enqueue((result.Position, result.Position));
+            }, chunk);
         }
 
         public void HandlerForDelete()

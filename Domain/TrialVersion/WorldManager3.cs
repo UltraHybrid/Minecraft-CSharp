@@ -42,10 +42,8 @@ namespace tmp
                 {
                     var p = (PointI) point;
                     var result = landscapeGenerator.Generate(p.X, p.Z);
-                    lock (locker)
-                    {
-                        world[result.Position] = result;
-                    }
+
+                    world[result.Position] = result;
 
                     AddNotifyAll(result);
                 }, futureChunks.Dequeue());

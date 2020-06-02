@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using tmp.Interfaces;
 
@@ -20,7 +21,11 @@ namespace tmp
         {
             this.landscapeGenerator = landscapeGenerator;
             this.manager =
-                new ChunkManager<PointI, Chunk<Block>>((point) => this.landscapeGenerator.Generate(point.X, point.Z));
+                new ChunkManager<PointI, Chunk<Block>>((point) =>
+                {
+                    Thread.Sleep(140);
+                    return this.landscapeGenerator.Generate(point.X, point.Z);
+                });
         }
 
         public void SetWorld(GameWorld gameWorld)
@@ -43,6 +48,7 @@ namespace tmp
 
             var answer = manager.Pop();
             world[answer.Position] = answer;
+            //AddNotifyAll(answer);
             return answer.Position;
         }
 

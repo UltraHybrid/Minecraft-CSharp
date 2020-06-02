@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using tmp.Logic;
 
 namespace tmp
@@ -12,10 +13,11 @@ namespace tmp
                 TextureSide.Left, TextureSide.Back, TextureSide.Right,
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
-
+            ThreadPool.SetMaxThreads(4,4);
+            ThreadPool.SetMinThreads(4, 4);
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 30;
-            var manager = new WorldManager3(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             //var manager = new WorldManager(new RandomGenerator());
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
