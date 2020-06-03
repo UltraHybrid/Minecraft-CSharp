@@ -13,8 +13,9 @@ namespace tmp
                 TextureSide.Left, TextureSide.Back, TextureSide.Right,
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
-            ThreadPool.SetMaxThreads(4,4);
-            ThreadPool.SetMinThreads(4, 4);
+            var threads = Environment.ProcessorCount;
+            ThreadPool.SetMaxThreads(threads,threads);
+            ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 30;
             var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
