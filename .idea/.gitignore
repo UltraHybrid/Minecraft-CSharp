@@ -75,4 +75,4 @@ fabric.properties
 # Default ignored files
 /.idea.tmp.dir/.idea/workspace.xml
 
-/obj/project.nuget.cache
+obj/
