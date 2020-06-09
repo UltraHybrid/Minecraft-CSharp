@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using tmp.Interfaces;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class Chunk<T> : IChunk<T>
     {

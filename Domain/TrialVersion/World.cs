@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using tmp.Interfaces;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public abstract class World<TContainer,TItem> : IWorld<TContainer, TItem> where TContainer: Chunk<TItem>
     {
@@ -22,7 +22,7 @@ namespace tmp
         public static PointI GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
         {
             return PointI.CreateXZ(chunkPosition.X * Chunk<TItem>.XLength, chunkPosition.Z * Chunk<TItem>.ZLength)
-                .Add(blockPosition);
+                .Add(blockPosition.AsPointI());
         }
 
         public (PointI cPosition, PointI elementPosition) Translate2LocalNotation(PointI point)

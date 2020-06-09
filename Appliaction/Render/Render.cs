@@ -2,6 +2,7 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
 
 namespace tmp

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using tmp.Interfaces;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class WorldManager3 : IChunkManager<Block>
     {
@@ -51,7 +52,7 @@ namespace tmp
 
         public PointI MakeFirstLunch()
         {
-            MakeShift(PointI.Default, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
+            MakeShift(PointI.Zero, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
             var firstPoint = futureChunks.Dequeue();
             var answer = landscapeGenerator.Generate(firstPoint.X, firstPoint.Z);
             world[answer.Position] = answer;

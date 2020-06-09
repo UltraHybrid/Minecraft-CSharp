@@ -1,6 +1,10 @@
 using System;
+using tmp.Domain.TrialVersion;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain.Generators
 {
     public class RandomGenerator : IGenerator<int, Chunk<Block>>
     {

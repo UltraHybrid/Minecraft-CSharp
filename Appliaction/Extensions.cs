@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
+using tmp.Domain;
+using tmp.Domain.TrialVersion;
+using tmp.Infrastructure.SimpleMath;
 
 namespace tmp
 {

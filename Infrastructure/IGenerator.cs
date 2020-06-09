@@ -1,4 +1,4 @@
-namespace tmp
+namespace tmp.Infrastructure
 {
     public interface IGenerator<TSource, TResult>
     {

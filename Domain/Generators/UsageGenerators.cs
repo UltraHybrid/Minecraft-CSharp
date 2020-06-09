@@ -1,4 +1,6 @@
-﻿namespace tmp
+﻿using tmp.Infrastructure;
+
+namespace tmp.Domain.Generators
 {
     public static class UsageGenerators
     {

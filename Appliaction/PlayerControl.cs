@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Input;
-using tmp.Interfaces;
+using tmp.Domain;
+using tmp.Domain.Commands;
+using tmp.Domain.TrialVersion;
+using tmp.Domain.TrialVersion.Blocks;
 using Veldrid;
 
 namespace tmp

@@ -1,13 +1,13 @@
 using System;
 
-namespace tmp
+namespace tmp.Infrastructure.SimpleMath
 {
-    public struct PointB
+    public readonly struct PointB
     {
-        public byte X { get; private set; }
-        public byte Y { get; private set; }
-        public byte Z { get; private set; }
-        public static readonly PointB Default = new PointB(0, 0, 0);
+        public byte X { get; }
+        public byte Y { get; }
+        public byte Z { get; }
+        public static readonly PointB Zero = new PointB(0, 0, 0);
 
         public PointB(byte x, byte y, byte z)
         {
@@ -26,14 +26,9 @@ namespace tmp
             return new PointB((byte) (X + other.X), (byte) (Y + other.Y), (byte) (Z + other.Z));
         }
 
-        public static implicit operator PointI(PointB point)
-        {
-            return new PointI(point.X, point.Y, point.Z);
-        }
-
         public override string ToString()
         {
-            return "(" + X + ", " + Y + ", " + Z + ")";
+            return "PointB(" + X + ", " + Y + ", " + Z + ")";
         }
     }
 }

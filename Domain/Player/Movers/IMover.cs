@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using tmp.Domain.TrialVersion;
 
-namespace tmp
+namespace tmp.Domain
 {
     public interface IMover
     {

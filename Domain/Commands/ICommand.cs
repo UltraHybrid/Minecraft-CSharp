@@ -1,4 +1,4 @@
-namespace tmp
+namespace tmp.Domain.Commands
 {
     public interface ICommand
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using tmp.Interfaces;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class WorldManager2: IDisposable
     {
@@ -40,7 +40,7 @@ namespace tmp
 
         public PointI MakeFirstLunch()
         {
-            MakeShift(PointI.Default, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
+            MakeShift(PointI.Zero, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
             manager.Start();
             while (manager.IsEmpty)
             {

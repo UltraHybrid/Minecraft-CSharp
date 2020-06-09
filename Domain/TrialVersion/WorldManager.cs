@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using tmp.Interfaces;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class WorldManager : IChunkManager<Block>
     {
@@ -74,7 +76,7 @@ namespace tmp
 
         public PointI MakeFirstLunch()
         {
-            MakeShift(PointI.Default, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
+            MakeShift(PointI.Zero, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
             AssignTasks();
             Task.WaitAll(tasks);
             var answer = tasks.First(x => x.Status == TaskStatus.RanToCompletion).Result.Position;

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using tmp.Domain.TrialVersion;
 
-namespace tmp
+namespace tmp.Domain
 {
     public abstract class EntityMover : IMover
     {

@@ -1,4 +1,8 @@
-﻿namespace tmp.Logic
+﻿using tmp.Domain;
+using tmp.Domain.TrialVersion;
+using tmp.Infrastructure.SimpleMath;
+
+namespace tmp.Logic
 {
     public class VisualWorld : World<VisualChunk, VisualizerData>
     {
@@ -8,18 +12,20 @@
 
         public override VisualizerData GetItem(PointI position)
         {
-            var (cPosition, elementPosition) = Translate2LocalNotation(position);
-            if (chunks.ContainsKey(cPosition) && Chunk<VisualizerData>.CheckBounds((PointB) elementPosition))
-                return chunks[cPosition][(PointB) elementPosition];
+            var (cPosition, ePosition) = Translate2LocalNotation(position);
+            var elementPosition = ePosition.AsPointB();
+            if (chunks.ContainsKey(cPosition) && Chunk<VisualizerData>.CheckBounds(elementPosition))
+                return chunks[cPosition][elementPosition];
             return null;
         }
 
         public override bool TrySetItem(PointI position, VisualizerData value)
         {
-            var (cPosition, elementPosition) = Translate2LocalNotation(position);
-            if (chunks.ContainsKey(cPosition) && Chunk<VisualizerData>.CheckBounds((PointB) elementPosition))
+            var (cPosition, ePosition) = Translate2LocalNotation(position);
+            var elementPosition = ePosition.AsPointB();
+            if (chunks.ContainsKey(cPosition) && Chunk<VisualizerData>.CheckBounds(elementPosition))
             {
-                chunks[cPosition][(PointB) elementPosition] = value;
+                chunks[cPosition][elementPosition] = value;
                 return true;
             }
 

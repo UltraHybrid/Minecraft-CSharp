@@ -1,6 +1,6 @@
 using System;
 
-namespace tmp
+namespace tmp.Infrastructure
 {
     public class PerlinHighGenerator : IGenerator<float, float>
     {

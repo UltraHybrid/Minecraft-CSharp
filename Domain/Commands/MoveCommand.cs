@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using tmp.Interfaces;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain.Commands
 {
     public class MoveCommand : ICommand
     {
@@ -20,7 +21,7 @@ namespace tmp
 
         public void Execute()
         {
-            entity.Move(new Piece(world, (PointI) entity.Position, 3), directions, time);
+            entity.Move(new Piece(world, entity.Position.AsPointI(), 3), directions, time);
         }
     }
 

@@ -1,4 +1,6 @@
-﻿namespace tmp.Interfaces
+﻿using tmp.Domain.TrialVersion.Blocks;
+
+namespace tmp.Domain
 {
     public interface IGame
     {

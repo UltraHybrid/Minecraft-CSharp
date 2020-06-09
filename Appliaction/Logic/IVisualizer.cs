@@ -1,4 +1,8 @@
-﻿namespace tmp.Logic
+﻿using tmp.Domain;
+using tmp.Domain.TrialVersion;
+using tmp.Infrastructure.SimpleMath;
+
+namespace tmp.Logic
 {
     public interface IVisualizer<TSource>
     {

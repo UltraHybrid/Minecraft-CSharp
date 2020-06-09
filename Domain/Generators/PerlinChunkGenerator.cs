@@ -1,6 +1,9 @@
-using System;
+using tmp.Domain.TrialVersion;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain.Generators
 {
     public class PerlinChunkGenerator : IGenerator<int, Chunk<Block>>
     {

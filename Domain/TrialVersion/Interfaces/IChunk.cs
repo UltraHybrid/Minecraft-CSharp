@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp.Interfaces
+namespace tmp.Domain
 {
     public interface IChunk<T> : IEnumerable<T>
     {

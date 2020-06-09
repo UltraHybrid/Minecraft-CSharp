@@ -1,4 +1,6 @@
-﻿namespace tmp.Interfaces
+﻿using tmp.Infrastructure.SimpleMath;
+
+namespace tmp.Domain
 {
     public interface IChunkManager<T>
     {

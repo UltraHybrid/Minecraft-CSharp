@@ -1,5 +1,6 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using tmp.Domain;
 
 namespace tmp
 {

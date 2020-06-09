@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace tmp
+namespace tmp.Infrastructure.SimpleMath
 {
-    public struct PointI
+    public readonly struct PointI
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public int Z { get; private set; }
-        public static readonly PointI Default = new PointI(0, 0, 0);
+        public int X { get; }
+        public int Y { get; }
+        public int Z { get; }
+        public static readonly PointI Zero = new PointI(0, 0, 0);
 
         public PointI(int x, int y, int z)
         {
@@ -18,6 +18,7 @@ namespace tmp
             Z = z;
         }
 
+        // ReSharper disable once InconsistentNaming
         public static PointI CreateXZ(int x, int z)
         {
             return new PointI(x, 0, z);
@@ -38,22 +39,12 @@ namespace tmp
             return new PointI(-point.X, -point.Y, -point.Z);
         }
 
-        public static explicit operator PointB(PointI point)
-        {
-            return new PointB((byte) point.X, (byte) point.Y, (byte) point.Z);
-        }
-
-        public static explicit operator Vector(PointI point)
-        {
-            return new Vector(point.X, point.Y, point.Z);
-        }
-
         public override string ToString()
         {
-            return "(" + X + ", " + Y + ", " + Z + ")";
+            return "PointI(" + X + ", " + Y + ", " + Z + ")";
         }
 
-        public IEnumerable<PointI> GetNeighbours()
+        /*public IEnumerable<PointI> GetNeighbours()
         {
             return GetFlatNeighbours(1, 2);
         }
@@ -64,6 +55,6 @@ namespace tmp
             for(var dz = -1; dz <= 1; dz++)
                 if (totalDifference.Contains(Math.Abs(dx) + Math.Abs(dz)))
                     yield return new PointI(X + dx, Y, Z + dz);
-        }
+        }*/
     }
 }

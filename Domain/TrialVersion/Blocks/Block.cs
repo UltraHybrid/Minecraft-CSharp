@@ -1,22 +1,26 @@
-﻿namespace tmp
+﻿using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
+
+namespace tmp.Domain.TrialVersion.Blocks
 {
     public class Block
     {
-        public static Block Either = new Block(BaseBlocks.Bedrock);
+        public static readonly Block Either = new Block(BaseBlocks.Corpuscle, PointB.Zero);
         public readonly BlockType BlockType;
         public int Hardness { get; set; }
         public PointB Position { get; set; }
 
-        private Block(BlockType blockType)
+        public Block(BlockType blockType, PointB position)
         {
             BlockType = blockType;
             Hardness = blockType.Hardness;
-            Position = PointB.Default;
+            Position = position;
         }
 
-        public Block(BlockType blockType, PointB position) : this(blockType)
+        public HitBox GetHitBox()
         {
-            Position = position;
+            var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
+            return new HitBox(1, 1, 1, offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2));
         }
 
         public bool CanRemove()

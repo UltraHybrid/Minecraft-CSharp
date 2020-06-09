@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using tmp.Domain.TrialVersion;
 
-namespace tmp
+namespace tmp.Domain
 {
     public sealed class FreeFlyMover : EntityMover
     {
@@ -42,15 +42,15 @@ namespace tmp
         {
             Speed = 15f;
             Front = front;
-            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
-            Up = Vector.Cross(Front, Left).Normalize();
+            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalized();
+            Up = Vector.Cross(Front, Left).Normalized();
         }
 
         public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {
             var distance = Speed * time;
-            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
-            var resultMove = Vector.Default;
+            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalized();
+            var resultMove = Vector.Zero;
             foreach (var direction in directions)
             {
                 resultMove += direction switch
@@ -64,7 +64,7 @@ namespace tmp
                 };
             }
             
-            Position += distance * (resultMove.Normalize());
+            Position += distance * (resultMove.Normalized());
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
@@ -72,7 +72,7 @@ namespace tmp
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Left = Vector.Cross(Up, Front).Normalize();
+            Left = Vector.Cross(Up, Front).Normalized();
         }
     }
 }

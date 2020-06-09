@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using tmp.Interfaces;
+using tmp.Domain;
+using tmp.Domain.TrialVersion;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Logic
 {

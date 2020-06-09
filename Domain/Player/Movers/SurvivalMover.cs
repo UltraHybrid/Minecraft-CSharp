@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace tmp
+﻿namespace tmp.Domain
 {
-    public sealed class SurvivalMover : EntityMover
+    /*public sealed class SurvivalMover : EntityMover
     {
         public override Vector Left { get; set; }
         public override Vector Up { get; set; }
@@ -50,15 +46,15 @@ namespace tmp
             Front = front;
             boxHeight = hitBoxHeight;
             boxRadius = hitBotRadius;
-            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalize();
-            Up = Vector.Cross(Front, Left).Normalize();
+            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalized();
+            Up = Vector.Cross(Front, Left).Normalized();
         }
 
         public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {
             var distance = Speed * time;
-            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalize();
-            var resultMove = Vector.Default;
+            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalized();
+            var resultMove = Vector.Zero;
             verticalSpeed -= new Vector(0,gravity * time, 0);
             foreach (var direction in directions)
             {
@@ -90,7 +86,7 @@ namespace tmp
                 }
             }
 
-            var move = verticalSpeed + distance * (resultMove.Normalize());
+            var move = verticalSpeed + distance * (resultMove.Normalized());
             Position += CropMove(move, piece);
 
         }
@@ -100,7 +96,7 @@ namespace tmp
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Left = Vector.Cross(Up, Front).Normalize();
+            Left = Vector.Cross(Up, Front).Normalized();
         }
 
         private Vector CropMove(Vector move, Piece piece)
@@ -174,5 +170,5 @@ namespace tmp
             }
             return true;
         }
-    }
+    }*/
 }

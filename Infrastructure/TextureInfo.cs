@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using SharpDX;
 
-namespace tmp
+namespace tmp.Infrastructure
 {
     public class TextureInfo
     {
@@ -24,7 +23,7 @@ namespace tmp
             {TextureSide.Left, 0.6f},
             {TextureSide.Right, 0.6f},
             {TextureSide.Top, 1.0f},
-            {TextureSide.Bottom, 1.0f},
+            {TextureSide.Bottom, 0.5f},
             {TextureSide.Front, 0.8f},
             {TextureSide.Back, 0.8f},
         };

@@ -1,6 +1,7 @@
-﻿using tmp.Interfaces;
+﻿using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class Piece
     {

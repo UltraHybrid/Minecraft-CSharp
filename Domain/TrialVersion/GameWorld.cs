@@ -1,6 +1,7 @@
-﻿using tmp.Interfaces;
+﻿using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure.SimpleMath;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class GameWorld : World<Chunk<Block>, Block>
     {
@@ -11,16 +12,18 @@ namespace tmp
         public override Block GetItem(PointI position)
         {
             var (cPosition, bPosition) = Translate2LocalNotation(position);
-            if (chunks.ContainsKey(cPosition) && Chunk<Block>.CheckBounds((PointB) bPosition))
-                return chunks[cPosition][(PointB) bPosition];
+            var blockPosition = bPosition.AsPointB();
+            if (chunks.ContainsKey(cPosition) && Chunk<Block>.CheckBounds(blockPosition))
+                return chunks[cPosition][blockPosition];
             return Block.Either;
         }
 
         public override bool TrySetItem(PointI position, Block value)
         {
             var (cPosition, bPosition) = Translate2LocalNotation(position);
-            if (!chunks.ContainsKey(cPosition) || !Chunk<Block>.CheckBounds((PointB) bPosition)) return false;
-            chunks[cPosition][(PointB) bPosition] = value;
+            var blockPosition = bPosition.AsPointB();
+            if (!chunks.ContainsKey(cPosition) || !Chunk<Block>.CheckBounds(blockPosition)) return false;
+            chunks[cPosition][blockPosition] = value;
             return true;
         }
     }

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using OpenTK;
-using OpenTK.Input;
-using Vector2 = OpenTK.Vector2;
+﻿using OpenTK;
+using tmp.Domain;
 using Vector3 = OpenTK.Vector3;
 
 namespace tmp

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
-using tmp.Interfaces;
 
-namespace tmp
+namespace tmp.Domain
 {
     public class ChunkManager<TSource, TResult>
     {

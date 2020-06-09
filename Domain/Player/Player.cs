@@ -1,4 +1,4 @@
-﻿namespace tmp
+﻿namespace tmp.Domain
 {
     public class Player
     {

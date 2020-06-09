@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using tmp.Domain;
+using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
 
 namespace tmp

@@ -1,4 +1,9 @@
-namespace tmp
+using tmp.Domain.TrialVersion;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
+
+namespace tmp.Domain.Generators
 {
     public class FlatGenerator : IGenerator<int, Chunk<Block>>
     {
