@@ -10,12 +10,12 @@ namespace tmp
 {
     public class World : IRender
     {
-        private int vbo, ebo;
+        private int ebo;
         private readonly int vPMatrixLocation, shaderProgram;
         private int textureBuffer;
 
-        private readonly int[] vao, position, texturesId;
-        private readonly int arrayTex;
+        private readonly int[] vao, vbo, texturesId;
+        private readonly List<int> arrayTex = new List<int>();
 
         private readonly List<PointI> chunksCords = new List<PointI>();
         private readonly List<int> chunkSidesCount = new List<int>();
@@ -27,11 +27,14 @@ namespace tmp
         {
             this.viewer = viewer;
             this.visualManager = visualManager;
-            arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
+            foreach (var e in Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList())
+            {
+                arrayTex.Add(Texture.GetTexture(e));
+            }
             var size = visualManager.World.Size;
             Size = size * size;
             vao = new int[Size];
-            position = new int[Size];
+            vbo = new int[Size];
             texturesId = new int[Size];
             shaderProgram = Shaders.GetSideShader();
             GenBuffers();
@@ -42,9 +45,9 @@ namespace tmp
 
         public void Render(Matrix4 viewProjectionMatrix)
         {
-            GL.Enable(EnableCap.CullFace);
+            //GL.Enable(EnableCap.CullFace);
             GL.UseProgram(shaderProgram);
-            GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
+            //GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
 
             GL.UniformMatrix4(vPMatrixLocation, false, ref viewProjectionMatrix);
             
@@ -54,13 +57,12 @@ namespace tmp
                   //  chunksCords[i].Convert().Xz * 16 - viewer.Position.Convert().Xz) >= 0)
                 {
                     GL.BindVertexArray(vao[i]);
-                    GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
-                        chunkSidesCount[i]);
+                    GL.DrawElements(PrimitiveType.Triangles, chunkSidesCount[i] * 6, DrawElementsType.UnsignedInt, 0);
                 }
             }
 
             GL.BindVertexArray(0);
-            GL.Disable(EnableCap.CullFace);
+            //GL.Disable(EnableCap.CullFace);
         }
 
         public void Update()
@@ -87,18 +89,19 @@ namespace tmp
                         chunksCords[index] = newChunk;
                         chunkSidesCount[index] = sidesCount;
                     }
-
                     SendData(index, data.Positions, data.TexturesData);
                 }
             }
         }
 
-        private void SendData(int n, List<Vector3> positions, List<Vector2> sideTexId)
-        {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, position[n]);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Count,
-                positions.ToArray(), BufferUsageHint.StaticDraw);
+        private int indCount;
 
+        private void SendData(int n, List<Vector3> vertex, List<uint> indexData)
+        {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo[n]);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * vertex.Count,
+                vertex.ToArray(), BufferUsageHint.StaticDraw);
+/*
             GL.BindBuffer(BufferTarget.ArrayBuffer, texturesId[n]);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * sideTexId.Count, sideTexId.ToArray(),
                 BufferUsageHint.StaticDraw);
@@ -110,64 +113,37 @@ namespace tmp
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * TextureCords.Length, TextureCords,
                 BufferUsageHint.StaticDraw);
+*/
 
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(int), Indices,
-                BufferUsageHint.StaticDraw);
+            if (indCount < indexData.Count)
+            {
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, indexData.Count * sizeof(int), indexData.ToArray(),
+                    BufferUsageHint.StaticDraw);
+            }
         }
 
         private void GenBuffers()
         {
             GL.GenVertexArrays(Size, vao);
-            GL.GenBuffers(1, out vbo);
-            GL.GenBuffers(Size, position);
-            GL.GenBuffers(Size, texturesId);
+            GL.GenBuffers(Size, vbo);
             GL.GenBuffers(1, out ebo);
-            GL.GenBuffers(1, out textureBuffer);
         }
 
         private void InstallAttributes(int n)
         {
             GL.BindVertexArray(vao[n]);
 
-            //0
-            GL.BindBuffer(BufferTarget.ArrayBuffer, position[n]);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo[n]);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0);
-
-            //1
-            GL.BindBuffer(BufferTarget.ArrayBuffer, texturesId[n]);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
-            GL.EnableVertexAttribArray(1);
-
-            //2-7
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            for (var index = 2; index <= 7; index++)
-            {
-                GL.VertexAttribPointer(index, 3, VertexAttribPointerType.Float, false, 0,
-                    sizeof(float) * (index - 2) * 12);
-                GL.EnableVertexAttribArray(index);
-            }
-
-            //8-13
-            GL.BindBuffer(BufferTarget.ArrayBuffer, textureBuffer);
-            for (var index = 8; index <= 13; index++)
-            {
-                GL.VertexAttribPointer(index, 2, VertexAttribPointerType.Float, false, 0,
-                    sizeof(float) * (index - 8) * 8);
-                GL.EnableVertexAttribArray(index);
-            }
-
-            GL.VertexAttribDivisor(0, 1);
-            GL.VertexAttribDivisor(1, 1);
 
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BindVertexArray(0);
         }
 
-        private int[] Indices => Cube.GetSideIndices();
-        private Vector3[] Vertexes => Cube.GetVertexes();
+        private uint[] Indices => Cube.GetSideIndices();
         private Vector2[] TextureCords => Cube.GetTextureCoords().Select(nn => nn.Xy).ToArray();
     }
 }

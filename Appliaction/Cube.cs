@@ -10,43 +10,49 @@ namespace tmp
             IndiceCount = Indices.Length;
         }
         
-        private static readonly Vector3[] Vertexes =
+        public static readonly Vector3[][] Vertexes =
         {
             //left
+            new[]{
             new Vector3(1f, 0f, 0f),
             new Vector3(1f, 1f, 0f),
             new Vector3(1f, 1f, 1f),
-            new Vector3(1f, 0f, 1f),
+            new Vector3(1f, 0f, 1f)},
 
             //back
+            new[]{
             new Vector3(1f, 1f, 1f),
             new Vector3(0f, 1f, 1f),
             new Vector3(0f, 0f, 1f),
-            new Vector3(1f, 0f, 1f),
+            new Vector3(1f, 0f, 1f)},
 
             //right
+            new[]{
             new Vector3(0f, 1f, 1f),
             new Vector3(0f, 1f, 0f),
             new Vector3(0f, 0f, 0f),
-            new Vector3(0f, 0f, 1f),
+            new Vector3(0f, 0f, 1f)},
 
             //top
+            new[]{
             new Vector3(0f, 1f, 0f),
             new Vector3(0f, 1f, 1f),
             new Vector3(1f, 1f, 1f),
-            new Vector3(1f, 1f, 0f),
+            new Vector3(1f, 1f, 0f)},
 
             //front
+            new[]{
             new Vector3(0f, 0f, 0f),
             new Vector3(0f, 1f, 0f),
             new Vector3(1f, 1f, 0f),
-            new Vector3(1f, 0f, 0f),
+            new Vector3(1f, 0f, 0f)},
 
             //bottom
+            new[]{
             new Vector3(1f, 0f, 1f),
             new Vector3(0f, 0f, 1f),
             new Vector3(0f, 0f, 0f),
-            new Vector3(1f, 0f, 0f),
+            new Vector3(1f, 0f, 0f)},
         };
 
         private static readonly Vector3[] TexCords = {
@@ -102,16 +108,16 @@ namespace tmp
             20, 21, 22, 20, 22, 23
         };
 
-        private static readonly int[] SideIndices = {0, 1, 2, 0, 2, 3};
+        private static readonly uint[] SideIndices = {0, 1, 2, 0, 2, 3};
 
         public static Vector3[] GetTextureCoords() => TexCords;
         
 
-        public static Vector3[] GetVertexes() => Vertexes;
+        public static Vector3[][] GetVertexes() => Vertexes;
         
 
         public static int[] GetIndices() => Indices;
         
-        public static int[] GetSideIndices() => SideIndices;
+        public static uint[] GetSideIndices() => SideIndices;
     }
 }

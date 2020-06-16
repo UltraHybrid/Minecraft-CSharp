@@ -32,9 +32,9 @@
     public class RevisedData
     {
         public List<Vector3> Positions { get; }
-        public List<Vector2> TexturesData { get; }
+        public List<uint> TexturesData { get; }
 
-        public RevisedData(List<Vector3> positions, List<Vector2> texturesData)
+        public RevisedData(List<Vector3> positions, List<uint> texturesData)
         {
             Positions = positions;
             TexturesData = texturesData;

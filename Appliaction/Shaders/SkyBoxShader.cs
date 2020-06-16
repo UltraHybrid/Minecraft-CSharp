@@ -9,7 +9,7 @@ namespace tmp
         private readonly int shaderProgram;
         private int vao, vbo, ebo;
         private readonly int vPMatrixLocation;
-        private static int[] Indices => Cube.GetSideIndices();
+        private static uint[] Indices => Cube.GetSideIndices();
 
         public SkyBoxShader()
         {

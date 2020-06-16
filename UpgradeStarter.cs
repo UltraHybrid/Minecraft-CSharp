@@ -8,17 +8,19 @@ namespace tmp
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Number Of Logical Processors: {0}", Environment.ProcessorCount);
             TextureInfo.Order = new[]
             {
                 TextureSide.Left, TextureSide.Back, TextureSide.Right,
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
-            ThreadPool.SetMaxThreads(4,4);
-            ThreadPool.SetMinThreads(4, 4);
+            ThreadPool.SetMaxThreads(Environment.ProcessorCount,Environment.ProcessorCount);
+            ThreadPool.SetMinThreads(Environment.ProcessorCount, Environment.ProcessorCount);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 30;
-            var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
-            //var manager = new WorldManager(new RandomGenerator());
+            var worldSize = 10;
+            //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            var manager = new WorldManager2(new RandomGenerator());
+            //var manager = new WorldManager2(new FlatGenerator());
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);

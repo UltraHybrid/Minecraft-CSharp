@@ -55,36 +55,21 @@ namespace tmp
         private const string VertSrcSide =
             @"#version 410 core
 
-            layout (location = 0) in vec3 position;
-            layout (location = 1) in vec2 sideTex;
-            layout (location = 2) in vec3 vert[6];
-            layout (location = 8) in vec2 texCord[6];
+            layout (location = 0) in vec3 vertex;
 
             uniform mat4 viewProjection;
 
-            out vec3 color;
-
             void main(void)
             {
-                int sideID = int(sideTex.x);
-                gl_Position = viewProjection * vec4(position + vert[sideID], 1.0);
-                color = vec3(texCord[sideID], sideTex.y);
+                gl_Position = viewProjection * vec4(vertex, 1.0);
             }";
 
         private const string FragSrcSide =
             @"#version 410 core
 
-            in vec3 color;
-
-            uniform sampler2DArray tarr;
-
             void main(void)
             {
-                vec4 tmp = texture(tarr, color);
-                if(tmp.a < 0.1)
-                    discard;
-                
-                gl_FragColor = tmp;
+                gl_FragColor = vec4(1, 0, 1, 1);
             }";
 
         private const string VertSkyBox =

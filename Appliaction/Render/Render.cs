@@ -10,10 +10,6 @@ namespace tmp
     {
         #region Variables
 
-        private int texture, arrayTex;
-        private readonly List<PointI> chunksCords = new List<PointI>();
-        private readonly List<int> chunkSidesCount = new List<int>();
-
         private Matrix4 viewMatrix;
         private Matrix4 projectionMatrix, viewProjectionMatrix;
 
@@ -72,7 +68,7 @@ namespace tmp
         {
             GL.Viewport(0, 0, width, height);
             viewMatrix = Matrix4.Identity;
-            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, width / (float) height, 0.1f, 1575);
+            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(1.3f, width / (float) height, 0.1f, visualManager.World.Size * 16 * 2);
         }
     }
 }
