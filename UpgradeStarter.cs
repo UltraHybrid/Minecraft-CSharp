@@ -21,7 +21,7 @@ namespace tmp
             ThreadPool.SetMaxThreads(threads,threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 20;
+            var worldSize = 10;
             var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             //var manager = new WorldManager(new RandomGenerator());
             var game = new Game(worldSize, startOffset, manager);

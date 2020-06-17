@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 using tmp.Domain.TrialVersion;
+using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
     public sealed class FreeFlyMover : EntityMover
     {
-        public override Vector Left { get; set; }
-        public override Vector Up { get; set; }
+        public override Vector3 Left { get; set; }
+        public override Vector3 Up { get; set; }
         public override float Speed { get; set; }
         private float pitch;
 
@@ -38,19 +41,19 @@ namespace tmp.Domain
             }
         }
 
-        public FreeFlyMover(Vector position, Vector front) : base(position, front)
+        public FreeFlyMover(PointF position, Vector3 front) : base(position, front)
         {
             Speed = 15f;
             Front = front;
-            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalized();
-            Up = Vector.Cross(Front, Left).Normalized();
+            Left = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, front));
+            Up = Vector3.Normalize(Vector3.Cross(Front, Left));
         }
 
         public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {
             var distance = Speed * time;
-            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalized();
-            var resultMove = Vector.Zero;
+            var frontXZ = Vector3.Normalize(new Vector3(Front.X, 0, Front.Z));
+            var resultMove = Vector3.Zero;
             foreach (var direction in directions)
             {
                 resultMove += direction switch
@@ -63,8 +66,9 @@ namespace tmp.Domain
                     Direction.Down => -Up,
                 };
             }
-            
-            Position += distance * (resultMove.Normalized());
+
+            if (!resultMove.Equals(Vector3.Zero))
+                Position = Position.Add(distance * Vector3.Normalize(resultMove));
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
@@ -72,7 +76,7 @@ namespace tmp.Domain
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Left = Vector.Cross(Up, Front).Normalized();
+            Left = Vector3.Normalize(Vector3.Cross(Up, Front));
         }
     }
 }

@@ -40,9 +40,14 @@ namespace tmp
         }
 
 
-        public static Vector3 Convert(this Vector vector)
+        public static Vector3 Convert(this System.Numerics.Vector3 vectorLast)
         {
-            return new Vector3(vector.X, vector.Y, vector.Z);
+            return new Vector3(vectorLast.X, vectorLast.Y, vectorLast.Z);
+        }
+        
+        public static Vector3 Convert(this PointF vectorLast)
+        {
+            return new Vector3(vectorLast.X, vectorLast.Y, vectorLast.Z);
         }
     }
 }

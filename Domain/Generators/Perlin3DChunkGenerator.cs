@@ -1,5 +1,4 @@
-﻿using tmp.Domain.TrialVersion;
-using tmp.Domain.TrialVersion.Blocks;
+﻿using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 

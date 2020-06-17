@@ -5,7 +5,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
 {
-    public class HitBox : IEnumerable<PointF>
+    public struct HitBox : IEnumerable<PointF>
     {
         public PointF Up0;
         public PointF Up1;
@@ -17,6 +17,7 @@ namespace tmp.Infrastructure
         public PointF Down3;
         private PointF size;
         private Basis basis;
+        public static HitBox Unit => new HitBox(1, 1, 1, Basis.UnitBasis);
 
         public HitBox(float xLength, float yLength, float zLength, Basis centerBasis)
         {

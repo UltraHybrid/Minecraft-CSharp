@@ -1,4 +1,3 @@
-using tmp.Domain.TrialVersion;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
@@ -23,12 +22,6 @@ namespace tmp.Domain.Generators
                 {
                     var value = (int) (highGenerator.Generate(x * Chunk<Block>.XLength + i,
                         z * Chunk<Block>.ZLength + k) * 22f + 100);
-                    /*if (value < 0)
-                    {
-                        Console.WriteLine("?????????");
-                        var position = new PointB(i, 0, k);
-                        chunk[position] = new Block(BaseBlocks.Grass, position);
-                    }*/
 
                     for (var j = value; j >= 0; j--)
                     {

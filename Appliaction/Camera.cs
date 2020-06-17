@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using tmp.Domain;
+using tmp.Infrastructure.SimpleMath;
 using Vector3 = OpenTK.Vector3;
 
 namespace tmp

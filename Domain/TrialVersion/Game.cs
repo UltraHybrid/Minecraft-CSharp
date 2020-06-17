@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure.SimpleMath;
 
@@ -27,7 +28,7 @@ namespace tmp.Domain
             var ready = manager.MakeFirstLunch();
             Console.WriteLine("Ready ");
             Console.WriteLine("World " + World.Count);
-            Player = new Player(DefineSpawn(ready), new Vector(0, 0, 1), 10);
+            Player = new Player(DefineSpawn(ready), new Vector3(0, 0, 1), 10);
         }
 
         public void Update()
@@ -35,7 +36,7 @@ namespace tmp.Domain
             manager.Update();
         }
 
-        private Vector DefineSpawn(PointI ready)
+        private PointF DefineSpawn(PointI ready)
         {
             var chunk = World[ready];
             for (byte x = 0; x < Chunk<Block>.XLength; x++)
@@ -48,27 +49,13 @@ namespace tmp.Domain
                         var p1 = new PointB(x, (byte) (y + 1), z);
                         var p2 = new PointB(x, (byte) (y + 2), z);
                         if (chunk[p0] != null && chunk[p1] == null && chunk[p2] == null)
-                            return BlockWorld.GetAbsolutePosition(p1, ready).AsVector() + new Vector(0.5f, 0, 0.5f);
+                            return (BlockWorld.GetAbsolutePosition(p1, ready).AsVector() + new Vector3(0.5f, 0, 0.5f))
+                                .AsPointF();
                     }
                 }
             }
 
             throw new ArgumentException("Не удалось найти подходящего для спавна места", ready.ToString());
-
-            /*var empty = Enumerable.Range(-252, 252)
-                .Select(Math.Abs)
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                .First(p =>
-                    World.GetItem(World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) p, 0), ready)) !=
-                    null &&
-                    World.GetItem(
-                        World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 1), 0), ready)) ==
-                    null &&
-                    World.GetItem(
-                        World<Chunk<Block>, Block>.GetAbsolutePosition(new PointB(0, (byte) (p + 2), 0), ready)) ==
-                    null);
-            return (Vector) World<Chunk<Block>, Block>.GetAbsolutePosition(PointB.Zero, ready) +
-                   new Vector(0.5f, empty + 1, 0.5f);*/
         }
     }
 }

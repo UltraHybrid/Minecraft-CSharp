@@ -1,4 +1,6 @@
-﻿namespace tmp.Infrastructure.SimpleMath
+﻿using System.Numerics;
+
+namespace tmp.Infrastructure.SimpleMath
 {
     public static class SimpleMath
     {
@@ -12,19 +14,39 @@
             return new PointI(point.X, point.Y, point.Z);
         }
 
-        public static Vector AsVector(this PointI point)
+        public static Vector3 AsVector(this PointI point)
         {
-            return new Vector(point.X, point.Y, point.Z);
+            return new Vector3(point.X, point.Y, point.Z);
         }
 
-        public static PointF Add(this PointF point, Vector vector)
+        public static PointF Add(this PointF point, Vector3 vectorLast)
         {
-            return new PointF(point.X + vector.X, point.Y + vector.Y, point.Z + vector.Z);
+            return new PointF(point.X + vectorLast.X, point.Y + vectorLast.Y, point.Z + vectorLast.Z);
         }
 
-        public static PointI AsPointI(this Vector vector)
+        public static PointI AsPointI(this Vector3 vectorLast)
         {
-            return new PointI((int) vector.X, (int) vector.Y, (int) vector.Z);
+            return new PointI((int) vectorLast.X, (int) vectorLast.Y, (int) vectorLast.Z);
+        }
+
+        public static PointF AsPointF(this PointI point)
+        {
+            return new PointF(point.X, point.Y, point.Z);
+        }
+
+        public static PointI AsPointI(this PointF point)
+        {
+            return new PointI((int) point.X, (int) point.Y, (int) point.Z);
+        }
+
+        public static Vector3 AsVector(this PointF point)
+        {
+            return new Vector3(point.X, point.Y, point.Z);
+        }
+
+        public static PointF AsPointF(this Vector3 vectorLast)
+        {
+            return new PointF(vectorLast.X, vectorLast.Y, vectorLast.Z);
         }
     }
 }
