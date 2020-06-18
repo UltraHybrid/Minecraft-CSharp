@@ -28,7 +28,7 @@ namespace tmp.Domain.Generators
 
             if (treeRoot.Equals(PointI.Zero))
                 return source;
-            Console.WriteLine("Spawn " + World<Chunk<Block>, Block>.GetAbsolutePosition(treeRoot.AsPointB(), source.Position));
+            //Console.WriteLine("Spawn " + World<Chunk<Block>, Block>.GetAbsolutePosition(treeRoot.AsPointB(), source.Position));
             
             treeRoot = treeRoot.Add(WorldStructures.Tree.ShiftToCenter);
             foreach (var coord in WorldStructures.Tree.TrunkCoordinates)

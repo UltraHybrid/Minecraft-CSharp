@@ -7,9 +7,9 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
-    public class WorldManager2: IDisposable
+    public class WorldManager : IDisposable
     {
-        private readonly IGenerator<PointI, Chunk<Block>> landscapeGenerator;
+        private readonly IGenerator<PointI, Chunk<Block>> generator;
         private readonly ChunkManager<PointI, Chunk<Block>> manager;
         private GameWorld world;
 
@@ -17,25 +17,15 @@ namespace tmp.Domain
         public event Action<Chunk<Block>> DeleteAlert;
         public event Action<Chunk<Block>> UpdateAlert;
 
-        public WorldManager2(IGenerator<PointI, Chunk<Block>> landscapeGenerator)
+        public WorldManager(IGenerator<PointI, Chunk<Block>> generator)
         {
-            this.landscapeGenerator = landscapeGenerator;
-            this.manager =
-                new ChunkManager<PointI, Chunk<Block>>((point) =>
-                {
-                    Thread.Sleep(140);
-                    return this.landscapeGenerator.Generate(point);
-                });
+            this.generator = generator;
+            manager = new ChunkManager<PointI, Chunk<Block>>(this.generator.Generate);
         }
 
         public void SetWorld(GameWorld gameWorld)
         {
             world = gameWorld;
-        }
-
-        private Chunk<Block> Generate(PointI position)
-        {
-            return landscapeGenerator.Generate(position);
         }
 
         public PointI MakeFirstLunch()
@@ -80,24 +70,43 @@ namespace tmp.Domain
             }
         }
 
-        protected virtual void AddNotifyAll(Chunk<Block> chunk)
+        private void AddNotifyAll(Chunk<Block> chunk)
         {
             AddAlert?.Invoke(chunk);
         }
 
-        protected virtual void DeleteAlertAll(Chunk<Block> chunk)
+        private void DeleteAlertAll(Chunk<Block> chunk)
         {
             DeleteAlert?.Invoke(chunk);
         }
 
-        protected virtual void UpdateAlertAll(Chunk<Block> chunk)
+        private void UpdateAlertAll(Chunk<Block> chunk)
         {
             UpdateAlert?.Invoke(chunk);
         }
 
+        private bool isDisposed = false;
+
+        ~WorldManager()
+        {
+            Dispose(false);
+        }
+        
         public void Dispose()
         {
-            manager.Stop();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool fromDisposeMethod)
+        {
+            if (!isDisposed)
+            {
+                if (fromDisposeMethod)
+                {
+                    manager.Stop();
+                }
+                isDisposed = true;
+            }
         }
     }
 }

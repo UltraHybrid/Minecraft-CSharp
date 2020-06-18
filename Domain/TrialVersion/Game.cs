@@ -13,9 +13,9 @@ namespace tmp.Domain
         public BlockWorld World { get; }
         public Player Player { get; private set; }
 
-        private readonly WorldManager2 manager;
+        private readonly WorldManager manager;
 
-        public Game(int worldSize, PointI worldOffset, WorldManager2 manager)
+        public Game(int worldSize, PointI worldOffset, WorldManager manager)
         {
             var world = new GameWorld(worldOffset, worldSize);
             this.manager = manager;

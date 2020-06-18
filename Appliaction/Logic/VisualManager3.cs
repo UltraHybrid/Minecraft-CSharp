@@ -9,7 +9,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Logic
 {
-    public class VisualManager3 : IChunkManager<VisualizerData>
+    public class VisualManager3
     {
         private readonly IVisualizer<Block> visualizer;
         private readonly VisualWorld visualWorld;

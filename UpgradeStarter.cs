@@ -18,8 +18,8 @@ namespace tmp
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
             var threads = Environment.ProcessorCount;
-            ThreadPool.SetMaxThreads(threads, threads);
-            ThreadPool.SetMinThreads(threads, threads);
+            ThreadPool.SetMaxThreads(threads/2, threads/2);
+            ThreadPool.SetMinThreads(threads/2, threads/2);
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 10;
             var gg = new WorldGenerator(
@@ -28,7 +28,7 @@ namespace tmp
                 new SimpleTreeSpawner());
             //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
             //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
-            var manager = new WorldManager2(gg);
+            var manager = new WorldManager(gg);
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
