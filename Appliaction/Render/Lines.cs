@@ -8,8 +8,8 @@ namespace tmp
     {
         private int vbo, vao;
         private readonly int shaderProgram, vPMatrixLocation;
-        private IMover viewer;
-        public Lines(IMover viewer)
+        private IMover2 viewer;
+        public Lines(IMover2 viewer)
         {
             this.viewer = viewer;
             shaderProgram = Shaders.GetLineShader();

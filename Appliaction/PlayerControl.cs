@@ -15,10 +15,10 @@ namespace tmp
 
         private Vector2 lastMousePosition;
         private readonly Dictionary<Key, bool> keys;
-        private readonly EntityMover entity;
+        private readonly EntityMover2 entity;
         private readonly IWorld<Chunk<Block>, Block> world;
 
-        public PlayerControl(Dictionary<Key, bool> keys, EntityMover entity, IWorld<Chunk<Block>, Block> world)
+        public PlayerControl(Dictionary<Key, bool> keys, EntityMover2 entity, IWorld<Chunk<Block>, Block> world)
         {
             this.keys = keys;
             this.entity = entity;
@@ -45,7 +45,7 @@ namespace tmp
             lastMousePosition = new Vector2(mouse.X, mouse.Y);
             var yaw = deltaX * MouseSensitivity;
             var pitch = deltaY * MouseSensitivity;
-            new RotateCommand(entity, yaw, pitch).Execute();
+            new RotateCommand(entity, yaw, -pitch).Execute();
         }
     }
 }
