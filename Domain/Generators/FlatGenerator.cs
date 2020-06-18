@@ -4,11 +4,11 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain.Generators
 {
-    public class FlatGenerator : IGenerator<int, Chunk<Block>>
+    public class FlatGenerator : IGenerator<PointI, Chunk<Block>>
     {
-        public Chunk<Block> Generate(int x, int z)
+        public Chunk<Block> Generate(PointI point)
         {
-            var chunk = new Chunk<Block>(PointI.CreateXZ(x, z));
+            var chunk = new Chunk<Block>(point);
             for (byte i = 0; i < Chunk<Block>.XLength; i++)
             for (byte j = 0; j < 5; j++)
             for (byte k = 0; k < Chunk<Block>.ZLength; k++)

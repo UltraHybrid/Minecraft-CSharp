@@ -18,20 +18,24 @@ namespace tmp
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
             var threads = Environment.ProcessorCount;
-            ThreadPool.SetMaxThreads(threads,threads);
+            ThreadPool.SetMaxThreads(threads, threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 10;
-            var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
-            //var manager = new WorldManager(new RandomGenerator());
+            var gg = new WorldGenerator(
+                new LandGenerator(UsageGenerators.CoreGenerator),
+                new OreGenerator(UsageGenerators.OreCoreGenerator),
+                new SimpleTreeSpawner());
+            //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
+            //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            var manager = new WorldManager2(gg);
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
-            //manager.AddAlert += (ch) => Console.WriteLine("Generate " + ch.Position);
             manager.AddAlert += visualManager.HandlerForAdd;
-            
+
             game.Start();
-            
+
             Console.Beep();
             GC.Collect();
             GC.WaitForPendingFinalizers();

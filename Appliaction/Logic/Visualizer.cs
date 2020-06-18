@@ -42,7 +42,8 @@ namespace tmp.Logic
 
         private VisualizerData ChooseBordersWithEmpty(PointI position)
         {
-            var currentBTextures = gameWorld.GetItem(position).BlockType.Textures.GetOrderedTextures();
+            var currentBlock = gameWorld.GetItem(position);
+            var currentBTextures = currentBlock.BlockType.Textures.GetOrderedTextures();
             var result = new List<FaceData>();
             for (var i = 0; i < TextureInfo.Order.Length; i++)
             {
@@ -60,7 +61,8 @@ namespace tmp.Logic
 
                 var neighboringBlock = gameWorld.GetItem(position.Add(offset));
 
-                if (neighboringBlock == null || neighboringBlock == Block.Either)
+                if (neighboringBlock == null || neighboringBlock == Block.Either ||
+                    neighboringBlock.BlockType == BaseBlocks.Glass || currentBlock.BlockType == BaseBlocks.CoalOre)
                     result.Add(new FaceData(currentBTextures[i], i, 15));
             }
 

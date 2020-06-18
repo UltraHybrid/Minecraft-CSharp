@@ -1,8 +1,9 @@
 using System;
+using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
 {
-    public class PerlinHighGenerator : IGenerator<float, float>
+    public class PerlinHighGenerator : IGenerator<PointF, float>
     {
         private readonly float persistence;
         private readonly float frequency;
@@ -20,9 +21,9 @@ namespace tmp.Infrastructure
             Seed = (float) (20 * Math.PI + new Random().NextDouble() * 30 * Math.PI);
         }
 
-        public float Generate(float x, float z)
+        public float Generate(PointF point)
         {
-            return GetPerlinNoise(x, z, Seed);
+            return GetPerlinNoise(point.X, point.Z, Seed);
         }
 
         private float GetPerlinNoise(float x, float z, float factor)

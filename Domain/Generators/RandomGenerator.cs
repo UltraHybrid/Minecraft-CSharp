@@ -6,12 +6,12 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain.Generators
 {
-    public class RandomGenerator : IGenerator<int, Chunk<Block>>
+    public class RandomGenerator : IGenerator<PointI, Chunk<Block>>
     {
-        public Chunk<Block> Generate(int x, int z)
+        public Chunk<Block> Generate(PointI point)
         {
             var rnd = new Random();
-            var chunk = new Chunk<Block>(PointI.CreateXZ(x, z));
+            var chunk = new Chunk<Block>(point);
             var allBlocks = BaseBlocks.AllBlocks;
             for (byte i = 0; i < Chunk<Block>.XLength; i++)
             for (byte j = 0; j < Chunk<Block>.YLength - 1; j++)

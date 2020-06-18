@@ -9,7 +9,7 @@ namespace tmp.Domain
 {
     public class WorldManager2: IDisposable
     {
-        private readonly IGenerator<int, Chunk<Block>> landscapeGenerator;
+        private readonly IGenerator<PointI, Chunk<Block>> landscapeGenerator;
         private readonly ChunkManager<PointI, Chunk<Block>> manager;
         private GameWorld world;
 
@@ -17,14 +17,14 @@ namespace tmp.Domain
         public event Action<Chunk<Block>> DeleteAlert;
         public event Action<Chunk<Block>> UpdateAlert;
 
-        public WorldManager2(IGenerator<int, Chunk<Block>> landscapeGenerator)
+        public WorldManager2(IGenerator<PointI, Chunk<Block>> landscapeGenerator)
         {
             this.landscapeGenerator = landscapeGenerator;
             this.manager =
                 new ChunkManager<PointI, Chunk<Block>>((point) =>
                 {
                     Thread.Sleep(140);
-                    return this.landscapeGenerator.Generate(point.X, point.Z);
+                    return this.landscapeGenerator.Generate(point);
                 });
         }
 
@@ -35,7 +35,7 @@ namespace tmp.Domain
 
         private Chunk<Block> Generate(PointI position)
         {
-            return landscapeGenerator.Generate(position.X, position.Z);
+            return landscapeGenerator.Generate(position);
         }
 
         public PointI MakeFirstLunch()

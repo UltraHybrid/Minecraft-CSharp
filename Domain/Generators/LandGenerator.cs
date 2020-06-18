@@ -1,14 +1,15 @@
-using tmp.Domain.TrialVersion.Blocks;
+﻿using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain.Generators
 {
-    public class PerlinChunkGenerator : IGenerator<PointI, Chunk<Block>>
+    public class LandGenerator : IGenerator<PointI, Chunk<Block>>
     {
+        // ReSharper disable once InconsistentNaming
         private readonly IGenerator<PointF, float> highGenerator;
 
-        public PerlinChunkGenerator(IGenerator<PointF, float> highGenerator)
+        public LandGenerator(IGenerator<PointF, float> highGenerator)
         {
             this.highGenerator = highGenerator;
         }
@@ -23,12 +24,8 @@ namespace tmp.Domain.Generators
                     var innerPoint = PointF.CreateXZ(point.X * Chunk<Block>.XLength + i,
                         point.Z * Chunk<Block>.ZLength + k);
                     var value = (int) (highGenerator.Generate(innerPoint) * 22f + 100);
-
-                    for (var j = value; j >= 0; j--)
-                    {
-                        var position = new PointB(i, (byte) j, k);
-                        chunk[position] = new Block(j == value ? BaseBlocks.Grass : BaseBlocks.Dirt, position);
-                    }
+                    var position = new PointB(i, (byte) value, k);
+                    chunk[position] = new Block(BaseBlocks.Grass, position);
                 }
             }
 

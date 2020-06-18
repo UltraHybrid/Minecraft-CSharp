@@ -13,6 +13,9 @@ namespace tmp.Domain.Generators
         public static readonly PerlinHighGenerator OtherGenerator2 =
             new PerlinHighGenerator(0.43f, (1 / 215.0f), 20.0f, 9);
 
+        public static readonly PerlinHighGenerator OreCoreGenerator =
+            new PerlinHighGenerator(0.06f, 0.4f, 3.5f, 3) {Seed = 114.78f};
+
         public static readonly Perlin3DChunkGenerator OreGenerator = new Perlin3DChunkGenerator(
             new PerlinHighGenerator(0.06f, 0.4f, 3.5f, 3) {Seed = 114.78f}
         );

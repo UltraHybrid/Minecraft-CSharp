@@ -38,6 +38,21 @@ namespace tmp.Domain.TrialVersion.Blocks
                 Basis.UnitBasis
             );
 
+        public static readonly BlockType IronOre =
+            new BlockType("IronOre", 8,
+                TextureInfo.CreateSolid("iron_ore.png", HitBox.Unit),
+                Basis.UnitBasis);
+
+        public static readonly BlockType GoldOre =
+            new BlockType("GoldOre", 10,
+                TextureInfo.CreateSolid("gold_ore.png", HitBox.Unit),
+                Basis.UnitBasis);
+
+        public static readonly BlockType DiamondOre =
+            new BlockType("DiamondOre", 15,
+                TextureInfo.CreateSolid("diamond_ore.png", HitBox.Unit),
+                Basis.UnitBasis);
+
         public static readonly BlockType Cobblestone =
             new BlockType("Cobblestone", 10,
                 TextureInfo.CreateSolid("cobblestone.png", HitBox.Unit),
@@ -66,6 +81,12 @@ namespace tmp.Domain.TrialVersion.Blocks
         public static readonly BlockType OakLog =
             new BlockType("OakLog", 4,
                 TextureInfo.CreateWithTopAndBottom("oak_log_top.png", "oak_log_top.png", "oak_log.png", HitBox.Unit),
+                Basis.UnitBasis
+            );
+
+        public static readonly BlockType OakLeaves =
+            new BlockType("OakLeaves", 1,
+                TextureInfo.CreateSolid("oak_leaves.png", HitBox.Unit),
                 Basis.UnitBasis
             );
 
