@@ -78,7 +78,6 @@ namespace tmp.Logic
             var (cPosition, ePosition) = gameWorld.Translate2LocalNotation(position);
             var blockPosition = ePosition.AsPointB();
             return ChooseBordersWithEmpty(position);
-
         }
     }
 }

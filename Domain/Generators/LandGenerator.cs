@@ -24,8 +24,13 @@ namespace tmp.Domain.Generators
                     var innerPoint = PointF.CreateXZ(point.X * Chunk<Block>.XLength + i,
                         point.Z * Chunk<Block>.ZLength + k);
                     var value = (int) (highGenerator.Generate(innerPoint) * 22f + 100);
-                    var position = new PointB(i, (byte) value, k);
-                    chunk[position] = new Block(BaseBlocks.Grass, position);
+                    var acme = new PointB(i, (byte) value, k);
+                    chunk[acme] = new Block(BaseBlocks.Grass, acme);
+                    for (var y = value - 1; y >= 0; y--)
+                    {
+                        var position = new PointB(i, (byte) y, k);
+                        chunk[position] = new Block(BaseBlocks.Dirt, position);
+                    }
                 }
             }
 

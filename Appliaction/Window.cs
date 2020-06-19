@@ -119,7 +119,7 @@ namespace tmp
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
             {
-                game.PutBlock(new PointI(5 * 16+c, 120 + c, 5 * 16));
+                game.PutBlock(new PointI(5 * 16+c, 120 , 5 * 16));
                 c++;
             }
         }

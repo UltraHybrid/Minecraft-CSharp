@@ -19,12 +19,14 @@ namespace tmp.Domain.Generators
             {
                 for (var z = 0; z < Chunk<Block>.ZLength; z++)
                 {
-                    for (var y = 0; y < Chunk<Block>.YLength; y++)
+                    for (var y = 0; y < Chunk<Block>.YLength - 3; y++)
                     {
                         var point = new PointI(x, y, z).AsPointB();
-                        if (source[point] != null)
+                        if (source[point.Add(new PointB(0,3,0))] == null)
                             break;
-                        source[point] = DeterminateOre(point, source.Position);
+                        var block = DeterminateOre(point, source.Position);
+                        if (block != null)
+                            source[point] = block;
                     }
                 }
             }
@@ -35,12 +37,23 @@ namespace tmp.Domain.Generators
         private Block DeterminateOre(PointB point, PointI chunkPosition)
         {
             const float coeff = 0.9f;
-            var noiseValue = Get3DNoise(point.X * coeff + chunkPosition.X * Chunk<Block>.XLength, point.Y * coeff,
+            var noiseValue = Get3DNoise(
+                point.X * coeff + chunkPosition.X * Chunk<Block>.XLength,
+                point.Y * coeff,
                 point.Z * coeff + chunkPosition.Z * Chunk<Block>.ZLength);
-            if (noiseValue >= 0.7 && noiseValue<0.71)
+
+            if (noiseValue >= 0.7 && noiseValue < 0.72)
                 return new Block(BaseBlocks.CoalOre, point);
-            else if(noiseValue>=0.01 && noiseValue<0.012)
+
+            if (noiseValue >= 0.01 && noiseValue < 0.015 && point.Y <= 60)
+                return new Block(BaseBlocks.GoldOre, point);
+
+            if (noiseValue >= 0.8 && noiseValue < 0.82)
                 return new Block(BaseBlocks.IronOre, point);
+
+            if (noiseValue >= -0.307 && noiseValue < -0.3 && point.Y <= 35)
+                return new Block(BaseBlocks.DiamondOre, point);
+            
             return null;
         }
 

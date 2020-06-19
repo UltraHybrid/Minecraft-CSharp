@@ -9,22 +9,26 @@ namespace tmp.Domain.Generators
         private readonly IGenerator<PointI, Chunk<Block>> landGenerator;
         private readonly IGenerator<Chunk<Block>, Chunk<Block>> oreGenerator;
         private readonly IGenerator<Chunk<Block>, Chunk<Block>> treeGenerator;
+        private readonly IGenerator<Chunk<Block>, Chunk<Block>> bedrockGenerator;
 
         public WorldGenerator(IGenerator<PointI, Chunk<Block>> landGenerator,
             IGenerator<Chunk<Block>, Chunk<Block>> oreGenerator,
-            IGenerator<Chunk<Block>, Chunk<Block>> treeGenerator)
+            IGenerator<Chunk<Block>, Chunk<Block>> treeGenerator,
+            IGenerator<Chunk<Block>, Chunk<Block>> bedrockGenerator)
         {
             this.landGenerator = landGenerator;
             this.oreGenerator = oreGenerator;
             this.treeGenerator = treeGenerator;
+            this.bedrockGenerator = bedrockGenerator;
         }
 
         public Chunk<Block> Generate(PointI source)
         {
-            var landChunk = landGenerator.Generate(source);
-            var oreChunk = oreGenerator.Generate(landChunk);
-            var treeChunk = treeGenerator.Generate(oreChunk);
-            return treeChunk;
+            return new ChunkBuilder(landGenerator)
+                .UseNext(oreGenerator)
+                .UseNext(treeGenerator)
+                .UseNext(bedrockGenerator)
+                .Compile(source);
         }
     }
 }

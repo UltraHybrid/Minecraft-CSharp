@@ -27,7 +27,9 @@ namespace tmp
             var gg = new WorldGenerator(
                 new LandGenerator(UsageGenerators.CoreGenerator),
                 new OreGenerator(UsageGenerators.OreCoreGenerator),
-                new SimpleTreeSpawner());
+                new SimpleTreeSpawner(),
+                new BedrockGenerator(UsageGenerators.BedrockCoreGenerator)
+                );
             //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
             //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             var manager = new WorldManager(gg);
@@ -36,7 +38,7 @@ namespace tmp
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;
             manager.UpdateAlert += visualManager.HandlerForUpdate;
-            
+
             Console.Beep();
             GC.Collect();
             GC.WaitForPendingFinalizers();
