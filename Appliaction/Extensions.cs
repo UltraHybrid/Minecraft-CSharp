@@ -5,6 +5,7 @@ using OpenTK;
 using tmp.Domain;
 using tmp.Domain.TrialVersion;
 using tmp.Infrastructure.SimpleMath;
+using tmp.Logic;
 
 namespace tmp
 {

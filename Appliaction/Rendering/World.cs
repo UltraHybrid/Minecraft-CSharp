@@ -7,8 +7,10 @@ using OpenTK.Graphics.OpenGL4;
 using tmp.Domain;
 using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
+using Shader = tmp.Shaders.Shaders;
 
-namespace tmp
+
+namespace tmp.Rendering
 {
     public class World : IRender
     {
@@ -35,7 +37,7 @@ namespace tmp
             vao = new int[Size];
             position = new int[Size];
             texturesId = new int[Size];
-            shaderProgram = Shaders.GetSideShader();
+            shaderProgram = Shader.GetSideShader();
             GenBuffers();
             for (var i = 0; i < Size; i++)
                 InstallAttributes(i);

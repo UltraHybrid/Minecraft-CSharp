@@ -1,8 +1,8 @@
-﻿﻿using System.Collections.Generic;
- using OpenTK;
- using tmp.Infrastructure.SimpleMath;
+﻿using System.Collections.Generic;
+using OpenTK;
+using tmp.Infrastructure.SimpleMath;
 
- namespace tmp
+namespace tmp.Logic
 {
     public class VisualizerData
     {

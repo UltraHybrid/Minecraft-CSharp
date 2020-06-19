@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
 
-namespace tmp
+namespace tmp.Rendering
 {
     public class Render
     {

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace tmp
+namespace tmp.Shaders
 {
     public class BlocksShader
     {
