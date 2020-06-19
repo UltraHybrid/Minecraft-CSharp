@@ -11,7 +11,7 @@ namespace tmp.Infrastructure
         public readonly string Front;
         public readonly string Top;
         public readonly string Bottom;
-        public readonly HitBox Appearance;
+        public readonly Geometry Appearance;
 
         public static TextureSide[] Order =
         {
@@ -30,7 +30,7 @@ namespace tmp.Infrastructure
         };
 
         public TextureInfo(string left, string back, string right,
-            string front, string top, string bottom, HitBox appearance)
+            string front, string top, string bottom, Geometry appearance)
         {
             Left = left;
             Back = back;
@@ -41,13 +41,13 @@ namespace tmp.Infrastructure
             Appearance = appearance;
         }
 
-        public static TextureInfo CreateWithTopAndBottom(string top, string bottom, string side, HitBox appearance)
+        public static TextureInfo CreateWithTopAndBottom(string top, string bottom, string side, Geometry appearance)
         {
             return new TextureInfo(side, side, side,
                 side, top, bottom, appearance);
         }
 
-        public static TextureInfo CreateSolid(string texture, HitBox appearance)
+        public static TextureInfo CreateSolid(string texture, Geometry appearance)
         {
             return new TextureInfo(texture, texture, texture,
                 texture, texture, texture, appearance);

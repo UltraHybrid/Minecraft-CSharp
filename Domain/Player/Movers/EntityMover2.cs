@@ -12,7 +12,7 @@ namespace tmp.Domain
         public Vector3 Front { get; protected set; }
         protected Vector3 Right { get; set;}
         protected Vector3 Up { get; set; }
-        public abstract HitBox HitBox { get; }
+        public abstract Geometry Geometry { get; }
 
         public EntityMover2(PointF position, Vector3 front)
         {

@@ -28,7 +28,7 @@ namespace tmp.Domain
             var ready = manager.MakeFirstLunch();
             Console.WriteLine("Ready ");
             Console.WriteLine("World " + World.Count);
-            Player = new Player(DefineSpawn(ready), new Vector3(1, 0, 0), 10);
+            Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
         }
 
         public void Update()

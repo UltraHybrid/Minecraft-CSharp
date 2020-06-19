@@ -5,7 +5,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
 {
-    public struct HitBox : IEnumerable<PointF>
+    public struct Geometry : IEnumerable<PointF>
     {
         public PointF Up0;
         public PointF Up1;
@@ -17,20 +17,25 @@ namespace tmp.Infrastructure
         public PointF Down3;
         private PointF size;
         private Basis basis;
-        public static HitBox Unit => new HitBox(1, 1, 1, Basis.UnitBasis);
+        public static Geometry Unit => new Geometry(1, 1, 1, Basis.UnitBasis);
 
-        public HitBox(float xLength, float yLength, float zLength, Basis centerBasis)
+        public Geometry(float xLength, float yLength, float zLength, Basis centerBasis)
         {
             basis = centerBasis.Scale(xLength, yLength, zLength);
             size = new PointF(xLength, yLength, zLength);
-            Down0 = basis.O.Add(basis.I / 2 - basis.K / 2);
-            Down1 = basis.O.Add(-basis.I / 2 - basis.K / 2);
-            Down2 = basis.O.Add(-basis.I / 2 + basis.K / 2);
-            Down3 = basis.O.Add(basis.I / 2 + basis.K / 2);
+            Down0 = basis.O.Add(-basis.I / 2 - basis.K / 2);
+            Down1 = basis.O.Add(-basis.I / 2 + basis.K / 2);
+            Down2 = basis.O.Add(basis.I / 2 + basis.K / 2);
+            Down3 = basis.O.Add(basis.I / 2 - basis.K / 2);
             Up0 = Down0.Add(basis.J);
             Up1 = Down1.Add(basis.J);
             Up2 = Down2.Add(basis.J);
             Up3 = Down3.Add(basis.J);
+        }
+
+        public static Geometry Identity(Basis basis)
+        {
+            return new Geometry(1,1,1,basis);
         }
 
         public bool IsInnerPoint(PointF point)
@@ -39,7 +44,7 @@ namespace tmp.Infrastructure
             return 0 <= p.X && p.X <= size.X && 0 <= p.Y && p.Y <= size.Y && 0 <= p.Z && p.Z <= size.Z;
         }
 
-        public bool IsCollision(HitBox other)
+        public bool IsCollision(Geometry other)
         {
             return other.Any(IsInnerPoint);
         }

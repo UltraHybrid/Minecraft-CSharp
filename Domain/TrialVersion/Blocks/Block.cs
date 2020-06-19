@@ -17,10 +17,10 @@ namespace tmp.Domain.TrialVersion.Blocks
             Position = position;
         }
 
-        public HitBox GetHitBox()
+        public Geometry GetHitBox()
         {
             var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
-            return new HitBox(1, 1, 1, offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2));
+            return  Geometry.Identity(offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2));
         }
 
         public bool CanRemove()

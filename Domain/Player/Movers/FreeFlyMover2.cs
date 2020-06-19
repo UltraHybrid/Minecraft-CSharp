@@ -41,7 +41,7 @@ namespace tmp.Domain
             Speed = 15f;
         }
 
-        public override HitBox HitBox { get; }
+        public override Geometry Geometry { get; }
 
         public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
         {

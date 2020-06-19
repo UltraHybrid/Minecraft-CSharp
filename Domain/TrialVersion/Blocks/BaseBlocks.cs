@@ -10,89 +10,89 @@ namespace tmp.Domain.TrialVersion.Blocks
     {
         public static readonly BlockType Dirt =
             new BlockType("Dirt", 3,
-                TextureInfo.CreateSolid("dirt.png", HitBox.Unit),
+                TextureInfo.CreateSolid("dirt.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Glass =
             new BlockType("Glass", 1,
-                TextureInfo.CreateSolid("glass.png", HitBox.Unit),
+                TextureInfo.CreateSolid("glass.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Stone =
             new BlockType("Stone", 10,
-                TextureInfo.CreateSolid("stone.png", HitBox.Unit),
+                TextureInfo.CreateSolid("stone.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Sand =
             new BlockType("Sand", 2,
-                TextureInfo.CreateSolid("sand.png", HitBox.Unit),
+                TextureInfo.CreateSolid("sand.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType CoalOre =
             new BlockType("CoalOre", 5,
-                TextureInfo.CreateSolid("coal_ore.png", HitBox.Unit),
+                TextureInfo.CreateSolid("coal_ore.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType IronOre =
             new BlockType("IronOre", 8,
-                TextureInfo.CreateSolid("iron_ore.png", HitBox.Unit),
+                TextureInfo.CreateSolid("iron_ore.png", Geometry.Unit),
                 Basis.UnitBasis);
 
         public static readonly BlockType GoldOre =
             new BlockType("GoldOre", 10,
-                TextureInfo.CreateSolid("gold_ore.png", HitBox.Unit),
+                TextureInfo.CreateSolid("gold_ore.png", Geometry.Unit),
                 Basis.UnitBasis);
 
         public static readonly BlockType DiamondOre =
             new BlockType("DiamondOre", 15,
-                TextureInfo.CreateSolid("diamond_ore.png", HitBox.Unit),
+                TextureInfo.CreateSolid("diamond_ore.png", Geometry.Unit),
                 Basis.UnitBasis);
 
         public static readonly BlockType Cobblestone =
             new BlockType("Cobblestone", 10,
-                TextureInfo.CreateSolid("cobblestone.png", HitBox.Unit),
+                TextureInfo.CreateSolid("cobblestone.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Bedrock =
             new BlockType("Bedrock", int.MaxValue,
-                TextureInfo.CreateSolid("bedrock.png", HitBox.Unit),
+                TextureInfo.CreateSolid("bedrock.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType GrassPath =
             new BlockType("GrassPath", 3,
                 TextureInfo.CreateWithTopAndBottom("grass_path_top.png", "dirt.png", "grass_path_side.png",
-                    HitBox.Unit),
+                    Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Grass =
             new BlockType("Grass", 3,
-                TextureInfo.CreateWithTopAndBottom("grass_top.png", "dirt.png", "grass_block_side.png", HitBox.Unit),
+                TextureInfo.CreateWithTopAndBottom("grass_top.png", "dirt.png", "grass_block_side.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType OakLog =
             new BlockType("OakLog", 4,
-                TextureInfo.CreateWithTopAndBottom("oak_log_top.png", "oak_log_top.png", "oak_log.png", HitBox.Unit),
+                TextureInfo.CreateWithTopAndBottom("oak_log_top.png", "oak_log_top.png", "oak_log.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType OakLeaves =
             new BlockType("OakLeaves", 1,
-                TextureInfo.CreateSolid("oak_leaves.png", HitBox.Unit),
+                TextureInfo.CreateSolid("oak_leaves.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
         public static readonly BlockType Snow =
             new BlockType("Snow", 2,
-                TextureInfo.CreateSolid("snow.png", HitBox.Unit),
+                TextureInfo.CreateSolid("snow.png", Geometry.Unit),
                 Basis.UnitBasis
             );
 
