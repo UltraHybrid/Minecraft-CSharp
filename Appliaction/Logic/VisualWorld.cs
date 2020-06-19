@@ -1,4 +1,5 @@
-﻿using tmp.Domain;
+﻿using System;
+using tmp.Domain;
 using tmp.Domain.TrialVersion;
 using tmp.Infrastructure.SimpleMath;
 
@@ -9,12 +10,16 @@ namespace tmp.Logic
         public VisualWorld(PointI startOffset, int size) : base(startOffset, size)
         {
         }
-        
-        
+
+
         public float[] GetRowData(PointI position)
         {
-            return this[new PointI(position.X, 0, position.Z)].RowData[position.Y].ToArray();
-        } 
+            var ch = this[new PointI(position.X, 0, position.Z)];
+            Console.WriteLine(ch == null);
+            var rd = ch.RowData[position.Y];
+            Console.WriteLine(rd == null);
+            return rd.ToArray();
+        }
 
 
         public override VisualizerData GetItem(PointI position)
