@@ -6,12 +6,12 @@ namespace tmp.Domain.Commands
 {
     public class MoveCommand : ICommand
     {
-        private readonly IMover entity;
+        private readonly IMover2 entity;
         private readonly IEnumerable<Direction> directions;
         private readonly float time;
         private readonly IWorld<Chunk<Block>, Block> world;
 
-        public MoveCommand(IMover entity, IWorld<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
+        public MoveCommand(IMover2 entity, IWorld<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
         {
             this.entity = entity;
             this.world = world;
@@ -27,11 +27,11 @@ namespace tmp.Domain.Commands
 
     public class RotateCommand : ICommand
     {
-        private readonly IMover mover;
+        private readonly IMover2 mover;
         private readonly float dx;
         private readonly float dy;
 
-        public RotateCommand(IMover mover, float dx, float dy)
+        public RotateCommand(IMover2 mover, float dx, float dy)
         {
             this.mover = mover;
             this.dx = dx;

@@ -24,10 +24,10 @@ namespace tmp.Rendering
         private readonly List<PointI> chunksCords = new List<PointI>();
         private readonly List<int> chunkSidesCount = new List<int>();
         private readonly VisualManager3 visualManager;
-        private readonly IMover viewer;
+        private readonly IMover2 viewer;
         private int Size { get; }
 
-        public World(VisualManager3 visualManager, IMover viewer)
+        public World(VisualManager3 visualManager, IMover2 viewer)
         {
             this.viewer = viewer;
             this.visualManager = visualManager;

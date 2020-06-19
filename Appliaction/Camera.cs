@@ -7,10 +7,10 @@ namespace tmp
 {
     public class Camera
     {
-        public readonly IMover viewer;
+        public readonly IMover2 viewer;
         private readonly Vector3 offset;
 
-        public Camera(IMover viewer, Vector3 offset)
+        public Camera(IMover2 viewer, Vector3 offset)
         {
             this.viewer = viewer;
             this.offset = offset;
@@ -19,7 +19,7 @@ namespace tmp
         public Matrix4 GetViewMatrix()
         {
             var eye = viewer.Position.Convert() + offset;
-            return Matrix4.LookAt(eye, eye + viewer.Front.Convert(), viewer.Up.Convert());
+            return Matrix4.LookAt(eye, eye + viewer.Front.Convert(), Vector3.UnitY);
         }
     }
 }
