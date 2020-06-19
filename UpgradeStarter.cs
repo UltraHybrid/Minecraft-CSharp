@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using tmp.Domain;
 using tmp.Domain.Generators;
@@ -33,7 +35,9 @@ namespace tmp
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;
-
+            
+            
+            Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
             game.Start();
 
             Console.Beep();

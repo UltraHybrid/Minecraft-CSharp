@@ -12,6 +12,7 @@ namespace tmp
     public static class Texture
     {
         public static Dictionary<string, int> textures = new Dictionary<string, int>();
+        public static int arrayTex;
 
         public static int GetTexture(string name)
         {
@@ -109,7 +110,7 @@ namespace tmp
 
         //3dtextures/2darray
 
-        public static int InitArray(List<string> path)
+        public static void InitArray(List<string> path)
         {
             const int width = 16;
             const int height = 16;
@@ -159,7 +160,7 @@ namespace tmp
             SetTextureParameters(TextureTarget.Texture2DArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
 
-            return texturesArray;
+            arrayTex = texturesArray;
         }
     }
 }

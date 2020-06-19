@@ -31,7 +31,7 @@ namespace tmp.Rendering
         {
             this.viewer = viewer;
             this.visualManager = visualManager;
-            arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
+            arrayTex = Texture.arrayTex;
             var size = visualManager.World.Size;
             Size = size * size * 16;
             vao = new int[Size];

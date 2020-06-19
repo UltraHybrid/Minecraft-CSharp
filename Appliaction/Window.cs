@@ -107,5 +107,15 @@ namespace tmp
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
             playerControl.MouseMove();
         }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+        }
     }
 }
