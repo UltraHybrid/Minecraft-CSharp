@@ -7,6 +7,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
+    public delegate void BlockUpdateEvent(PointI position);
     public class WorldManager : IDisposable
     {
         private readonly IGenerator<PointI, Chunk<Block>> generator;
@@ -15,7 +16,7 @@ namespace tmp.Domain
 
         public event Action<Chunk<Block>> AddAlert;
         public event Action<Chunk<Block>> DeleteAlert;
-        public event Action<Chunk<Block>> UpdateAlert;
+        public event BlockUpdateEvent UpdateAlert;
 
         public WorldManager(IGenerator<PointI, Chunk<Block>> generator)
         {
@@ -70,6 +71,11 @@ namespace tmp.Domain
             }
         }
 
+        public void PutBlock(BlockType blockType, PointI position)
+        {
+            world.Translate2LocalNotation(position);
+        }
+
         private void AddNotifyAll(Chunk<Block> chunk)
         {
             AddAlert?.Invoke(chunk);
@@ -80,9 +86,9 @@ namespace tmp.Domain
             DeleteAlert?.Invoke(chunk);
         }
 
-        private void UpdateAlertAll(Chunk<Block> chunk)
+        protected virtual void OnUpdateAlert(PointI position)
         {
-            UpdateAlert?.Invoke(chunk);
+            UpdateAlert?.Invoke(position);
         }
 
         private bool isDisposed = false;
