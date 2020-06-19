@@ -13,7 +13,7 @@ namespace tmp.Logic
     {
         private readonly IVisualizer<Block> visualizer;
         private readonly VisualWorld visualWorld;
-        public readonly Queue<(PointI, PointI)> Ready;
+        public readonly Queue<PointI> Ready;
         public readonly Queue<(PointI, PointI)> Ready2;
         private object readyLocker = new object();
 
@@ -23,7 +23,7 @@ namespace tmp.Logic
         {
             this.visualizer = visualizer;
             this.visualWorld = visualWorld;
-            Ready = new Queue<(PointI, PointI)>();
+            Ready = new Queue<PointI>();
             Ready2 = new Queue<(PointI, PointI)>();
         }
 
@@ -92,10 +92,7 @@ namespace tmp.Logic
             var (cPosition, ePosition) = World.Translate2LocalNotation(position);
             var a = cPosition.Add(new PointI(0, ePosition.Y / 16, 0));
             World[cPosition].AdaptToStupidData(ePosition.Y / 16);
-            lock (readyLocker)
-            {
-                Ready2.Enqueue((a,a));
-            }
+            Ready.Enqueue(a);
         }
     }
 }
