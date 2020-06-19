@@ -87,7 +87,7 @@ namespace tmp.Shaders
                 if(tmp.a < 0.1)
                     discard;
                 
-                gl_FragColor = tmp * light;
+                gl_FragColor = tmp;
             }";
 
         private const string VertSkyBox =

@@ -125,10 +125,10 @@ namespace tmp.Rendering
 
             //0
             GL.BindBuffer(BufferTarget.ArrayBuffer, data[n]);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, sizeof(float) * 6);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 6, 0);
             GL.EnableVertexAttribArray(0);
 
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, sizeof(float) * 6);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, sizeof(float) * 6, sizeof(float) * 3);
             GL.EnableVertexAttribArray(1);
 
             //2-7
