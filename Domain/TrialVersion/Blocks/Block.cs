@@ -21,7 +21,7 @@ namespace tmp.Domain.TrialVersion.Blocks
         public Geometry GetHitBox(Vector3 externalOffset)
         {
             var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
-            return Geometry.Identity(offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2 + externalOffset));
+            return Geometry.Identity(offset.Shift(externalOffset));
         }
 
         public bool CanRemove()

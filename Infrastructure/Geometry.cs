@@ -19,23 +19,30 @@ namespace tmp.Infrastructure
         private Basis basis;
         public static Geometry Unit => new Geometry(1, 1, 1, Basis.UnitBasis);
 
-        public Geometry(float xLength, float yLength, float zLength, Basis centerBasis)
+        public Geometry(float xLength, float yLength, float zLength, Basis directionBasis)
         {
-            basis = centerBasis.Scale(xLength, yLength, zLength);
+            basis = directionBasis.Scale(xLength, yLength, zLength);
             size = new PointF(xLength, yLength, zLength);
-            Down0 = basis.O.Add(-basis.I / 2 - basis.K / 2);
-            Down1 = basis.O.Add(-basis.I / 2 + basis.K / 2);
-            Down2 = basis.O.Add(basis.I / 2 + basis.K / 2);
-            Down3 = basis.O.Add(basis.I / 2 - basis.K / 2);
+
+            Down0 = basis.O;
+            Down1 = basis.O.Add(basis.K);
+            Down2 = basis.O.Add(basis.I + basis.K);
+            Down3 = basis.O.Add(basis.I);
+
             Up0 = Down0.Add(basis.J);
             Up1 = Down1.Add(basis.J);
             Up2 = Down2.Add(basis.J);
             Up3 = Down3.Add(basis.J);
         }
 
+        public static Geometry CreateFromCenter(float xLength, float yLength, float zLength, Basis basis)
+        {
+            return new Geometry(xLength, yLength, zLength, basis.Shift(-(basis.I + basis.K) / 2));
+        }
+
         public static Geometry Identity(Basis basis)
         {
-            return new Geometry(1,1,1,basis);
+            return new Geometry(1, 1, 1, basis);
         }
 
         public bool IsInnerPoint(PointF point)

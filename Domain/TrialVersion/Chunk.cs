@@ -21,6 +21,7 @@ namespace tmp.Domain
             blocks = new T[XLength, YLength, ZLength];
         }
 
+
         public IEnumerator<T> GetEnumerator()
         {
             return blocks.Cast<T>().GetEnumerator();
