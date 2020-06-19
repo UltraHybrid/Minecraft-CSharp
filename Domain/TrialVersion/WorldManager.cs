@@ -71,6 +71,11 @@ namespace tmp.Domain
             }
         }
 
+        public void PutBlock(BlockType blockType, PointI position)
+        {
+            world.Translate2LocalNotation(position);
+        }
+
         private void AddNotifyAll(Chunk<Block> chunk)
         {
             AddAlert?.Invoke(chunk);

@@ -31,6 +31,11 @@ namespace tmp.Domain
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
         }
 
+        public void PutBlock()
+        {
+            
+        }
+
         public void Update()
         {
             manager.Update();
