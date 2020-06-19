@@ -60,6 +60,7 @@ namespace tmp.Logic
                         Ready2.Enqueue((queuePoint, queuePoint));
                     }
                 }
+
                 //result.SimpleData = new RevisedData(positions, textureData);
                 //Ready.Enqueue((result.Position, result.Position));
             }, chunk);
@@ -71,7 +72,30 @@ namespace tmp.Logic
 
         public void HandlerForUpdate(PointI position)
         {
+            Console.WriteLine("Put " + position);
+            var data = visualizer.UpdateOne(position);
+            World.TrySetItem(position, data);
+            var neighbors = new[]
+            {
+                new PointI(1, 0, 0), new PointI(-1, 0, 0),
+                new PointI(0, 1, 0), new PointI(0, -1, 0),
+                new PointI(0, 0, 1), new PointI(0, 0, -1)
+            };
             
+            for (var i = 0; i < neighbors.Length; i++)
+            {
+                var point = position.Add(neighbors[i]);
+                var r = World.TrySetItem(point, visualizer.UpdateOne(point));
+                Console.Error.WriteLine(r);
+            }
+
+            var (cPosition, ePosition) = World.Translate2LocalNotation(position);
+            var a = cPosition.Add(new PointI(0, ePosition.Y / 16, 0));
+            World[cPosition].AdaptToStupidData(ePosition.Y / 16);
+            lock (readyLocker)
+            {
+                Ready2.Enqueue((a,a));
+            }
         }
     }
 }

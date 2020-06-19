@@ -35,6 +35,7 @@ namespace tmp
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;
+            manager.UpdateAlert += visualManager.HandlerForUpdate;
             
             Console.Beep();
             GC.Collect();

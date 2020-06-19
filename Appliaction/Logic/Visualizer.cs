@@ -43,6 +43,9 @@ namespace tmp.Logic
         private VisualizerData ChooseBordersWithEmpty(PointI position)
         {
             var currentBlock = gameWorld.GetItem(position);
+            if (currentBlock==null)
+                return null;
+            
             var currentBTextures = currentBlock.BlockType.Textures.GetOrderedTextures();
             var result = new List<FaceData>();
             for (var i = 0; i < TextureInfo.Order.Length; i++)
@@ -70,10 +73,12 @@ namespace tmp.Logic
             return result.Count != 0 ? new VisualizerData(position, result) : null;
         }
 
-        public void UpdateOne(PointI position)
+        public VisualizerData UpdateOne(PointI position)
         {
-            //gameWorld.Translate2LocalNotation()
-            //gameWorld.GetItem(position);
+            var (cPosition, ePosition) = gameWorld.Translate2LocalNotation(position);
+            var blockPosition = ePosition.AsPointB();
+            return ChooseBordersWithEmpty(position);
+
         }
     }
 }

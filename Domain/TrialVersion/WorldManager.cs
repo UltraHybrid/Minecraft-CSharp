@@ -39,7 +39,7 @@ namespace tmp.Domain
 
             var answer = manager.Pop();
             world[answer.Position] = answer;
-            //AddNotifyAll(answer);
+            AddNotifyAll(answer);
             return answer.Position;
         }
 

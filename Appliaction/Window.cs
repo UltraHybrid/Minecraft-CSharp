@@ -9,6 +9,7 @@ using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using tmp.Domain;
+using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
 using tmp.Rendering;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
@@ -115,6 +116,8 @@ namespace tmp
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
+            if (e.Button == MouseButton.Left)
+                game.PutBlock(new PointI(5*16,120,5*16));
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
