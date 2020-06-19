@@ -113,11 +113,15 @@ namespace tmp
             playerControl.MouseMove();
         }
 
+        public int c = 0;
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
-                game.PutBlock(new PointI(5*16,120,5*16));
+            {
+                game.PutBlock(new PointI(5 * 16+c, 120 + c, 5 * 16));
+                c++;
+            }
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
