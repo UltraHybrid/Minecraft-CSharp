@@ -36,10 +36,6 @@ namespace tmp
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;
             
-            
-            Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
-            game.Start();
-
             Console.Beep();
             GC.Collect();
             GC.WaitForPendingFinalizers();

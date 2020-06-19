@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
@@ -32,7 +34,9 @@ namespace tmp
             {
                 keys[key] = false;
             }
-
+            
+            Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
+            game.Start();
             this.game = game;
             this.manager = manager;
             Location = new Point(100, 100);
