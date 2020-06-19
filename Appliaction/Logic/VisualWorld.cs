@@ -9,6 +9,13 @@ namespace tmp.Logic
         public VisualWorld(PointI startOffset, int size) : base(startOffset, size)
         {
         }
+        
+        
+        public float[] GetRowData(PointI position)
+        {
+            return this[new PointI(position.X, 0, position.Z)].RowData[position.Y].ToArray();
+        } 
+
 
         public override VisualizerData GetItem(PointI position)
         {

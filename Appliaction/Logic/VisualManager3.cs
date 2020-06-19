@@ -14,8 +14,9 @@ namespace tmp.Logic
         private readonly IVisualizer<Block> visualizer;
         private readonly VisualWorld visualWorld;
         public readonly Queue<(PointI, PointI)> Ready;
+        public readonly Queue<(PointI, PointI)> Ready2;
 
-        public World<VisualChunk, VisualizerData> World => visualWorld;
+        public VisualWorld World => visualWorld;
 
         public VisualManager3(IVisualizer<Block> visualizer, VisualWorld visualWorld)
         {
@@ -46,11 +47,15 @@ namespace tmp.Logic
             {
                 var ch = (Chunk<Block>) c;
                 var result = visualizer.Visualize(ch);
-                var (positions, textureData) = result.AdaptToStupidData();
-                for (var i = 0; i < 16; i++) result.AdaptToStupidData(i);
-                result.SimpleData = new RevisedData(positions, textureData);
-
                 visualWorld[result.Position] = result;
+                var (positions, textureData) = result.AdaptToStupidData();
+                for (var i = 0; i < 16; i++)
+                {
+                    result.AdaptToStupidData(i);
+                    var queuePoint = result.Position.Add(new PointI(0, i, 0));
+                    Ready2.Enqueue((queuePoint, queuePoint));
+                }
+                result.SimpleData = new RevisedData(positions, textureData);
                 Ready.Enqueue((result.Position, result.Position));
             }, chunk);
         }

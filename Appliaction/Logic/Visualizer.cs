@@ -63,7 +63,7 @@ namespace tmp.Logic
 
                 if (neighboringBlock == null || neighboringBlock == Block.Either ||
                     neighboringBlock.BlockType == BaseBlocks.Glass || currentBlock.BlockType == BaseBlocks.CoalOre
-                    || currentBlock.BlockType==BaseBlocks.OakLeaves)
+                    || currentBlock.BlockType==BaseBlocks.OakLeaves || neighboringBlock.BlockType==BaseBlocks.OakLeaves)
                     result.Add(new FaceData(currentBTextures[i], i, 15));
             }
 

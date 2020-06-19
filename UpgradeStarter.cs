@@ -18,8 +18,8 @@ namespace tmp
                 TextureSide.Top, TextureSide.Front, TextureSide.Bottom
             };
             var threads = Environment.ProcessorCount;
-            ThreadPool.SetMaxThreads(threads/2, threads/2);
-            ThreadPool.SetMinThreads(threads/2, threads/2);
+            ThreadPool.SetMaxThreads(threads, threads);
+            ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
             var worldSize = 10;
             var gg = new WorldGenerator(

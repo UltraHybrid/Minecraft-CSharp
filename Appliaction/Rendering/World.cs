@@ -71,8 +71,8 @@ namespace tmp.Rendering
         {
             if (visualManager.Ready.Count != 0)
             {
-                var (newChunk, chunkForDelete) = visualManager.Ready.Dequeue();
-                var chunk = visualManager.World[newChunk];
+                var (newChunk, chunkForDelete) = visualManager.Ready2.Dequeue();
+                var chunk = visualManager.World.GetRowData(newChunk);
                 if (chunk != null)
                 {
                     var data = chunk.SimpleData;
