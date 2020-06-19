@@ -71,7 +71,8 @@ namespace tmp.Logic
 
         public void UpdateOne(PointI position)
         {
-            throw new System.NotImplementedException();
+            //gameWorld.Translate2LocalNotation()
+            //gameWorld.GetItem(position);
         }
     }
 }

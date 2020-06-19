@@ -1,4 +1,5 @@
-﻿using tmp.Infrastructure;
+﻿using System.Numerics;
+using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain.TrialVersion.Blocks
@@ -17,10 +18,10 @@ namespace tmp.Domain.TrialVersion.Blocks
             Position = position;
         }
 
-        public Geometry GetHitBox()
+        public Geometry GetHitBox(Vector3 externalOffset)
         {
             var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
-            return  Geometry.Identity(offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2));
+            return Geometry.Identity(offset.Shift(BlockType.Form.I / 2 + BlockType.Form.K / 2 + externalOffset));
         }
 
         public bool CanRemove()

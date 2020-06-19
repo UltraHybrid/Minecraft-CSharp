@@ -47,6 +47,7 @@ namespace tmp.Logic
                 var ch = (Chunk<Block>) c;
                 var result = visualizer.Visualize(ch);
                 var (positions, textureData) = result.AdaptToStupidData();
+                for (var i = 0; i < 16; i++) result.AdaptToStupidData(i);
                 result.SimpleData = new RevisedData(positions, textureData);
 
                 visualWorld[result.Position] = result;
@@ -60,6 +61,7 @@ namespace tmp.Logic
 
         public void HandlerForUpdate()
         {
+            
         }
     }
 }
