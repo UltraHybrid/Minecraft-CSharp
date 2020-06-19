@@ -15,9 +15,9 @@ namespace tmp.Logic
         public float[] GetRowData(PointI position)
         {
             var ch = this[new PointI(position.X, 0, position.Z)];
-            Console.WriteLine(ch == null);
+            //Console.WriteLine(ch == null);
             var rd = ch.RowData[position.Y];
-            Console.WriteLine(rd == null);
+            //Console.WriteLine(rd == null);
             return rd.ToArray();
         }
 

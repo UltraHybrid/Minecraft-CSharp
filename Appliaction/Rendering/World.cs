@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NUnit.Framework.Constraints;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using tmp.Domain;
@@ -67,11 +68,20 @@ namespace tmp.Rendering
 
         public void Update()
         {
+            while (visualManager.Ready.Count != 0)
+            {
+                var updateChunk = visualManager.Ready.Dequeue();
+                var chunkData = visualManager.World.GetRowData(updateChunk);
+                var index = chunksCords.IndexOf(updateChunk);
+                chunksCords[index] = updateChunk;
+                chunkSidesCount[index] = chunkData.Length / 6;
+                SendData(index, chunkData);
+            }
+            
             if (visualManager.Ready2.Count != 0)
             {
                 var (newChunk, chunkForDelete) = visualManager.Ready2.Dequeue();
                 var chunkData = visualManager.World.GetRowData(newChunk);
-                //Console.WriteLine(data==null);
                 int index;
                 var sidesCount = chunkData.Length / 6;
                 if (Equals(chunkForDelete, newChunk))
