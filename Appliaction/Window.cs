@@ -7,10 +7,11 @@ using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using tmp.Domain;
-using tmp.Domain.TrialVersion;
 using tmp.Logic;
+using tmp.Rendering;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
 using Vector3 = OpenTK.Vector3;
+
 
 namespace tmp
 {

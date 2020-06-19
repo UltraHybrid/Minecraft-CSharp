@@ -1,6 +1,6 @@
 using OpenTK;
 
-namespace tmp
+namespace tmp.Rendering
 {
     public interface IRender
     {

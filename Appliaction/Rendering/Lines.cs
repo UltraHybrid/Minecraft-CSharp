@@ -1,8 +1,9 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using tmp.Domain;
+using Shader = tmp.Shaders.Shaders;
 
-namespace tmp
+namespace tmp.Rendering
 {
     public class Lines : IRender
     {
@@ -12,7 +13,7 @@ namespace tmp
         public Lines(IMover viewer)
         {
             this.viewer = viewer;
-            shaderProgram = Shaders.GetLineShader();
+            shaderProgram = Shader.GetLineShader();
             GenBuffers();
             InstallAttributes();
             vPMatrixLocation = GL.GetUniformLocation(shaderProgram, "viewProjection");

@@ -1,8 +1,7 @@
-using System.Drawing.Drawing2D;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
-namespace tmp
+namespace tmp.Shaders
 {
     public class SkyBoxShader
     {

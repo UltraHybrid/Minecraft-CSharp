@@ -2,8 +2,9 @@ using System.IO;
 using System.Linq;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using Shader = tmp.Shaders.Shaders;
 
-namespace tmp
+namespace tmp.Rendering
 {
     public class SkyBox : IRender
     {
@@ -13,7 +14,7 @@ namespace tmp
 
         public SkyBox()
         {
-            shaderProgram = Shaders.GetSkyBoxShader();
+            shaderProgram = Shader.GetSkyBoxShader();
             GenBuffers();
             InstallAttributes();
             vPMatrixLocation = GL.GetUniformLocation(shaderProgram, "projection");
