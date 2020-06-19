@@ -62,7 +62,8 @@ namespace tmp.Logic
                 var neighboringBlock = gameWorld.GetItem(position.Add(offset));
 
                 if (neighboringBlock == null || neighboringBlock == Block.Either ||
-                    neighboringBlock.BlockType == BaseBlocks.Glass || currentBlock.BlockType == BaseBlocks.CoalOre)
+                    neighboringBlock.BlockType == BaseBlocks.Glass || currentBlock.BlockType == BaseBlocks.CoalOre
+                    || currentBlock.BlockType==BaseBlocks.OakLeaves)
                     result.Add(new FaceData(currentBTextures[i], i, 15));
             }
 
