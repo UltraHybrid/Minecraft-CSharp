@@ -29,9 +29,9 @@ namespace tmp.Logic
                         if (block == null) continue;
                         foreach (var face in block.Faces)
                         {
-                            RowData[number].Add(x);
+                            RowData[number].Add(Position.X * 16 + x);
                             RowData[number].Add(y);
-                            RowData[number].Add(z);
+                            RowData[number].Add(Position.Z * 16 + z);
 
                             RowData[number].Add(face.Number);
                             RowData[number].Add(Texture.textures[face.Name]);
