@@ -67,16 +67,16 @@ namespace tmp.Domain
 
         public override void Rotate(float deltaYaw, float deltaPitch)
         {
-            Console.WriteLine(deltaYaw + " " + deltaPitch);
+            //Console.WriteLine(deltaYaw + " " + deltaPitch);
 
             Yaw += deltaYaw;
             Pitch += deltaPitch;
-            Console.WriteLine(Yaw + " " + Pitch);
+            //Console.WriteLine(Yaw + " " + Pitch);
             Front = Convert2Cartesian(Yaw, Pitch);
             Right = Vector3.Normalize(Vector3.Cross(Front, Up));
-            Console.WriteLine("Front " + Front);
-            Console.WriteLine("Right " + Right);
-            Console.WriteLine("Len " + Front.Length() + " " + Right.Length());
+            //Console.WriteLine("Front " + Front);
+            //Console.WriteLine("Right " + Right);
+            //Console.WriteLine("Len " + Front.Length() + " " + Right.Length());
         }
     }
 }
