@@ -18,7 +18,7 @@ namespace tmp.Rendering
         private readonly int vPMatrixLocation, shaderProgram;
         private int textureBuffer;
 
-        private readonly int[] vao, position, texturesId;
+        private readonly int[] vao, data;
         private readonly int arrayTex;
 
         private readonly List<PointI> chunksCords = new List<PointI>();
@@ -35,8 +35,7 @@ namespace tmp.Rendering
             var size = visualManager.World.Size;
             Size = size * size;
             vao = new int[Size];
-            position = new int[Size];
-            texturesId = new int[Size];
+            data = new int[Size];
             shaderProgram = Shader.GetSideShader();
             GenBuffers();
             for (var i = 0; i < Size; i++)
@@ -51,11 +50,10 @@ namespace tmp.Rendering
             GL.BindTexture(TextureTarget.Texture2DArray, arrayTex);
 
             GL.UniformMatrix4(vPMatrixLocation, false, ref viewProjectionMatrix);
-            
+
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                //if (Vector2.Dot(viewer.Front.Convert().Xz,
-                  //  chunksCords[i].Convert().Xz * 16 - viewer.Position.Convert().Xz) >= 0)
+                if (Vector3.Dot(viewer.Front.Convert(), chunksCords[i].Convert() * 16 - viewer.Position.Convert()) >= 0)
                 {
                     GL.BindVertexArray(vao[i]);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
@@ -72,41 +70,33 @@ namespace tmp.Rendering
             if (visualManager.Ready.Count != 0)
             {
                 var (newChunk, chunkForDelete) = visualManager.Ready2.Dequeue();
-                var chunk = visualManager.World.GetRowData(newChunk);
-                if (chunk != null)
+                var chunkData = visualManager.World.GetRowData(newChunk);
+                //Console.WriteLine(data==null);
+                int index;
+                var sidesCount = chunkData.Length / 6;
+                if (Equals(chunkForDelete, newChunk))
                 {
-                    var data = chunk.SimpleData;
-                    //Console.WriteLine(data==null);
-                    int index;
-                    var sidesCount = data.TexturesData.Count;
-                    if (Equals(chunkForDelete, newChunk))
-                    {
-                        chunksCords.Add(newChunk);
-                        chunkSidesCount.Add(sidesCount);
-                        index = chunksCords.Count - 1;
-                    }
-                    else
-                    {
-                        index = chunksCords.IndexOf(chunkForDelete);
-                        chunksCords[index] = newChunk;
-                        chunkSidesCount[index] = sidesCount;
-                    }
-
-                    SendData(index, data.Positions, data.TexturesData);
+                    chunksCords.Add(newChunk);
+                    chunkSidesCount.Add(sidesCount);
+                    index = chunksCords.Count - 1;
                 }
+                else
+                {
+                    index = chunksCords.IndexOf(chunkForDelete);
+                    chunksCords[index] = newChunk;
+                    chunkSidesCount[index] = sidesCount;
+                }
+
+                SendData(index, chunkData);
             }
         }
 
-        private void SendData(int n, List<Vector3> positions, List<Vector2> sideTexId)
+        private void SendData(int n, float[] data)
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, position[n]);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Count,
-                positions.ToArray(), BufferUsageHint.StaticDraw);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, texturesId[n]);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * sideTexId.Count, sideTexId.ToArray(),
-                BufferUsageHint.StaticDraw);
-
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.data[n]);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * data.Length,
+                data.ToArray(), BufferUsageHint.StaticDraw);
+            
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * Vertexes.Length, Vertexes,
                 BufferUsageHint.StaticDraw);
@@ -124,8 +114,7 @@ namespace tmp.Rendering
         {
             GL.GenVertexArrays(Size, vao);
             GL.GenBuffers(1, out vbo);
-            GL.GenBuffers(Size, position);
-            GL.GenBuffers(Size, texturesId);
+            GL.GenBuffers(Size, data);
             GL.GenBuffers(1, out ebo);
             GL.GenBuffers(1, out textureBuffer);
         }
@@ -135,13 +124,11 @@ namespace tmp.Rendering
             GL.BindVertexArray(vao[n]);
 
             //0
-            GL.BindBuffer(BufferTarget.ArrayBuffer, position[n]);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, data[n]);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, sizeof(float) * 6);
             GL.EnableVertexAttribArray(0);
 
-            //1
-            GL.BindBuffer(BufferTarget.ArrayBuffer, texturesId[n]);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, sizeof(float) * 6);
             GL.EnableVertexAttribArray(1);
 
             //2-7
