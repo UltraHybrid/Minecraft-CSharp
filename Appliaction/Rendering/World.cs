@@ -33,7 +33,7 @@ namespace tmp.Rendering
             this.visualManager = visualManager;
             arrayTex = Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
             var size = visualManager.World.Size;
-            Size = size * size;
+            Size = size * size * 16;
             vao = new int[Size];
             data = new int[Size];
             shaderProgram = Shader.GetSideShader();
@@ -67,7 +67,7 @@ namespace tmp.Rendering
 
         public void Update()
         {
-            if (visualManager.Ready.Count != 0)
+            if (visualManager.Ready2.Count != 0)
             {
                 var (newChunk, chunkForDelete) = visualManager.Ready2.Dequeue();
                 var chunkData = visualManager.World.GetRowData(newChunk);
@@ -94,7 +94,7 @@ namespace tmp.Rendering
         private void SendData(int n, float[] data)
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.data[n]);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * data.Length,
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * data.Length,
                 data.ToArray(), BufferUsageHint.StaticDraw);
             
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
