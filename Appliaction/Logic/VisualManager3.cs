@@ -23,6 +23,7 @@ namespace tmp.Logic
             this.visualizer = visualizer;
             this.visualWorld = visualWorld;
             Ready = new Queue<(PointI, PointI)>();
+            Ready2 = new Queue<(PointI, PointI)>();
         }
 
         private object locker = new object();
@@ -64,7 +65,7 @@ namespace tmp.Logic
         {
         }
 
-        public void HandlerForUpdate()
+        public void HandlerForUpdate(PointI position)
         {
             
         }

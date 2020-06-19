@@ -31,9 +31,9 @@ namespace tmp.Domain
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
         }
 
-        public void PutBlock()
+        public void PutBlock(PointI position)
         {
-            
+            manager.PutBlock(Player.ActiveBlock, position);
         }
 
         public void Update()

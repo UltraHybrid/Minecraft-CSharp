@@ -73,7 +73,10 @@ namespace tmp.Domain
 
         public void PutBlock(BlockType blockType, PointI position)
         {
-            world.Translate2LocalNotation(position);
+            var (cPosition, ePosition)= world.Translate2LocalNotation(position);
+            var blockPosition = ePosition.AsPointB();
+            world[cPosition][blockPosition]=new Block(blockType, blockPosition);
+            OnUpdateAlert(position);
         }
 
         private void AddNotifyAll(Chunk<Block> chunk)
