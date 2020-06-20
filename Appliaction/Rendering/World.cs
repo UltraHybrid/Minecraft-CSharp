@@ -54,7 +54,7 @@ namespace tmp.Rendering
 
             for (var i = 0; i < chunksCords.Count; i++)
             {
-                if (System.Numerics.Vector3.Dot(viewer.Front, 16*chunksCords[i].AsVector() - viewer.Position.AsVector()) >= 0)
+                if (System.Numerics.Vector3.Dot(viewer.Front, 16*chunksCords[i].AsVector() - viewer.Position.AsVector() + 16 * viewer.Front) >= 0)
                 {
                     GL.BindVertexArray(vao[i]);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
