@@ -9,9 +9,9 @@ namespace tmp.Domain.Commands
         private readonly IMover2 entity;
         private readonly IEnumerable<Direction> directions;
         private readonly float time;
-        private readonly IWorld<Chunk<Block>, Block> world;
+        private readonly World<Chunk<Block>, Block> world;
 
-        public MoveCommand(IMover2 entity, IWorld<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
+        public MoveCommand(IMover2 entity, World<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
         {
             this.entity = entity;
             this.world = world;

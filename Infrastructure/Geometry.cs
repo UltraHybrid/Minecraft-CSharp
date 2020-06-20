@@ -5,7 +5,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
 {
-    public struct Geometry : IEnumerable<PointF>
+    public class Geometry : IEnumerable<PointF>
     {
         public PointF Up0;
         public PointF Up1;
