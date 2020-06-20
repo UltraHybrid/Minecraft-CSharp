@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
 {
-    public struct Geometry : IEnumerable<PointF>
+    public class Geometry : IEnumerable<PointF>
     {
         public PointF Up0;
         public PointF Up1;
@@ -40,6 +41,14 @@ namespace tmp.Infrastructure
             return new Geometry(xLength, yLength, zLength, basis.Shift(-(basis.I + basis.K) / 2));
         }
 
+        public static Geometry CreateFromPosition(PointF pos, float radius, float height)
+        {
+            var b = Basis.UnitBasis
+                .Scale(radius * 2, height, radius * 2)
+                .Shift(pos.AsVector());
+            return CreateFromCenter(radius * 2, height, radius * 2, b);
+        }
+
         public static Geometry Identity(Basis basis)
         {
             return new Geometry(1, 1, 1, basis);
@@ -53,7 +62,7 @@ namespace tmp.Infrastructure
 
         public bool IsCollision(Geometry other)
         {
-            return other.Any(IsInnerPoint);
+            return other.Any(IsInnerPoint) || this.Any(other.IsInnerPoint);
         }
 
 

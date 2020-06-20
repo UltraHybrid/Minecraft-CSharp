@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace tmp.Infrastructure.SimpleMath
 {
@@ -40,6 +42,19 @@ namespace tmp.Infrastructure.SimpleMath
         public override string ToString()
         {
             return "PointL(" + X + ", " + Y + ", " + Z + ")";
+        }
+        
+        public IEnumerable<PointL> GetXzNeighbours()
+        {
+            return GetFlatXzNeighbours(1, 2);
+        }
+
+        private IEnumerable<PointL> GetFlatXzNeighbours(params int[] totalDifference)
+        {
+            for(var dx = -1; dx <= 1; dx++)
+            for(var dz = -1; dz <= 1; dz++)
+                if (((IList) totalDifference).Contains(Math.Abs(dx) + Math.Abs(dz)))
+                    yield return new PointL(X + dx, Y, Z + dz);
         }
     }
 }
