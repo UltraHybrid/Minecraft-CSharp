@@ -44,7 +44,7 @@ namespace tmp.Domain
         {
             pitch = 90;
             yaw = 0;
-            Speed = 5f;
+            Speed = 4f;
             this.gravity = gravity;
             radius = hitBotRadius;
             height = hitBoxHeight;
@@ -103,7 +103,7 @@ namespace tmp.Domain
         private bool HaveVerticalAccess(PointF newPosition, PointL accessBlockPosition, Piece piece)
         {
             var newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
-            if (piece.GetItem(accessBlockPosition) == null) return false;
+            if (piece.GetItem(accessBlockPosition) != null) return false;
             foreach (var neighbour in accessBlockPosition.GetXzNeighbours())
             {
                 var block = piece.GetItem(neighbour);
@@ -116,10 +116,9 @@ namespace tmp.Domain
         private Vector3 CropMove(Vector3 move, Piece piece, float time)
         {
             var newPosition = Position.Add(move);
+            newPosition = HorizontalCrop(newPosition, piece, time);
+            var oldY = newPosition.Y;
 
-            //newPosition = HorizontalCrop(newPosition, piece, time);
-            //var oldY = newPosition.Y;
-            
             var bottomCoords = new PointL((long) newPosition.X, (long) newPosition.Y, (long) newPosition.Z);
             var upperCoords = new PointL(bottomCoords.X, (long) (newPosition.Y + height), bottomCoords.Z);
 
@@ -128,7 +127,7 @@ namespace tmp.Domain
                 if (!HaveVerticalAccess(newPosition, upperCoords, piece))
                 {
                     newPosition = new PointF(newPosition.X, upperCoords.Y - height, newPosition.Z);
-                    verticalSpeed.Y = 0;
+                    verticalSpeed = new Vector3(0,0,0);
                 }
             }
             else if (move.Y < 0)
@@ -136,18 +135,69 @@ namespace tmp.Domain
                 if (!HaveVerticalAccess(newPosition, bottomCoords, piece))
                 {
                     newPosition = new PointF(newPosition.X, bottomCoords.Y + 1, newPosition.Z);
-                    verticalSpeed.Y = 0; 
+                    verticalSpeed = new Vector3(0, 0, 0); 
+                }
+            }
+            if (newPosition.Y != oldY)
+            {
+                newPosition = HorizontalCrop(newPosition, piece, time);
+            }
+
+            return newPosition.AsVector() - Position.AsVector();
+        }
+        
+        /*private PointF HorizontalCrop(PointF newPosition, Piece piece, float time)
+        {
+            var geom = Geometry.CreateFromPosition(newPosition, radius, height);
+            for (var y = (long) (newPosition.Y); y < (long) (newPosition.Y + height); y++)
+            {
+                var coords = new PointL((long) newPosition.X, y, (long) newPosition.Z);
+                if (piece.GetItem(coords) != null) continue;
+                foreach (var neighbour in coords.GetXzNeighbours())
+                {
+                    if (piece.GetItem(neighbour) == null) continue;
+                    if (!geom.IsCollision(Block.GetGeometry(neighbour))) continue;
+                    var bPos = neighbour.AsVector() + Vector3.One / 2;
+                    var diff = bPos - newPosition.AsVector();
+                    newPosition = Math.Abs(diff.X) > Math.Abs(diff.Z) 
+                        ? new PointF(bPos.X - Math.Sign(diff.X) * (0.5f + radius), newPosition.Y, newPosition.Z) 
+                        : new PointF(newPosition.X, newPosition.Y, bPos.Z - Math.Sign(diff.Z) * (0.5f + radius));
+                    geom = Geometry.CreateFromPosition(newPosition, radius, height);
+                }
+            }
+            return newPosition;
+        }*/
+        private PointF HorizontalCrop(PointF newPosition, Piece piece, float time)
+        {
+            for (var y = (long) (newPosition.Y + gravity * time); y < (long) (newPosition.Y + height); y++)
+            {
+                var coords = new PointL((long) newPosition.X, y, (long) newPosition.Z);
+                foreach (var neighbour in coords.GetXzNeighbours())
+                {
+                    if (piece.GetItem(neighbour) == null) continue;
+                    var bPos = new Vector3(neighbour.X + 0.5f, neighbour.Y + 0.5f, neighbour.Z + 0.5f);
+                    for (var i = 0; i < 2; i++)
+                    {
+                        var xDiff = bPos.X - newPosition.X;
+                        var zDiff = bPos.Z - newPosition.Z;
+                        var distance = Math.Max(Math.Abs(xDiff), Math.Abs(zDiff));
+                        if (distance >= 0.5 + radius) break;
+                        if (Math.Abs(xDiff) > Math.Abs(zDiff))
+                        {
+                            newPosition =
+                                newPosition.Add(new PointF(bPos.X - Math.Sign(xDiff) * (0.5f + radius) - newPosition.X,
+                                    0, 0));
+                        }
+                        else
+                        {
+                            newPosition = newPosition.Add(new PointF(0, 0,
+                                bPos.Z - Math.Sign(zDiff) * (0.5f + radius) - newPosition.Z));
+                        }
+                    }
                 }
             }
 
-            /*if (newPosition.Y != oldY)
-            {
-                newPosition = HorizontalCrop(newPosition, piece, time);
-            }*/
-            
-            
-            
-            return newPosition.AsVector() - Position.AsVector();
+            return newPosition;
         }
     }
 }

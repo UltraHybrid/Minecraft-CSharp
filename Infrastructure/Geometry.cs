@@ -44,7 +44,6 @@ namespace tmp.Infrastructure
         public static Geometry CreateFromPosition(PointF pos, float radius, float height)
         {
             var b = Basis.UnitBasis
-                .Scale(radius * 2, height, radius * 2)
                 .Shift(pos.AsVector());
             return CreateFromCenter(radius * 2, height, radius * 2, b);
         }
