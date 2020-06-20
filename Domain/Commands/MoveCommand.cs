@@ -21,7 +21,7 @@ namespace tmp.Domain.Commands
 
         public void Execute()
         {
-            entity.Move(new Piece(world, entity.Position.AsPointI(), 3), directions, time);
+            entity.Move(new Piece(world, entity.Position.AsPointL(), 3), directions, time);
         }
     }
 

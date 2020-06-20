@@ -19,24 +19,24 @@ namespace tmp.Domain
             chunks = new Dictionary<PointI, TContainer>();
         }
 
-        public static PointI GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
+        public static PointL GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
         {
-            return PointI.CreateXZ(chunkPosition.X * Chunk<TItem>.XLength, chunkPosition.Z * Chunk<TItem>.ZLength)
-                .Add(blockPosition.AsPointI());
+            return PointL.CreateXZ((long)chunkPosition.X * Chunk<TItem>.XLength, (long)chunkPosition.Z * Chunk<TItem>.ZLength)
+                .Add(blockPosition.AsPointL());
         }
 
-        public (PointI cPosition, PointI elementPosition) Translate2LocalNotation(PointI point)
+        public (PointI cPosition, PointB elementPosition) Translate2LocalNotation(PointL point)
         {
-            var elementX = point.X % Chunk<TItem>.XLength;
-            var elementZ = point.Z % Chunk<TItem>.ZLength;
-            var chunkX = point.X / Chunk<TItem>.XLength;
-            var chunkZ = point.Z / Chunk<TItem>.ZLength;
-            return (PointI.CreateXZ(chunkX, chunkZ), new PointI(elementX, point.Y, elementZ));
+            var elementX = (byte)(point.X % Chunk<TItem>.XLength);
+            var elementZ = (byte)(point.Z % Chunk<TItem>.ZLength);
+            var chunkX = (int)(point.X / Chunk<TItem>.XLength);
+            var chunkZ = (int)(point.Z / Chunk<TItem>.ZLength);
+            return (PointI.CreateXZ(chunkX, chunkZ), new PointB(elementX, (byte)point.Y, elementZ));
         }
 
-        public abstract TItem GetItem(PointI position);
+        public abstract TItem GetItem(PointL position);
 
-        public abstract bool TrySetItem(PointI position, TItem value);
+        public abstract bool TrySetItem(PointL position, TItem value);
 
         public bool IsChunkInBounds(PointI point)
         {

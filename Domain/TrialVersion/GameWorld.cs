@@ -9,21 +9,19 @@ namespace tmp.Domain
         {
         }
 
-        public override Block GetItem(PointI position)
+        public override Block GetItem(PointL position)
         {
             var (cPosition, bPosition) = Translate2LocalNotation(position);
-            var blockPosition = bPosition.AsPointB();
-            if (chunks.ContainsKey(cPosition) && Chunk<Block>.CheckBounds(blockPosition))
-                return chunks[cPosition][blockPosition];
+            if (chunks.ContainsKey(cPosition) && Chunk<Block>.CheckBounds(bPosition))
+                return chunks[cPosition][bPosition];
             return Block.Either;
         }
 
-        public override bool TrySetItem(PointI position, Block value)
+        public override bool TrySetItem(PointL position, Block value)
         {
             var (cPosition, bPosition) = Translate2LocalNotation(position);
-            var blockPosition = bPosition.AsPointB();
-            if (!chunks.ContainsKey(cPosition) || !Chunk<Block>.CheckBounds(blockPosition)) return false;
-            chunks[cPosition][blockPosition] = value;
+            if (!chunks.ContainsKey(cPosition) || !Chunk<Block>.CheckBounds(bPosition)) return false;
+            chunks[cPosition][bPosition] = value;
             return true;
         }
     }

@@ -7,7 +7,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
-    public delegate void BlockUpdateEvent(PointI position);
+    public delegate void BlockUpdateEvent(PointL position);
     public class WorldManager : IDisposable
     {
         private readonly IGenerator<PointI, Chunk<Block>> generator;
@@ -71,11 +71,10 @@ namespace tmp.Domain
             }
         }
 
-        public void PutBlock(BlockType blockType, PointI position)
+        public void PutBlock(BlockType blockType, PointL position)
         {
             var (cPosition, ePosition)= world.Translate2LocalNotation(position);
-            var blockPosition = ePosition.AsPointB();
-            world[cPosition][blockPosition]=new Block(blockType, blockPosition);
+            world[cPosition][ePosition]=new Block(blockType, ePosition);
             OnUpdateAlert(position);
         }
 
@@ -89,7 +88,7 @@ namespace tmp.Domain
             DeleteAlert?.Invoke(chunk);
         }
 
-        protected virtual void OnUpdateAlert(PointI position)
+        protected virtual void OnUpdateAlert(PointL position)
         {
             UpdateAlert?.Invoke(position);
         }

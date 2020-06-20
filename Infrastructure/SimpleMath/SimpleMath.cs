@@ -8,6 +8,11 @@ namespace tmp.Infrastructure.SimpleMath
         {
             return new PointI(point.X, point.Y, point.Z);
         }
+        
+        public static PointL AsPointL(this PointB point)
+        {
+            return new PointL(point.X, point.Y, point.Z);
+        }
 
         public static PointB AsPointB(this PointI point)
         {
@@ -33,8 +38,18 @@ namespace tmp.Infrastructure.SimpleMath
         {
             return new PointI((int) point.X, (int) point.Y, (int) point.Z);
         }
+        
+        public static PointL AsPointL(this PointF point)
+        {
+            return new PointL((long) point.X, (long) point.Y, (long) point.Z);
+        }
 
         public static Vector3 AsVector(this PointF point)
+        {
+            return new Vector3(point.X, point.Y, point.Z);
+        }
+
+        public static Vector3 AsVector(this PointL point)
         {
             return new Vector3(point.X, point.Y, point.Z);
         }

@@ -6,10 +6,10 @@ namespace tmp.Logic
 {
     public class VisualizerData
     {
-        public readonly PointI Position;
+        public readonly PointL Position;
         public readonly List<FaceData> Faces;
 
-        public VisualizerData(PointI position, List<FaceData> faces)
+        public VisualizerData(PointL position, List<FaceData> faces)
         {
             this.Position = position;
             Faces = faces;
@@ -27,18 +27,6 @@ namespace tmp.Logic
             Name = name;
             Number = number;
             Luminosity = luminosity;
-        }
-    }
-
-    public class RevisedData
-    {
-        public List<Vector3> Positions { get; }
-        public List<Vector2> TexturesData { get; }
-
-        public RevisedData(List<Vector3> positions, List<Vector2> texturesData)
-        {
-            Positions = positions;
-            TexturesData = texturesData;
         }
     }
 }

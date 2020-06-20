@@ -7,6 +7,6 @@ namespace tmp.Logic
     public interface IVisualizer<TSource>
     {
         VisualChunk Visualize(Chunk<TSource> worldChunk);
-        VisualizerData UpdateOne(PointI position);
+        VisualizerData UpdateOne(PointL position);
     }
 }

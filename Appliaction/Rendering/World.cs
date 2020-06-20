@@ -68,9 +68,9 @@ namespace tmp.Rendering
 
         public void Update()
         {
-            while (visualManager.Ready.Count != 0)
+            while (visualManager.ReadyToUpdate.Count != 0)
             {
-                var updateChunk = visualManager.Ready.Dequeue();
+                var updateChunk = visualManager.ReadyToUpdate.Dequeue();
                 var chunkData = visualManager.World.GetRowData(updateChunk);
                 var index = chunksCords.IndexOf(updateChunk);
                 chunksCords[index] = updateChunk;
@@ -78,9 +78,9 @@ namespace tmp.Rendering
                 SendData(index, chunkData);
             }
             
-            if (visualManager.Ready2.Count != 0)
+            if (visualManager.ReadyToReplace.Count != 0)
             {
-                var (newChunk, chunkForDelete) = visualManager.Ready2.Dequeue();
+                var (newChunk, chunkForDelete) = visualManager.ReadyToReplace.Dequeue();
                 var chunkData = visualManager.World.GetRowData(newChunk);
                 int index;
                 var sidesCount = chunkData.Length / 6;

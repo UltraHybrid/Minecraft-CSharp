@@ -8,34 +8,38 @@ namespace tmp.Logic
 {
     public class VisualChunk : Chunk<VisualizerData>
     {
-        public RevisedData SimpleData;
-        public List<float>[] RowData;
+        private readonly List<float>[] rowData;
+        public const int RowDataLevels = 16;
+        private const int countInLevel = YLength / RowDataLevels;
+        public IEnumerable<float>[] RowData => rowData;
 
         public VisualChunk(PointI position) : base(position)
         {
-            RowData = new List<float>[16];
+            rowData = new List<float>[RowDataLevels];
         }
 
         public void AdaptToStupidData(int number)
         {
-            RowData[number] = new List<float>();
+            if (number >= RowDataLevels || number < 0)
+                throw new IndexOutOfRangeException("Некорректный индекс " + number);
+            rowData[number] = new List<float>();
             for (var x = 0; x < XLength; x++)
             {
                 for (var z = 0; z < ZLength; z++)
                 {
-                    for (var y = number * 16; y < number * 16 + 16; y++)
+                    for (var y = number * RowDataLevels; y < number * RowDataLevels + countInLevel; y++)
                     {
-                        var block = this[new PointI(x, y, z).AsPointB()];
-                        if (block == null) continue;
-                        foreach (var face in block.Faces)
+                        var vData = this[new PointI(x, y, z).AsPointB()];
+                        if (vData == null) continue;
+                        foreach (var face in vData.Faces)
                         {
-                            RowData[number].Add(Position.X * 16 + x);
-                            RowData[number].Add(y);
-                            RowData[number].Add(Position.Z * 16 + z);
+                            rowData[number].Add(vData.Position.X);
+                            rowData[number].Add(y);
+                            rowData[number].Add(vData.Position.Z);
 
-                            RowData[number].Add(face.Number);
-                            RowData[number].Add(Texture.textures[face.Name]);
-                            RowData[number].Add(face.Luminosity);
+                            rowData[number].Add(face.Number);
+                            rowData[number].Add(Texture.textures[face.Name]);
+                            rowData[number].Add(face.Luminosity);
                         }
                     }
                 }

@@ -22,25 +22,7 @@ namespace tmp
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
-        public static (List<Vector3> positions, List<Vector2> textureData) AdaptToStupidData(
-            this Chunk<VisualizerData> chunk)
-        {
-            var positions = new List<Vector3>();
-            var textureData = new List<Vector2>();
-            foreach (var visData in chunk.Where(x => x != null))
-            {
-                foreach (var face in visData.Faces)
-                {
-                    positions.Add(visData.Position.Convert());
-                    textureData.Add(new Vector2(face.Number, Texture.textures[face.Name]));
-                }
-            }
-
-            return (positions, textureData);
-        }
-
-
+        
         public static Vector3 Convert(this System.Numerics.Vector3 vectorLast)
         {
             return new Vector3(vectorLast.X, vectorLast.Y, vectorLast.Z);

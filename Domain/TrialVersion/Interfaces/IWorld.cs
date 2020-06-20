@@ -8,8 +8,8 @@ namespace tmp.Domain
         PointI Offset { get; set; }
         int Size { get; }
         int Count { get; }
-        TItem GetItem(PointI position);
-        bool TrySetItem(PointI position, TItem value);
+        TItem GetItem(PointL position);
+        bool TrySetItem(PointL position, TItem value);
         IReadOnlyList<PointI> GetNeedlessChunks();
         bool TryDeleteChunk(PointI position);
         IReadOnlyList<PointI> GetPointOfGaps();
