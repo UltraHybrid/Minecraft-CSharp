@@ -23,7 +23,7 @@ namespace tmp
             ThreadPool.SetMaxThreads(threads, threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 10;
+            var worldSize = 20;
             var gg = new WorldGenerator(
                 new LandGenerator(UsageGenerators.CoreGenerator),
                 new OreGenerator(UsageGenerators.OreCoreGenerator),
@@ -47,7 +47,7 @@ namespace tmp
             Console.Beep();
 
             using var painter = new Window(game, visualManager);
-            painter.Run(200, 200);
+            painter.Run(0, 0);
         }
     }
 }
