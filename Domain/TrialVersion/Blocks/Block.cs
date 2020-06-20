@@ -28,5 +28,10 @@ namespace tmp.Domain.TrialVersion.Blocks
         {
             return Hardness <= 0;
         }
+
+        public static Geometry GetGeometry(PointL position)
+        {
+            return Geometry.Identity(Basis.UnitBasis.Shift(position.AsVector()));
+        }
     }
 }
