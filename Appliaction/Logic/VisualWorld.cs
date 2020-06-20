@@ -13,13 +13,14 @@ namespace tmp.Logic
         }
 
 
-        public float[] GetRowData(PointI position)
+        public (float[] vertex, int[] indices) GetRowData(PointI position)
         {
             var chunk = this[new PointI(position.X, 0, position.Z)];
             if (chunk == null)
                 throw new ArgumentException("Данного чанка не существует " + new PointI(position.X, 0, position.Z));
             var rd = chunk.RowData[position.Y];
-            return rd.ToArray();
+            var i = chunk.Indices[position.Y];
+            return (rd.ToArray(), i.ToArray());
         }
 
 

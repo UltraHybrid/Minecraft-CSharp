@@ -10,11 +10,6 @@ namespace tmp.Rendering
     public class Render
     {
         #region Variables
-
-        private int texture, arrayTex;
-        private readonly List<PointI> chunksCords = new List<PointI>();
-        private readonly List<int> chunkSidesCount = new List<int>();
-
         private Matrix4 viewMatrix;
         private Matrix4 projectionMatrix, viewProjectionMatrix;
 

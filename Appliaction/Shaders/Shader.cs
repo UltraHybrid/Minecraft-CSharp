@@ -55,10 +55,9 @@ namespace tmp.Shaders
         private const string VertSrcSide =
             @"#version 410 core
 
-            layout (location = 0) in vec3 position;
-            layout (location = 1) in vec3 sideTex;
-            layout (location = 2) in vec3 vert[6];
-            layout (location = 8) in vec2 texCord[6];
+            layout (location = 0) in vec3 vertex;
+            layout (location = 1) in vec2 texCord;
+            layout (location = 2) in vec2 texLigth;
 
             uniform mat4 viewProjection;
 
@@ -67,10 +66,9 @@ namespace tmp.Shaders
 
             void main(void)
             {
-                int sideID = int(sideTex.x);
-                gl_Position = viewProjection * vec4(position + vert[sideID], 1.0);
-                color = vec3(texCord[sideID], sideTex.y);
-                light = sideTex.z;
+                gl_Position = viewProjection * vec4(vertex, 1.0);
+                color = vec3(texCord, texLigth.x);
+                light = texLigth.y;
             }";
 
         private const string FragSrcSide =

@@ -11,22 +11,20 @@ namespace tmp.Logic
 
         public VisualizerData(PointL position, List<FaceData> faces)
         {
-            this.Position = position;
+            Position = position;
             Faces = faces;
         }
     }
 
     public class FaceData
     {
-        public string Name { get; }
-        public int Number { get; }
-        public float Luminosity { get; }
+        public float[] Vertex { get; }
+        public int[] Indices { get; }
 
-        public FaceData(string name, int number, float luminosity)
+        public FaceData(float[] vertex, int[] indices)
         {
-            Name = name;
-            Number = number;
-            Luminosity = luminosity;
+            Vertex = vertex;
+            Indices = indices;
         }
     }
 }

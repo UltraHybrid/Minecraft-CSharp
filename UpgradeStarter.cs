@@ -23,7 +23,7 @@ namespace tmp
             ThreadPool.SetMaxThreads(threads, threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 10;
+            var worldSize = 2;
             var gg = new WorldGenerator(
                 new LandGenerator(UsageGenerators.CoreGenerator),
                 new OreGenerator(UsageGenerators.OreCoreGenerator),

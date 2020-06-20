@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using tmp.Domain;
 using tmp.Domain.TrialVersion;
 using tmp.Domain.TrialVersion.Blocks;
@@ -51,7 +52,24 @@ namespace tmp.Logic
                 var element = TextureInfo.Order[i];
                 if (currentCore == BlockCore.Ore || currentCore == BlockCore.Transparent)
                 {
-                    result.Add(new FaceData(currentBTextures[i], i, TextureInfo.Brightness[element]));
+                    var res1 = new List<float>();
+                    for (var j = 0; j < 4; j++)
+                    {
+                        var vert = Cube.GetVertexes()[i * 4 + j] + position.AsVector().Convert();
+                        var texCord = Cube.GetTextureCoords()[i * 4 + j];
+                        
+                        res1.Add(vert.X);
+                        res1.Add(vert.Y);
+                        res1.Add(vert.Z);
+                        res1.Add(texCord.X);
+                        res1.Add(texCord.Y);
+                        res1.Add(Texture.textures[currentBTextures[i]]);
+                        res1.Add(TextureInfo.Brightness[element]);
+                    }
+
+                    var ind = Cube.GetSideIndices();
+
+                    result.Add(new FaceData(res1.ToArray(), ind));
                     continue;
                 }
 
@@ -67,10 +85,30 @@ namespace tmp.Logic
                 };
 
                 var neighboringBlock = gameWorld.GetItem(position.Add(offset));
-                
+
                 if (neighboringBlock == null || neighboringBlock == Block.Either ||
                     neighboringBlock.BlockType.Core == BlockCore.Transparent)
-                    result.Add(new FaceData(currentBTextures[i], i, TextureInfo.Brightness[element]));
+                {
+                    var res1 = new List<float>();
+                    for (var j = 0; j < 4; j++)
+                    {
+                        var vert = Cube.GetVertexes()[i * 4 + j] + position.AsVector().Convert();
+                        var texCord = Cube.GetTextureCoords()[i * 4 + j];
+                        
+                        res1.Add(vert.X);
+                        res1.Add(vert.Y);
+                        res1.Add(vert.Z);
+                        res1.Add(texCord.X);
+                        res1.Add(texCord.Y);
+                        res1.Add(Texture.textures[currentBTextures[i]]);
+                        res1.Add(TextureInfo.Brightness[element]);
+                    }
+
+                    var ind = Cube.GetSideIndices();
+
+                    result.Add(new FaceData(res1.ToArray(), ind));
+                    
+                }
             }
 
             return result.Count != 0 ? new VisualizerData(position, result) : null;

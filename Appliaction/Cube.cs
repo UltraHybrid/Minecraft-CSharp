@@ -87,7 +87,7 @@ namespace tmp
             new Vector3(1f, 0f, 0f),
         };
         
-        private static readonly int[] Indices = {
+        private static readonly uint[] Indices = {
             //left
             0, 1, 2, 0, 2, 3,
             //back
@@ -110,7 +110,7 @@ namespace tmp
         public static Vector3[] GetVertexes() => Vertexes;
         
 
-        public static int[] GetIndices() => Indices;
+        public static uint[] GetIndices() => Indices;
         
         public static int[] GetSideIndices() => SideIndices;
     }
