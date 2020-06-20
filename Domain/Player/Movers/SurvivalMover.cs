@@ -77,11 +77,10 @@ namespace tmp
                         resultMove += Left;
                         break;
                     case Direction.Up:
-                        // TODO: Доделать возможность прыжка
                         if (Position.Y - (int) Position.Y < 0.01)
                         {
                             var underPoint = new PointI((int) Position.X, (int) Position.Y - 1, (int) Position.Z);
-                            if (!HaveVerticalAccess(Position, underPoint, piece))
+                            if (!HaveVerticalAccess(Position, underPoint, piece, out _))
                                 verticalSpeed = new Vector(0, 0.035f, 0);
                         }
                         break;
@@ -91,7 +90,7 @@ namespace tmp
             }
 
             var move = verticalSpeed + distance * (resultMove.Normalize());
-            Position += CropMove(move, piece);
+            Position += CropMove(move, piece, time);
 
         }
 
@@ -103,15 +102,19 @@ namespace tmp
             Left = Vector.Cross(Up, Front).Normalize();
         }
 
-        private Vector CropMove(Vector move, Piece piece)
+        private Vector CropMove(Vector move, Piece piece, float time)
         {
             var newPosition = Position + move;
+
+            newPosition = HorizontalCrop(newPosition, piece, time);
+            var oldY = newPosition.Y;
+            
             var bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
             var upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
 
             if (move.Y > 0 && piece.GetItem(upperCoords) != null)
             {
-                if (!HaveVerticalAccess(newPosition, upperCoords, piece))
+                if (!HaveVerticalAccess(newPosition, upperCoords, piece, out _))
                 {
                     newPosition.Y = upperCoords.Y - boxHeight;
                     verticalSpeed.Y = 0;
@@ -119,49 +122,56 @@ namespace tmp
             }
             else if (move.Y < 0)
             {
-                if (!HaveVerticalAccess(newPosition, bottomCoords, piece))
+                if (!HaveVerticalAccess(newPosition, bottomCoords, piece, out _))
                 {
                     newPosition.Y = bottomCoords.Y + 1;
                     verticalSpeed.Y = 0; 
                 }
-                
             }
 
-            // bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
-            // upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
-            //
-            // for (var y = bottomCoords.Y; y <= upperCoords.Y; y++)
-            // {
-            //     var pos = new PointI(bottomCoords.X, y, bottomCoords.Z);
-            //     foreach (var neighbour in pos.GetNeighbours())
-            //     {
-            //         if (piece.GetItem(neighbour) == null) continue;
-            //         var blockPos = new Vector(neighbour.X, neighbour.Y, neighbour.Z) + new Vector(0.5f, 0.5f, 0.5f);
-            //         for (var i = 0; i < 2; i++)
-            //         {
-            //             var xDiff = blockPos.X - newPosition.X;
-            //             var zDiff = blockPos.Z - newPosition.Z;
-            //             var maxDiff = Math.Max(Math.Abs(xDiff), Math.Abs(zDiff));
-            //             if (maxDiff >= 0.5 + boxRadius) break;
-            //             if (maxDiff == Math.Abs(xDiff))
-            //             {
-            //                 newPosition.X = blockPos.X - Math.Sign(xDiff) * (float) (0.5 + boxRadius);
-            //             }
-            //             else
-            //             {
-            //                 newPosition.Z = blockPos.Z - Math.Sign(zDiff) * (float) (0.5 + boxRadius);
-            //             }
-            //         }
-            //         
-            //         
-            //     }
-            // }
-
+            if (newPosition.Y != oldY)
+            {
+                newPosition = HorizontalCrop(newPosition, piece, time);
+            }
+            
+            
+            
             return newPosition - Position;
         }
 
-        private bool HaveVerticalAccess(Vector newPosition, PointI accessBlockPosition, Piece piece)
+        private Vector HorizontalCrop(Vector newPosition, Piece piece, float time)
         {
+            for (var y = (int) (newPosition.Y + gravity * time); y < (int) (newPosition.Y + boxHeight); y++)
+            {
+                var coords = new PointI((int) newPosition.X, y, (int) newPosition.Z);
+                foreach (var neighbour in coords.GetNeighbours())
+                {
+                    if (piece.GetItem(neighbour) == null) continue;
+                    var bPos = new Vector(neighbour.X + 0.5f, neighbour.Y + 0.5f, neighbour.Z + 0.5f);
+                    for (var i = 0; i < 2; i++)
+                    {
+                        var xDiff = bPos.X - newPosition.X;
+                        var zDiff = bPos.Z - newPosition.Z;
+                        var distance = Math.Max(Math.Abs(xDiff), Math.Abs(zDiff));
+                        if (distance >= 0.5 + boxRadius) break;
+                        if (Math.Abs(xDiff) > Math.Abs(zDiff))
+                        {
+                            newPosition.X = bPos.X - Math.Sign(xDiff) * (0.5f + boxRadius);
+                        }
+                        else
+                        {
+                            newPosition.Z = bPos.Z - Math.Sign(zDiff) * (0.5f + boxRadius);
+                        }
+                    }
+                }
+            }
+
+            return newPosition;
+        }
+
+        private bool HaveVerticalAccess(Vector newPosition, PointI accessBlockPosition, Piece piece, out int dimension)
+        {
+            dimension = -1;
             if (piece.GetItem(accessBlockPosition) != null) return false;
             foreach (var neighbour in accessBlockPosition.GetNeighbours())
             {
@@ -170,6 +180,7 @@ namespace tmp
                 var distance = Math.Max(Math.Abs(newPosition.X - blockPos.X),
                     Math.Abs(newPosition.Z - blockPos.Z));
                 if (distance >= 0.5 + boxRadius) continue;
+                dimension = Math.Abs(newPosition.X - blockPos.X) == distance ? 0 : 2;
                 return false;
             }
             return true;
