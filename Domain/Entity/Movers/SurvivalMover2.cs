@@ -48,6 +48,7 @@ namespace tmp.Domain
             this.gravity = gravity;
             radius = hitBotRadius;
             height = hitBoxHeight;
+            Console.WriteLine(Position);
         }
 
         public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
