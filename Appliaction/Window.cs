@@ -45,7 +45,7 @@ namespace tmp
             Location = new Point(100, 100);
             camera = new Camera(game.Player.Mover, new Vector3(0, game.Player.Height, 0));
             playerControl = new PlayerControl(keys, game.Player.Mover, game.World);
-            render = new Render(camera, manager);
+            render = new Render(camera, manager, game.Player.Height);
         }
 
         #region Variables

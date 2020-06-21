@@ -24,11 +24,13 @@ namespace tmp.Rendering
 
         private readonly VisualManager3 visualManager;
         private readonly Camera camera;
+        private readonly float heigth;
 
         #endregion
 
-        public Render(Camera camera, VisualManager3 visualManager)
+        public Render(Camera camera, VisualManager3 visualManager, float heigth)
         {
+            this.heigth = heigth;
             this.camera = camera;
             this.visualManager = visualManager;
             skyBox = new SkyBox();
@@ -42,7 +44,7 @@ namespace tmp.Rendering
             GL.Enable(EnableCap.Multisample);
             GL.Enable(EnableCap.DepthTest);
 
-            //lines.Render(viewProjectionMatrix);
+            lines.Render(viewProjectionMatrix, heigth);
             world.Render(viewProjectionMatrix);
             skyBox.Render(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
         }

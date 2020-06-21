@@ -5,7 +5,7 @@ using Shader = tmp.Shaders.Shaders;
 
 namespace tmp.Rendering
 {
-    public class Lines : IRender
+    public class Lines
     {
         private int vbo, vao;
         private readonly int shaderProgram, vPMatrixLocation;
@@ -20,14 +20,14 @@ namespace tmp.Rendering
             SendData();
         }
         
-        public void Render(Matrix4 viewProjectionMatrix)
+        public void Render(Matrix4 viewProjectionMatrix, float higth)
         {
             GL.UseProgram(shaderProgram);
             GL.BindVertexArray(vao);
             GL.LineWidth(3);
             var front = viewer.Front.Convert();
             var position = viewer.Position.Convert();
-            SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, 1.7f, 0)) * viewProjectionMatrix);
+            SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, higth, 0)) * viewProjectionMatrix);
             GL.DrawArrays(PrimitiveType.Lines, 0, 6);
         }
 
