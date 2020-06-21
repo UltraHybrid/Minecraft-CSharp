@@ -66,14 +66,7 @@ namespace tmp.Infrastructure
 
         public bool IsIntersect(Line line)
         {
-            var pf = Plane.From3Points(Down0, Up0, Down3);
-            var pr = Plane.From3Points(Down1, Up1, Up0);
-            var pt = Plane.From3Points(Up0, Up1, Up3);
-            var pbt = Plane.From3Points(Down0, Down3, Down1);
-            var pb = Plane.From3Points(Down1, Down2, Up1);
-            var pl = Plane.From3Points(Down3, Down2, Up3);
-
-            var planes = new[] {pf, pr, pt, pbt, pb, pl};
+            var planes = GetPlanes().ToArray();
             var squads = new[]
             {
                 new Parallelogram(Down3, Down0, Up0, Up3),
@@ -94,6 +87,16 @@ namespace tmp.Infrastructure
             }
 
             return false;
+        }
+
+        public IEnumerable<Plane> GetPlanes()
+        {
+            yield return Plane.From3Points(Down0, Up0, Down3);
+            yield return Plane.From3Points(Down1, Up1, Up0);
+            yield return Plane.From3Points(Up0, Up1, Up3);
+            yield return Plane.From3Points(Down0, Down3, Down1);
+            yield return Plane.From3Points(Down1, Down2, Up1);
+            yield return Plane.From3Points(Down3, Down2, Up3);
         }
 
 

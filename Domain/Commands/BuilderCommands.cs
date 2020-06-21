@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using NUnit.Framework.Constraints;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure.SimpleMath;
+using Plane = System.Numerics.Plane;
 
 namespace tmp.Domain.Commands
 {
@@ -19,6 +21,31 @@ namespace tmp.Domain.Commands
         public void Execute()
         {
             var mover = game.Player.Mover;
+            var cameraPos = mover.Position.Add(new PointF(0, game.Player.Height, 0));
+            var line = new Line(cameraPos, mover.Front);
+            var piece = new Piece(game.World, cameraPos.AsPointL(), 4);
+            var closestBlock = piece.Helper()
+                .Where(pair => pair.block != null && pair.block != Block.Either)
+                .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))
+                .OrderBy(pair => cameraPos.GetSquaredDistance(pair.position.AsVector().AsPointF().Add(new Vector3(0.5f))))
+                .FirstOrDefault();
+            if (closestBlock == default((PointL, Block))) return;
+            var planes = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position)
+                    .GetPlanes().ToArray();
+            var ordered = planes
+                .Select(plane => (plane, plane.CalculateIntersectionPoint(line)))
+                .Where(pair => pair.Item2 != null)
+                .OrderBy(pair => cameraPos.GetSquaredDistance(pair.Item2.Value))
+                .ToList();
+            if (!ordered.Any()) return;
+            var closestPlane = ordered.First();
+            var index = Array.IndexOf(planes, closestPlane.plane);
+            var finalCoords = closestBlock.position.GetNeighbours().ToArray()[index];
+            if (piece.GetItem(finalCoords) != null) return;
+            var blockGeometry = Block.GetGeometry(game.Player.ActiveBlock, finalCoords);
+            if (game.Player.Mover.Geometry.IsCollision(blockGeometry)) return;
+            game.PutBlock(game.Player.ActiveBlock, finalCoords);
+            /*var mover = game.Player.Mover;
             var point = mover.Position.Add(new PointF(0, game.Player.Height, 0));
             var line = new Line(point, mover.Front);
             var p = new Piece(game.World, mover.Position.AsPointL(), 4);
@@ -45,7 +72,7 @@ namespace tmp.Domain.Commands
                     game.PutBlock(game.Player.ActiveBlock, result);
             }
 
-            Console.WriteLine(gg);
+            Console.WriteLine(gg);*/
         }
     }
 
@@ -61,6 +88,18 @@ namespace tmp.Domain.Commands
         public void Execute()
         {
             var mover = game.Player.Mover;
+            var cameraPos = mover.Position.Add(new PointF(0, game.Player.Height, 0));
+            var line = new Line(cameraPos, mover.Front);
+            var piece = new Piece(game.World, cameraPos.AsPointL(), 4);
+            var closestBlock = piece.Helper()
+                .Where(pair => pair.block != null && pair.block != Block.Either)
+                .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))
+                .OrderBy(pair => cameraPos.GetSquaredDistance(pair.position.AsVector().AsPointF().Add(new Vector3(0.5f))))
+                .ToList();
+            if (!closestBlock.Any()) return;
+            game.PutBlock(null, closestBlock.First().position);
+
+            /*var mover = game.Player.Mover;
             var point = mover.Position.Add(new PointF(0, game.Player.Height, 0));
             var line = new Line(point, mover.Front);
             var p = new Piece(game.World, mover.Position.AsPointL(), 4);
@@ -75,7 +114,7 @@ namespace tmp.Domain.Commands
                 game.PutBlock(null, gg.position);
             }
 
-            Console.WriteLine("Delete " + gg);
+            Console.WriteLine("Delete " + gg);*/
         }
     }
 

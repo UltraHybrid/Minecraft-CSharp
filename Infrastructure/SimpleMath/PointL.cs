@@ -50,6 +50,16 @@ namespace tmp.Infrastructure.SimpleMath
             return GetFlatXzNeighbours(1).Concat(GetFlatXzNeighbours(2));
         }
 
+        public IEnumerable<PointL> GetNeighbours()
+        {
+            yield return Add(new PointL(0, 0, -1));
+            yield return Add(new PointL(-1, 0, 0));
+            yield return Add(new PointL(0, 1, 0));
+            yield return Add(new PointL(0, -1, 0));
+            yield return Add(new PointL(0, 0, 1));
+            yield return Add(new PointL(1, 0, 0));
+        }
+
         private IEnumerable<PointL> GetFlatXzNeighbours(int totalDifference)
         {
             for(var dx = -1; dx <= 1; dx++)

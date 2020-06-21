@@ -29,6 +29,11 @@ namespace tmp.Infrastructure.SimpleMath
             return Math.Max(Math.Max(Math.Abs(X - other.X), Math.Abs(Y - other.Y)), Math.Abs(Z - other.Z));
         }
 
+        public float GetSquaredDistance(PointF other)
+        {
+            return (float) Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2) + Math.Pow(Z - other.Z, 2));
+        }
+
         public PointF Add(PointF other)
         {
             return new PointF(X + other.X, Y + other.Y, Z + other.Z);

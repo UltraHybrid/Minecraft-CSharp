@@ -84,6 +84,7 @@ namespace tmp.Domain
                     verticalSpeed = 0;
             } 
             Position = Position.Add(vertMove);
+            geometry = Geometry.CreateFromPosition(Position, radius, height);
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
