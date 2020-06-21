@@ -99,7 +99,7 @@ namespace tmp.Domain
             var croppedMove = move;
             var newPosition = position.Add(move);
             //var newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
-            for (var y = (long) newPosition.Y; y < (long) (newPosition.Y + height); y++)
+            for (var y = (long) newPosition.Y; y <= (long) (newPosition.Y + height); y++)
             {
                 var blockCoords = new PointL((long) newPosition.X, y, (long) newPosition.Z);
                 foreach (var neighbour in blockCoords.GetXzNeighbours())
