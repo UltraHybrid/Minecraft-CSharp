@@ -111,8 +111,13 @@ namespace tmp
             {
                 var com = new Spectator(game);
                 com.Execute();
-                //if(com.figure!=null)
-                //    Print(com.figure)
+                if (com.figure != null)
+                    render.lines.Add(com.figure);
+            }
+            
+            if (e.Key == Key.X)
+            {
+                render.lines.lines();
             }
         }
 

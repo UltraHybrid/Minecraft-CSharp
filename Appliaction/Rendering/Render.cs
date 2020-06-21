@@ -20,7 +20,7 @@ namespace tmp.Rendering
 
         private readonly SkyBox skyBox;
         private readonly World world;
-        private readonly Lines lines;
+        public readonly Lines lines;
 
         private readonly VisualManager3 visualManager;
         private readonly Camera camera;

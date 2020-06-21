@@ -57,10 +57,10 @@ namespace tmp.Infrastructure.SimpleMath
 
     public class Parallelogram
     {
-        private readonly PointF p0;
-        private readonly PointF p1;
-        private readonly PointF p2;
-        private readonly PointF p3;
+        public readonly PointF p0;
+        public readonly PointF p1;
+        public readonly PointF p2;
+        public readonly PointF p3;
 
         public Parallelogram(PointF p0, PointF p1, PointF p2, PointF p3)
         {
