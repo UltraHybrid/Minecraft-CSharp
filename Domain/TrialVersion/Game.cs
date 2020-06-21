@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using tmp.Domain.Entity;
+using tmp.Domain.Generators;
 using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
@@ -17,13 +19,17 @@ namespace tmp.Domain
 
         private readonly WorldManager manager;
 
+        private readonly IGenerator<Chunk<Block>, List<PointB>> animalSpawner;
         public List<Cow> Animals;
 
         public Game(int worldSize, PointI worldOffset, WorldManager manager)
         {
             var world = new GameWorld(worldOffset, worldSize);
+
+            animalSpawner = new CowSpawner();
             this.manager = manager;
             manager.SetWorld(world);
+            manager.AddAlert += SpawnAnimals;
             World = world;
             Animals = new List<Cow>();
         }
@@ -34,7 +40,6 @@ namespace tmp.Domain
             Console.WriteLine("Ready ");
             Console.WriteLine("World " + World.Count);
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
-            Animals.Add(new Cow(DefineSpawn(ready).Add(20 * Vector3.UnitY)));
         }
 
         public void PutBlock(BlockType blockType, PointL position)
@@ -45,9 +50,19 @@ namespace tmp.Domain
         public void Update(float time)
         {
             manager.Update();
-            Animals.ForEach(a=>a.GoTo(Player.Mover.Position.AsPointL(),
-                new Piece(World, a.Mover.Position.AsPointL(), 5), 
+            Animals.ForEach(a => a.GoTo(Player.Mover.Position.AsPointL(),
+                new Piece(World, a.Mover.Position.AsPointL(), 5),
                 time));
+        }
+
+        private void SpawnAnimals(Chunk<Block> chunk)
+        {
+            foreach (var point in animalSpawner.Generate(chunk))
+            {
+                var animalPoint = World<Chunk<Block>, Block>.GetAbsolutePosition(point, chunk.Position).AsPointF();
+                Console.WriteLine("Cow Spawn on " + animalPoint);
+                Animals.Add(new Cow(animalPoint));
+            }
         }
 
         private PointF DefineSpawn(PointI ready)
