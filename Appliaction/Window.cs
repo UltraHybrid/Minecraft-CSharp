@@ -9,6 +9,7 @@ using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using tmp.Domain;
+using tmp.Domain.Commands;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure.SimpleMath;
 using tmp.Logic;
@@ -123,7 +124,6 @@ namespace tmp
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
             {
-                game.Player.ActiveBlock = BaseBlocks.Stone;
                 game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
             }
             if (e.Button == MouseButton.Right)
@@ -131,6 +131,13 @@ namespace tmp
                 game.Player.ActiveBlock = null;
                 game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
             }
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            new SwapBlock(game.Player, e.Value).Execute();
+            Console.WriteLine(e.Value);
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)

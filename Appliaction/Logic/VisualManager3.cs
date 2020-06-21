@@ -64,18 +64,23 @@ namespace tmp.Logic
 
         public void HandlerForUpdate(PointL position)
         {
-            Console.WriteLine("Put " + position);
+            var needToUpdate = new List<PointI>();
 
             foreach (var point in PointWithNeighbors)
             {
                 var shiftPoint = position.Add(point);
+                var (cPosition, ePosition) = World.Translate2LocalNotation(shiftPoint);
+                var microChunkPosition = cPosition.Add(new PointI(0, ePosition.Y / VisualChunk.CountInLevel, 0));
+                if (!needToUpdate.Contains(microChunkPosition))
+                    needToUpdate.Add(microChunkPosition);
                 World.TrySetItem(shiftPoint, visualizer.UpdateOne(shiftPoint));
             }
 
-            var (cPosition, ePosition) = World.Translate2LocalNotation(position);
-            var queuePoint = cPosition.Add(new PointI(0, ePosition.Y / VisualChunk.CountInLevel, 0));
-            World[cPosition].AdaptToStupidData(ePosition.Y / VisualChunk.CountInLevel);
-            ReadyToUpdate.Enqueue(queuePoint);
+            foreach (var point in needToUpdate)
+            {
+                World[PointI.CreateXZ(point.X, point.Z)].AdaptToStupidData(point.Y);
+                ReadyToUpdate.Enqueue(point);
+            }
         }
     }
 }
