@@ -146,8 +146,9 @@ namespace tmp.Shaders
         
         private const string VertDefault =
             @"#version 410 core
-            layout (location = 0) in vec3 position;
+            layout (location = 0) in vec3 vertex;
             layout (location = 1) in vec2 tex;
+            layout (location = 2) in mat4 transform;
 
             uniform mat4 viewProjection;
             
@@ -156,7 +157,7 @@ namespace tmp.Shaders
             void main()
             {
                 Tex = tex;
-                gl_Position = viewProjection * vec4(position, 1.0);
+                gl_Position = viewProjection * transform * vec4(vertex, 1.0);
             }";
 
         private const string FragDefault =
