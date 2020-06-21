@@ -37,5 +37,12 @@ namespace tmp.Domain
 
         public abstract void Move(Piece piece, IReadOnlyList<Direction> directions, float time);
         public abstract void Rotate(float deltaYaw, float deltaPitch);
+        
+        public void SetView(Vector3 view)
+        {
+            if (view.Equals(Vector3.Zero)) return;
+            Front = Vector3.Normalize(view);
+            Right = Vector3.Normalize(Vector3.Cross(Front, Up));
+        }
     }
 }
