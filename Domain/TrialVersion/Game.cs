@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using tmp.Domain.Entity;
+using tmp.Domain.Generators;
 using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
@@ -15,12 +19,19 @@ namespace tmp.Domain
 
         private readonly WorldManager manager;
 
+        private readonly IGenerator<Chunk<Block>, List<PointB>> animalSpawner;
+        public List<Cow> Animals;
+
         public Game(int worldSize, PointI worldOffset, WorldManager manager)
         {
             var world = new GameWorld(worldOffset, worldSize);
+
+            animalSpawner = new CowSpawner();
             this.manager = manager;
             manager.SetWorld(world);
+            manager.AddAlert += SpawnAnimals;
             World = world;
+            Animals = new List<Cow>();
         }
 
         public void Start()
@@ -36,9 +47,22 @@ namespace tmp.Domain
             manager.PutBlock(blockType, position);
         }
 
-        public void Update()
+        public void Update(float time)
         {
             manager.Update();
+            Animals.ForEach(a => a.GoTo(Player.Mover.Position.AsPointL(),
+                new Piece(World, a.Mover.Position.AsPointL(), 5),
+                time));
+        }
+
+        private void SpawnAnimals(Chunk<Block> chunk)
+        {
+            foreach (var point in animalSpawner.Generate(chunk))
+            {
+                var animalPoint = World<Chunk<Block>, Block>.GetAbsolutePosition(point, chunk.Position).AsPointF();
+                Console.WriteLine("Cow Spawn on " + animalPoint);
+                Animals.Add(new Cow(animalPoint));
+            }
         }
 
         private PointF DefineSpawn(PointI ready)

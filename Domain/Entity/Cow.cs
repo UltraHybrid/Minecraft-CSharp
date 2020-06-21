@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
 using tmp.Infrastructure;
@@ -10,7 +10,9 @@ namespace tmp.Domain.Entity
     {
         public string Name { get; }
         public int Health { get; }
-        public IMover2 Mover { get; }
+        public IMover Mover => mover;
+        private SurvivalMover mover;
+        private bool isSlowed = false;
 
         public Cow(PointF position)
         {
@@ -18,43 +20,24 @@ namespace tmp.Domain.Entity
             Health = 10;
             var rnd = new Random();
             var direction = new Vector3(rnd.Next(), 0, rnd.Next()) + Vector3.UnitX;
-            Mover = new CowMover(position, Vector3.Normalize(direction));
-        }
-    }
-
-    public class CowMover : EntityMover2
-    {
-        private readonly PointF size;
-        private float yaw;
-        private float pitch;
-        private readonly Random movementRnd;
-
-        public CowMover(PointF position, Vector3 front) : base(position, front)
-        {
-            size = new PointF(1.5f, 1.2f, 0.8f);
-            movementRnd = new Random();
+            mover = new SurvivalMover(3, position, direction, 0.4f, 0.9f, 0.1f);
         }
 
-        public override Geometry Geometry
+        public void GoTo(PointL target, Piece piece, float time)
         {
-            get
+            var view = target.AsVector() - Mover.Position.AsVector();
+            mover.SetView(view);
+            var pos = Mover.Position;
+            var directions = new List<Direction> {Direction.Forward};
+            if (isSlowed)
             {
-                var frontXZ = new Vector3(Front.X, 0, Front.Z);
-                var rightXZ = new Vector3(Right.X, 0, Right.Z);
-                var b = new Basis(Position, frontXZ, Up, rightXZ).Normalized();
-                return new Geometry(size.X, size.Y, size.Z, b);
+                directions.Add(Direction.Up);
+                isSlowed = false;
             }
-        }
 
-        public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Rotate(float deltaYaw, float deltaPitch)
-        {
-            yaw += (float) movementRnd.NextDouble();
-            
+            if (view.X != 0 && view.Z != 0)
+                Mover.Move(piece, directions, time);
+            if (Mover.Position.GetSquaredDistance(pos) < mover.Speed * time / 2) isSlowed = true;
         }
     }
-}*/
+}

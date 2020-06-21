@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using tmp.Domain.Generators;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;

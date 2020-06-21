@@ -76,7 +76,7 @@ namespace tmp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             playerControl.Move((float) e.Time);
-            game.Update();
+            game.Update((float) e.Time);
             manager.Update();
             render.UpdateFrame();
         }
@@ -142,14 +142,12 @@ namespace tmp
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
             {
-                //game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
                 new PutCommand(game).Execute();
             }
 
             if (e.Button == MouseButton.Right)
             {
                 new BreakCommand(game).Execute();
-                //game.PutBlock(null, game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
             }
         }
 
@@ -157,7 +155,6 @@ namespace tmp
         {
             base.OnMouseWheel(e);
             new SwapBlock(game.Player, e.Value).Execute();
-            Console.WriteLine(e.Value);
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)

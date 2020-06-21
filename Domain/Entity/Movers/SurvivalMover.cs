@@ -19,7 +19,7 @@ namespace tmp.Domain
         private float verticalSpeed;
         private Geometry geometry;
         public override Geometry Geometry => geometry;
-        public float Speed { get; private set; }
+        public float Speed { get; }
 
         private float Yaw
         {
@@ -41,7 +41,7 @@ namespace tmp.Domain
         }
 
 
-        public SurvivalMover(PointF position, Vector3 front, float hitBoxRadius, float hitBoxHeight, float gravity) :
+        public SurvivalMover(float speed, PointF position, Vector3 front, float hitBoxRadius, float hitBoxHeight, float gravity) :
             base(position, front)
         {
             height = hitBoxHeight;
@@ -50,7 +50,7 @@ namespace tmp.Domain
             geometry = Geometry.CreateFromPosition(position, radius, height);
             pitch = 90;
             yaw = 0;
-            Speed = 5f;
+            Speed = speed;
         }
 
         public override void Move(Piece piece, IReadOnlyList<Direction> directions, float time)
