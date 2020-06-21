@@ -124,12 +124,13 @@ namespace tmp
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
             {
-                game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
+                //game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
+                new PutCommand(game).Execute();
             }
             if (e.Button == MouseButton.Right)
             {
-                game.Player.ActiveBlock = null;
-                game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
+                new BreakCommand(game).Execute();
+                //game.PutBlock(null, game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
             }
         }
 

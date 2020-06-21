@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Infrastructure
@@ -63,6 +62,38 @@ namespace tmp.Infrastructure
         public bool IsCollision(Geometry other)
         {
             return other.Any(IsInnerPoint) || this.Any(other.IsInnerPoint);
+        }
+
+        public bool IsIntersect(Line line)
+        {
+            var pf = Plane.From3Points(Down0, Up0, Down3);
+            var pr = Plane.From3Points(Down1, Up1, Up0);
+            var pt = Plane.From3Points(Up0, Up1, Up3);
+            var pbt = Plane.From3Points(Down0, Down3, Down1);
+            var pb = Plane.From3Points(Down1, Down2, Up1);
+            var pl = Plane.From3Points(Down3, Down2, Up3);
+
+            var planes = new[] {pf, pr, pt, pbt, pb, pl};
+            var squads = new[]
+            {
+                new Parallelogram(Down3, Down0, Up0, Up3),
+                new Parallelogram(Down0, Down1, Up1, Up0),
+                new Parallelogram(Up0, Up1, Up2, Up3),
+                new Parallelogram(Down0, Down1, Down2, Down3),
+                new Parallelogram(Down1, Up1, Up2, Down2),
+                new Parallelogram(Down2, Up2, Up3, Down3),
+            };
+
+            for (var i = 0; i < 6; i++)
+            {
+                var v = planes[i].CalculateIntersectionPoint(line);
+                if (!v.HasValue)
+                    continue;
+                if (squads[i].IsInner(v.Value))
+                    return true;
+            }
+
+            return false;
         }
 
 

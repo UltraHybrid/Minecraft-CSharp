@@ -1,4 +1,5 @@
-﻿using tmp.Domain.TrialVersion.Blocks;
+﻿using System.Collections.Generic;
+using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
 
@@ -35,6 +36,21 @@ namespace tmp.Domain
                 return null;
             var (cPosition, bPosition) = world.Translate2LocalNotation(point);
             return world.GetItem(point).GetHitBox(cPosition.AsVector());
+        }
+
+        public IEnumerable<(PointL position, Block block)> Helper()
+        {
+            for (var i = -Radius; i <= Radius; i++)
+            {
+                for (var j = -Radius; j <= Radius; j++)
+                {
+                    for (var k = -Radius; k <= Radius; k++)
+                    {
+                        var position = new PointL(i,j,k).Add(Center);
+                        yield return (position, GetItem(position));
+                    }
+                }
+            }
         }
     }
 }
