@@ -1,9 +1,9 @@
 ﻿namespace tmp.Domain.Entity
 {
-    public class Entity
+    public interface IEntity
     {
-        public readonly string Name;
-        public int Health { get; protected set; }
-        public IMover2 Mover { get; protected set; }
+        public string Name { get; }
+        public int Health { get; }
+        public IMover2 Mover { get; }
     }
 }

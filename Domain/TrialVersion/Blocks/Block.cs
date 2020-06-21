@@ -22,7 +22,7 @@ namespace tmp.Domain.TrialVersion.Blocks
         {
             var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
             return Geometry.Identity(offset.Shift(externalOffset));
-        }
+        }    
 
         public bool CanRemove()
         {

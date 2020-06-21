@@ -97,7 +97,11 @@ namespace tmp
         {
             keys[e.Key] = true;
             if (e.Key == Key.Escape)
+            {
                 Close();
+                Environment.Exit(111);
+            }
+
             if (e.Key == Key.U)
                 render.UpdateFrame();
         }
