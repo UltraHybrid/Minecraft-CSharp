@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using tmp.Domain.Entity;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure.SimpleMath;
 
@@ -15,12 +17,15 @@ namespace tmp.Domain
 
         private readonly WorldManager manager;
 
+        public List<Cow> Animals;
+
         public Game(int worldSize, PointI worldOffset, WorldManager manager)
         {
             var world = new GameWorld(worldOffset, worldSize);
             this.manager = manager;
             manager.SetWorld(world);
             World = world;
+            Animals = new List<Cow>();
         }
 
         public void Start()
@@ -29,6 +34,7 @@ namespace tmp.Domain
             Console.WriteLine("Ready ");
             Console.WriteLine("World " + World.Count);
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
+            Animals.Add(new Cow(DefineSpawn(ready).Add(20 * Vector3.UnitY)));
         }
 
         public void PutBlock(BlockType blockType, PointL position)
@@ -39,6 +45,7 @@ namespace tmp.Domain
         public void Update()
         {
             manager.Update();
+            Animals.ForEach(a=>a.GoTo(Player.Mover.Position.AsPointL(), new Piece(World, a.Mover.Position.AsPointL(), 5), 1));
         }
 
         private PointF DefineSpawn(PointI ready)

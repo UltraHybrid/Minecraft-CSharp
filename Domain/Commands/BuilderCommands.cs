@@ -102,7 +102,7 @@ namespace tmp.Domain.Commands
                 .Where(pair => pair.block != null && pair.block != Block.Either)
                 .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))
                 .OrderBy(pair =>
-                    cameraPos.GetSquaredDistance(pair.position.AsPointF().Add(new Vector3(0.5f))))
+                   cameraPos.GetSquaredDistance(pair.position.AsPointF().Add(new Vector3(0.5f))))
                 .FirstOrDefault();
             if (closestBlock == default((PointL, Block))) return;
 
