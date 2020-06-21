@@ -42,7 +42,7 @@ namespace tmp.Domain
 
         public IEnumerable<(PointL position, Block block)> Helper()
         {
-            for (var i = 1; i <= Radius; i++)
+         /*   for (var i = 1; i <= Radius; i++)
             {
                 Console.WriteLine(i);
                 foreach (var p in Center.GetCubicNeighbourhood(i))
@@ -50,18 +50,18 @@ namespace tmp.Domain
                     Console.WriteLine(p);
                     yield return (p, GetItem(p));
                 }
-            }
-            /*for (var i = -Radius; i <= Radius; i++)
-            {
-                for (var j = -Radius; j <= Radius; j++)
-                {
-                    for (var k = -Radius; k <= Radius; k++)
-                    {
-                        var position = new PointL(i,j,k).Add(Center);
-                        yield return (position, GetItem(position));
-                    }
-                }
             }*/
+         for (var i = -Radius; i <= Radius; i++)
+         {
+             for (var j = -Radius; j <= Radius; j++)
+             {
+                 for (var k = -Radius; k <= Radius; k++)
+                 {
+                     var position = new PointL(i, j, k).Add(Center);
+                     yield return (position, GetItem(position));
+                 }
+             }
+         }
         }
     }
 }

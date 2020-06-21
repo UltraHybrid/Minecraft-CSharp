@@ -21,6 +21,7 @@ namespace tmp.Rendering
         private readonly SkyBox skyBox;
         private readonly World world;
         public readonly Lines lines;
+        public readonly Entity Entity;
 
         private readonly VisualManager3 visualManager;
         private readonly Camera camera;
@@ -36,6 +37,7 @@ namespace tmp.Rendering
             skyBox = new SkyBox();
             world = new World(visualManager, camera.viewer);
             lines = new Lines(camera.viewer);
+            Entity = new Entity();
         }
 
         public void RenderFrame()
@@ -46,6 +48,7 @@ namespace tmp.Rendering
 
             lines.Render(viewProjectionMatrix, heigth);
             world.Render(viewProjectionMatrix);
+            Entity.Render(viewProjectionMatrix);
             skyBox.Render(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
         }
 

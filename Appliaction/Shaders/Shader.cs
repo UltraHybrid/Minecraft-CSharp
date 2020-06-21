@@ -143,10 +143,36 @@ namespace tmp.Shaders
             {    
                 gl_FragColor = Color;
             }";
+        
+        private const string VertDefault =
+            @"#version 410 core
+            layout (location = 0) in vec3 position;
+            layout (location = 1) in vec2 tex;
+
+            uniform mat4 viewProjection;
+            
+            out vec2 Tex;
+
+            void main()
+            {
+                Tex = tex;
+                gl_Position = viewProjection * vec4(position, 1.0);
+            }";
+
+        private const string FragDefault =
+            @"#version 410 core
+
+            in vec2 Tex;
+            uniform sampler2D tarr;
+
+            void main()
+            {    
+                gl_FragColor = texture(tarr, Tex);
+            }";
 
         public static int GetLineShader() => InitShaders(VertLine, FragLine);
         
-        public static int GetDefaultShader() => InitShaders(VertSrcCube, FragSrcCube);
+        public static int GetDefaultShader() => InitShaders(VertDefault, FragDefault);
 
         public static int GetSkyBoxShader() => InitShaders(VertSkyBox, FragSkyBox);
 

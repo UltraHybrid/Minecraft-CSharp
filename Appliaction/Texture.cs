@@ -14,13 +14,13 @@ namespace tmp
         public static Dictionary<string, int> textures = new Dictionary<string, int>();
         public static int arrayTex;
 
-        public static int GetTexture(string name)
+        public static int InitTextureFromFile(string name, bool isReflected = false)
         {
-            var texture = GL.GenTexture();
+            GL.GenTextures(1, out int texture);
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
             var image = Image.Load(name);
-            var pixels = SetImage(image);
+            var pixels = SetImage(image, isReflected);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
@@ -53,9 +53,10 @@ namespace tmp
             return texture;
         }
 
-        private static List<byte> SetImage(Image<Rgba32> image)
+        private static List<byte> SetImage(Image<Rgba32> image, bool isReflected = false)
         {
-            image.Mutate(x => x.Flip(FlipMode.Vertical));
+            if(!isReflected)
+                image.Mutate(x => x.Flip(FlipMode.Vertical));
             var tempPixels = image.GetPixelSpan().ToArray();
 
             var pixels = new List<byte>();
