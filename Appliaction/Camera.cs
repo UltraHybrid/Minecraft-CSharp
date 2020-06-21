@@ -7,10 +7,10 @@ namespace tmp
 {
     public class Camera
     {
-        public readonly IMover2 viewer;
+        public readonly IMover viewer;
         private readonly Vector3 offset;
 
-        public Camera(IMover2 viewer, Vector3 offset)
+        public Camera(IMover viewer, Vector3 offset)
         {
             this.viewer = viewer;
             this.offset = offset;

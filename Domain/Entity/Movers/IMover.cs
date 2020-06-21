@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using tmp.Domain.TrialVersion;
 using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
@@ -9,9 +8,7 @@ namespace tmp.Domain
     {
         PointF Position { get; }
         Vector3 Front { get; }
-        Vector3 Left { get; }
-        Vector3 Up { get; }
-        void Move(Piece piece, IEnumerable<Direction> directions, float time);
+        void Move(Piece piece, IReadOnlyList<Direction> directions, float time);
         void Rotate(float deltaYaw, float deltaPitch);
     }
 }

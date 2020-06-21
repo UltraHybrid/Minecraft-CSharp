@@ -1,94 +1,89 @@
-﻿namespace tmp.Domain
-{
-    /*public sealed class SurvivalMover : EntityMover
-    {
-        public override Vector Left { get; set; }
-        public override Vector Up { get; set; }
-        public override float Speed { get; set; }
-        private float pitch;
-        private Vector verticalSpeed = new Vector(0, 0, 0);
-        private readonly float gravity;
-        private readonly float boxRadius;
-        private readonly float boxHeight;
+﻿using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using tmp.Domain.TrialVersion.Blocks;
+using tmp.Infrastructure;
+using tmp.Infrastructure.SimpleMath;
 
-        public override float Pitch
+namespace tmp.Domain
+{
+    public class SurvivalMover : EntityMover
+    {
+        private float yaw;
+        private float pitch;
+        private float radius;
+        private float height;
+        private float gravity;
+        private float verticalSpeed;
+        private Geometry geometry;
+        public override Geometry Geometry => geometry;
+        public float Speed { get; private set; }
+
+        private float Yaw
+        {
+            get => yaw;
+            set => yaw = value % 360;
+        }
+
+        private float Pitch
         {
             get => pitch;
             set
             {
-                pitch = value;
-                if (pitch > 89.0f)
-                    pitch = 89.0f;
-                if (pitch < -89.0f)
-                    pitch = -89.0f;
+                if (value > 179f)
+                    pitch = 179f;
+                else if (value < 1f)
+                    pitch = 1f;
+                else pitch = value;
             }
         }
 
-        private float yaw;
 
-        public override float Yaw
+        public SurvivalMover(PointF position, Vector3 front, float hitBoxRadius, float hitBoxHeight, float gravity) : base(position, front)
         {
-            get => yaw;
-            set
-            {
-                yaw = value;
-                if (yaw > 360)
-                    yaw -= 360;
-                if (yaw < 0)
-                    yaw += 360;
-            }
-        }
-
-        public SurvivalMover(Vector position, Vector front, float hitBotRadius, float hitBoxHeight, float gravity) : base(position, front)
-        {
+            height = hitBoxHeight;
+            radius = hitBoxRadius;
             this.gravity = gravity;
+            geometry = Geometry.CreateFromPosition(position, radius, height);
+            pitch = 90;
+            yaw = 0;
             Speed = 5f;
-            Front = front;
-            boxHeight = hitBoxHeight;
-            boxRadius = hitBotRadius;
-            Left = Vector.Cross(new Vector(0, 1, 0), front).Normalized();
-            Up = Vector.Cross(Front, Left).Normalized();
         }
 
-        public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
+        public override void Move(Piece piece, IReadOnlyList<Direction> directions, float time)
         {
             var distance = Speed * time;
-            var frontXZ = new Vector(Front.X, 0, Front.Z).Normalized();
-            var resultMove = Vector.Zero;
-            verticalSpeed -= new Vector(0,gravity * time, 0);
+            var frontXZ = Vector3.Normalize(new Vector3(Front.X, 0, Front.Z));
+            var resultMove = Vector3.Zero;
+            verticalSpeed -= gravity * time;
             foreach (var direction in directions)
             {
-                switch (direction)
+                resultMove += direction switch
                 {
-                    case Direction.Forward:
-                        resultMove += frontXZ;
-                        break;
-                    case Direction.Back:
-                        resultMove -= frontXZ;
-                        break;
-                    case Direction.Right:
-                        resultMove -= Left;
-                        break;
-                    case Direction.Left:
-                        resultMove += Left;
-                        break;
-                    case Direction.Up:
-                        // TODO: Доделать возможность прыжка
-                        if (Position.Y - (int) Position.Y < 0.01)
-                        {
-                            var underPoint = new PointI((int) Position.X, (int) Position.Y - 1, (int) Position.Z);
-                            if (!HaveVerticalAccess(Position, underPoint, piece))
-                                verticalSpeed = new Vector(0, 0.035f, 0);
-                        }
-                        break;
-                    case Direction.Down:
-                        break;
-                }
+                    Direction.Forward => frontXZ,
+                    Direction.Back => -frontXZ,
+                    Direction.Right => Right,
+                    Direction.Left => -Right,
+                    _ => Vector3.Zero
+                };
             }
 
-            var move = verticalSpeed + distance * (resultMove.Normalized());
-            Position += CropMove(move, piece);
+            if (!resultMove.Equals(Vector3.Zero))
+            {
+                Position = Position.Add(HorizontalCrop(Position, distance * Vector3.Normalize(resultMove), piece));
+            }
 
+            var vertMove = VerticalCrop(Position, new Vector3(0, verticalSpeed, 0), piece);
+            if (vertMove.Equals(Vector3.Zero))
+            {
+                if (verticalSpeed < 0 && directions.Contains(Direction.Up))
+                    verticalSpeed = 0.035f;
+                else
+                    verticalSpeed = 0;
+            } 
+            Position = Position.Add(vertMove);
         }
 
         public override void Rotate(float deltaYaw, float deltaPitch)
@@ -96,79 +91,81 @@
             Yaw += deltaYaw;
             Pitch += deltaPitch;
             Front = Convert2Cartesian(Yaw, Pitch);
-            Left = Vector.Cross(Up, Front).Normalized();
+            Right = Vector3.Normalize(Vector3.Cross(Front, Up));
         }
 
-        private Vector CropMove(Vector move, Piece piece)
+        private Vector3 HorizontalCrop(PointF position, Vector3 move, Piece piece)
         {
-            var newPosition = Position + move;
-            var bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
-            var upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
-
-            if (move.Y > 0 && piece.GetItem(upperCoords) != null)
+            var croppedMove = move;
+            var newPosition = position.Add(move);
+            //var newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
+            for (var y = (long) newPosition.Y; y <= (long) (newPosition.Y + height); y++)
             {
-                if (!HaveVerticalAccess(newPosition, upperCoords, piece))
+                var blockCoords = new PointL((long) newPosition.X, y, (long) newPosition.Z);
+                foreach (var neighbour in blockCoords.GetXzNeighbours())
                 {
-                    newPosition.Y = upperCoords.Y - boxHeight;
-                    verticalSpeed.Y = 0;
+                    if (piece.GetItem(neighbour) == null) continue;
+                    var blockPos = neighbour.AsVector() + new Vector3(0.5f);
+                    var xDiff = blockPos.X - newPosition.X;
+                    var zDiff = blockPos.Z - newPosition.Z;
+                    // TODO: 2 строки ниже должны делать тоже самое, но почему-то этого не делают!!!!
+                    //if (!newGeometry.IsCollision(Block.GetGeometry(neighbour))) continue;
+                    if (Math.Max(Math.Abs(xDiff), Math.Abs(zDiff)) >= 0.5 + radius) continue;
+                    if (Math.Abs(xDiff) > Math.Abs(zDiff))
+                    {
+                        var newAxisPos = blockPos.X - Math.Sign(xDiff) * (0.5 + radius);
+                        croppedMove = new Vector3((float) newAxisPos - position.X, croppedMove.Y, croppedMove.Z);
+                    }
+                    else
+                    {
+                        var newAxisPos = blockPos.Z - Math.Sign(zDiff) * (0.5 + radius);
+                        croppedMove = new Vector3(croppedMove.X, croppedMove.Y, (float) newAxisPos - position.Z);
+                    }
+                    newPosition = position.Add(croppedMove);
+                    //newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
                 }
             }
-            else if (move.Y < 0)
-            {
-                if (!HaveVerticalAccess(newPosition, bottomCoords, piece))
-                {
-                    newPosition.Y = bottomCoords.Y + 1;
-                    verticalSpeed.Y = 0; 
-                }
-                
-            }
 
-            // bottomCoords = new PointI((int) newPosition.X, (int) newPosition.Y, (int) newPosition.Z);
-            // upperCoords = new PointI(bottomCoords.X, (int) (newPosition.Y + boxHeight), bottomCoords.Z);
-            //
-            // for (var y = bottomCoords.Y; y <= upperCoords.Y; y++)
-            // {
-            //     var pos = new PointI(bottomCoords.X, y, bottomCoords.Z);
-            //     foreach (var neighbour in pos.GetNeighbours())
-            //     {
-            //         if (piece.GetItem(neighbour) == null) continue;
-            //         var blockPos = new Vector(neighbour.X, neighbour.Y, neighbour.Z) + new Vector(0.5f, 0.5f, 0.5f);
-            //         for (var i = 0; i < 2; i++)
-            //         {
-            //             var xDiff = blockPos.X - newPosition.X;
-            //             var zDiff = blockPos.Z - newPosition.Z;
-            //             var maxDiff = Math.Max(Math.Abs(xDiff), Math.Abs(zDiff));
-            //             if (maxDiff >= 0.5 + boxRadius) break;
-            //             if (maxDiff == Math.Abs(xDiff))
-            //             {
-            //                 newPosition.X = blockPos.X - Math.Sign(xDiff) * (float) (0.5 + boxRadius);
-            //             }
-            //             else
-            //             {
-            //                 newPosition.Z = blockPos.Z - Math.Sign(zDiff) * (float) (0.5 + boxRadius);
-            //             }
-            //         }
-            //         
-            //         
-            //     }
-            // }
-
-            return newPosition - Position;
+            return croppedMove;
         }
 
-        private bool HaveVerticalAccess(Vector newPosition, PointI accessBlockPosition, Piece piece)
+        private Vector3 VerticalCrop(PointF position, Vector3 move, Piece piece)
         {
+            var newPosition = position.Add(move);
+            if (move.Y < 0)
+            {
+                var blockCoords = newPosition.AsPointL();
+                if (!HaveVerticalAccess(newPosition, blockCoords, piece))
+                {
+                    return Vector3.Zero;
+                }
+            }
+            else
+            {
+                var blockCoords = newPosition.Add(new PointF(0, height, 0)).AsPointL();
+                if (!HaveVerticalAccess(newPosition, blockCoords, piece))
+                {
+                    return Vector3.Zero;
+                }
+            }
+
+            return move;
+        }
+        
+        private bool HaveVerticalAccess(PointF newPosition, PointL accessBlockPosition, Piece piece)
+        {
+            var newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
             if (piece.GetItem(accessBlockPosition) != null) return false;
-            foreach (var neighbour in accessBlockPosition.GetNeighbours())
+            foreach (var neighbour in accessBlockPosition.GetXzNeighbours())
             {
-                if (piece.GetItem(neighbour) == null) continue;
-                var blockPos = new Vector(neighbour.X + 0.5f, neighbour.Y + 0.5f, neighbour.Z + 0.5f);
-                var distance = Math.Max(Math.Abs(newPosition.X - blockPos.X),
-                    Math.Abs(newPosition.Z - blockPos.Z));
-                if (distance >= 0.5 + boxRadius) continue;
-                return false;
+                var block = piece.GetItem(neighbour);
+                if (block == null) continue;
+                var distance = Math.Max(Math.Abs(neighbour.X + 0.5 - newPosition.X),
+                    Math.Abs(neighbour.Z + 0.5 - newPosition.Z));
+                if (distance < 0.5 + radius) return false;
+                //if (newGeometry.IsCollision(Block.GetGeometry(neighbour))) return false;
             }
             return true;
         }
-    }*/
+    }
 }

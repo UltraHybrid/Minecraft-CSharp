@@ -9,7 +9,7 @@ namespace tmp.Domain
     {
         public readonly string Name;
         public int Hardness { get; private set; }
-        public readonly EntityMover2 Mover;
+        public readonly EntityMover Mover;
         public float Height { get; }
         public BlockType ActiveBlock { get; set; } = BaseBlocks.Dirt;
 
@@ -23,7 +23,7 @@ namespace tmp.Domain
             
             Hardness = hardness;
             Height = 1.7f;
-            Mover = new SurvivalMover2(position, direction, 0.25f, Height, 0.1f);
+            Mover = new SurvivalMover(position, direction, 0.25f, Height, 0.1f);
         }
     }
 }

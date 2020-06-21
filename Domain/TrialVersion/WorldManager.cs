@@ -8,6 +8,7 @@ using tmp.Infrastructure.SimpleMath;
 namespace tmp.Domain
 {
     public delegate void BlockUpdateEvent(PointL position);
+
     public class WorldManager : IDisposable
     {
         private readonly IGenerator<PointI, Chunk<Block>> generator;
@@ -73,8 +74,8 @@ namespace tmp.Domain
 
         public void PutBlock(BlockType blockType, PointL position)
         {
-            var (cPosition, ePosition)= world.Translate2LocalNotation(position);
-            world[cPosition][ePosition]=new Block(blockType, ePosition);
+            var (cPosition, ePosition) = world.Translate2LocalNotation(position);
+            world[cPosition][ePosition] = blockType == null ? null : new Block(blockType, ePosition);
             OnUpdateAlert(position);
         }
 
@@ -99,12 +100,13 @@ namespace tmp.Domain
         {
             Dispose(false);
         }
-        
+
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         protected virtual void Dispose(bool fromDisposeMethod)
         {
             if (!isDisposed)
@@ -113,6 +115,7 @@ namespace tmp.Domain
                 {
                     manager.Stop();
                 }
+
                 isDisposed = true;
             }
         }

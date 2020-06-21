@@ -15,10 +15,10 @@ namespace tmp
 
         private Vector2 lastMousePosition;
         private readonly Dictionary<Key, bool> keys;
-        private readonly EntityMover2 entity;
+        private readonly EntityMover entity;
         private readonly World<Chunk<Block>, Block> world;
 
-        public PlayerControl(Dictionary<Key, bool> keys, EntityMover2 entity, World<Chunk<Block>, Block> world)
+        public PlayerControl(Dictionary<Key, bool> keys, EntityMover entity, World<Chunk<Block>, Block> world)
         {
             this.keys = keys;
             this.entity = entity;

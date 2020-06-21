@@ -4,6 +4,6 @@
     {
         public string Name { get; }
         public int Health { get; }
-        public IMover2 Mover { get; }
+        public IMover Mover { get; }
     }
 }
