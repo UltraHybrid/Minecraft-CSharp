@@ -38,7 +38,8 @@ namespace tmp.Infrastructure
 
         public static Geometry CreateFromCenter(float xLength, float yLength, float zLength, Basis basis)
         {
-            return new Geometry(xLength, yLength, zLength, basis.Shift(-(basis.I + basis.K) / 2));
+            return new Geometry(xLength, yLength, zLength,
+                basis.Shift(-(xLength * basis.I + zLength * basis.K) / 2));
         }
 
         public static Geometry CreateFromPosition(PointF pos, float radius, float height)

@@ -22,16 +22,16 @@ namespace tmp.Domain.TrialVersion.Blocks
         {
             var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
             return Geometry.Identity(offset.Shift(externalOffset));
-        }    
+        }
 
         public bool CanRemove()
         {
             return Hardness <= 0;
         }
 
-        public static Geometry GetGeometry(PointL position)
+        public static Geometry GetGeometry(BlockType blockType, PointL position)
         {
-            return Geometry.Identity(Basis.UnitBasis.Shift(position.AsVector()));
+            return Geometry.Identity(blockType.Form.Shift(position.AsVector()));
         }
     }
 }
