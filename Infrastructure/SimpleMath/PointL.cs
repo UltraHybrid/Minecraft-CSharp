@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace tmp.Infrastructure.SimpleMath
 {
@@ -46,14 +47,14 @@ namespace tmp.Infrastructure.SimpleMath
         
         public IEnumerable<PointL> GetXzNeighbours()
         {
-            return GetFlatXzNeighbours(1, 2);
+            return GetFlatXzNeighbours(1).Concat(GetFlatXzNeighbours(2));
         }
 
-        private IEnumerable<PointL> GetFlatXzNeighbours(params int[] totalDifference)
+        private IEnumerable<PointL> GetFlatXzNeighbours(int totalDifference)
         {
             for(var dx = -1; dx <= 1; dx++)
             for(var dz = -1; dz <= 1; dz++)
-                if (((IList) totalDifference).Contains(Math.Abs(dx) + Math.Abs(dz)))
+                if (totalDifference == Math.Abs(dx) + Math.Abs(dz))
                     yield return new PointL(X + dx, Y, Z + dz);
         }
     }

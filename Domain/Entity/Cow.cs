@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Numerics;
 using tmp.Infrastructure;
@@ -57,4 +57,4 @@ namespace tmp.Domain.Entity
             
         }
     }
-}
+}*/
