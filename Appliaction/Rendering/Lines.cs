@@ -10,12 +10,14 @@ namespace tmp.Rendering
 {
     public class Lines
     {
-        private int vbo, vao;
+        private int[] vbo, vao;
         private readonly int shaderProgram, vPMatrixLocation;
         private IMover viewer;
 
         public Lines(IMover viewer)
         {
+            vbo = new int[2];
+            vao = new int[2];
             coords = a;
             this.viewer = viewer;
             shaderProgram = Shader.GetLineShader();
@@ -28,12 +30,19 @@ namespace tmp.Rendering
         public void Render(Matrix4 viewProjectionMatrix, float higth)
         {
             GL.UseProgram(shaderProgram);
-            GL.BindVertexArray(vao);
+            GL.BindVertexArray(vao[0]);
             GL.LineWidth(3);
             var front = viewer.Front.Convert();
             var position = viewer.Position.Convert();
+            
             SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, higth, 0)) * viewProjectionMatrix);
-            GL.DrawArrays(PrimitiveType.Lines, 0, coords.Count / 2);
+            GL.DrawArrays(PrimitiveType.Lines, 0, a.Count / 2);
+            if (coords.Count != 0)
+            {
+                GL.BindVertexArray(vao[1]);
+                SetVPMatrix(viewProjectionMatrix);
+                GL.DrawArrays(PrimitiveType.Lines, 0, coords.Count / 2);
+            }
         }
 
         public void Update()
@@ -45,30 +54,38 @@ namespace tmp.Rendering
 
         private void SendData()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo[0]);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * a.Count,
+                a.ToArray(), BufferUsageHint.StaticDraw);
+            
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo[1]);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * coords.Count,
                 coords.ToArray(), BufferUsageHint.StaticDraw);
+
         }
 
         private void GenBuffers()
         {
-            GL.GenVertexArrays(1, out vao);
-            GL.GenBuffers(1, out vbo);
+            GL.GenVertexArrays(2, vao);
+            GL.GenBuffers(2, vbo);
         }
 
         private void InstallAttributes()
         {
-            GL.BindVertexArray(vao);
+            for (var i = 0; i < 2; i++)
+            {
+                GL.BindVertexArray(vao[i]);
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes * 2, 0);
-            GL.EnableVertexAttribArray(0);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo[i]);
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes * 2, 0);
+                GL.EnableVertexAttribArray(0);
 
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes * 2,
-                Vector3.SizeInBytes);
-            GL.EnableVertexAttribArray(1);
+                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes * 2,
+                    Vector3.SizeInBytes);
+                GL.EnableVertexAttribArray(1);
 
-            GL.BindVertexArray(0);
+                GL.BindVertexArray(0);
+            }
         }
 
         private List<Vector3> coords;
@@ -94,8 +111,7 @@ namespace tmp.Rendering
 
         public void lines()
         {
-            coords = a;
-            SendData();
+            coords = new List<Vector3>();
         }
 
         public void Add(Parallelogram p)
