@@ -76,7 +76,7 @@ namespace tmp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             playerControl.Move((float) e.Time);
-            game.Update();
+            game.Update((float) e.Time);
             manager.Update();
             render.UpdateFrame();
         }

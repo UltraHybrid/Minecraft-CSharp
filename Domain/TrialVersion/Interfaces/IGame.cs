@@ -7,6 +7,6 @@ namespace tmp.Domain
         World<Chunk<Block>, Block> World { get; }
         Player Player { get; }
         void Start();
-        void Update();
+        void Update(float time);
     }
 }

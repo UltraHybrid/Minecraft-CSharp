@@ -42,10 +42,12 @@ namespace tmp.Domain
             manager.PutBlock(blockType, position);
         }
 
-        public void Update()
+        public void Update(float time)
         {
             manager.Update();
-            Animals.ForEach(a=>a.GoTo(Player.Mover.Position.AsPointL(), new Piece(World, a.Mover.Position.AsPointL(), 5), 1));
+            Animals.ForEach(a=>a.GoTo(Player.Mover.Position.AsPointL(),
+                new Piece(World, a.Mover.Position.AsPointL(), 5), 
+                time));
         }
 
         private PointF DefineSpawn(PointI ready)
