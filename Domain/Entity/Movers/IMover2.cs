@@ -8,7 +8,7 @@ namespace tmp.Domain
     {
         PointF Position { get; }
         Vector3 Front { get; }
-        void Move(Piece piece, IEnumerable<Direction> directions, float time);
+        void Move(Piece piece, IReadOnlyList<Direction> directions, float time);
         void Rotate(float deltaYaw, float deltaPitch);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
@@ -43,7 +44,7 @@ namespace tmp.Domain
 
         public override Geometry Geometry { get; }
 
-        public override void Move(Piece piece, IEnumerable<Direction> directions, float time)
+        public override void Move(Piece piece, IReadOnlyList<Direction> directions, float time)
         {
             var distance = Speed * time;
             var frontXZ = Vector3.Normalize(new Vector3(Front.X, 0, Front.Z));

@@ -39,7 +39,7 @@ namespace tmp.Domain
             return new Vector3(x, y, z);
         }
 
-        public abstract void Move(Piece piece, IEnumerable<Direction> directions, float time);
+        public abstract void Move(Piece piece, IReadOnlyList<Direction> directions, float time);
         public abstract void Rotate(float deltaYaw, float deltaPitch);
     }
 }

@@ -7,11 +7,11 @@ namespace tmp.Domain.Commands
     public class MoveCommand : ICommand
     {
         private readonly IMover2 entity;
-        private readonly IEnumerable<Direction> directions;
+        private readonly IReadOnlyList<Direction> directions;
         private readonly float time;
         private readonly World<Chunk<Block>, Block> world;
 
-        public MoveCommand(IMover2 entity, World<Chunk<Block>, Block> world, IEnumerable<Direction> directions, float time)
+        public MoveCommand(IMover2 entity, World<Chunk<Block>, Block> world, IReadOnlyList<Direction> directions, float time)
         {
             this.entity = entity;
             this.world = world;
