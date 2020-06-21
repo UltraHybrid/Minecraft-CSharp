@@ -44,10 +44,8 @@ namespace tmp.Domain
         {
             /*for (var i = 1; i <= Radius; i++)
             {
-                Console.WriteLine(i);
                 foreach (var p in Center.GetCubicNeighbourhood(i))
                 {
-                    Console.WriteLine(p);
                     yield return (p, GetItem(p));
                 }
             }*/

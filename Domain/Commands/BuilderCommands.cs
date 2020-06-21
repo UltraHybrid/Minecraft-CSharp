@@ -46,15 +46,7 @@ namespace tmp.Domain.Commands
             var closestPoint = intersectPoints.First();
 
             var closestPlane = planes.First(p => p.ContainsPoint(closestPoint));
-            /*var ordered = planes
-                .Select(plane => (plane, plane.CalculateIntersectionPoint(line)))
-                .Where(pair => pair.Item2 != null)
-                //.Where(pair => geometry.IsOnSurface(pair.Item2.Value))
-                .OrderBy(pair => cameraPos.GetSquaredDistance(pair.Item2.Value))
-                .ToList();
-            if (!ordered.Any()) return;
-            var closestPlane = ordered.First();
-            var index = Array.IndexOf(planes, closestPlane.plane);*/
+
             var index = Array.IndexOf(planes, closestPlane);
             var finalCoords = closestBlock.position.GetNeighbours().ToArray()[index];
             if (piece.GetItem(finalCoords) != null) return;
@@ -116,7 +108,6 @@ namespace tmp.Domain.Commands
 
             var geometry = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position);
             var planes = geometry.GetPlanes().ToArray();
-            Console.WriteLine("ClosestBlock " + closestBlock.position);
 
             var intersectPoints = geometry.GetIntersectPoints(line).OrderBy(cameraPos.GetSquaredDistance).ToList();
             if (!intersectPoints.Any()) return;
@@ -139,12 +130,11 @@ namespace tmp.Domain.Commands
             this.player = player;
             var amount = Math.Abs(number / allBlockType.Count) + 1;
             index = (number + amount * allBlockType.Count) % allBlockType.Count;
-            Console.WriteLine(index);
         }
 
         public void Execute()
         {
-            Console.WriteLine(allBlockType[index].Name);
+            Console.WriteLine("Выбран тип блока: " + allBlockType[index].Name);
             player.ActiveBlock = allBlockType[index];
         }
     }

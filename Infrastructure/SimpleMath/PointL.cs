@@ -62,13 +62,24 @@ namespace tmp.Infrastructure.SimpleMath
 
         public IEnumerable<PointL> GetCubicNeighbourhood(int radius)
         {
-            for (var i = -1; i <= 1; i++)
-            for (var j = -1; j <= 1; j++)
-            for (var k = -1; k <= 1; k++)
+            for (var i = -radius; i <= radius; i++)
+            for (var k = -radius; k <= radius; k++)
+                yield return Add(new PointL(i, -radius, k));
+
+            for (var j = -radius + 1; j <= radius - 1; j++)
             {
-                if (!(i == 0 && j == 0 && k == 0))
-                    yield return Add(new PointL(radius * i, radius * j, radius * k));
+                for (var i = -radius; i <= radius; i += 2 * radius)
+                for (var k = -radius; k <= radius; k++)
+                    yield return Add(new PointL(i, j, k));
+
+                for (var k = -radius; k <= radius; k += 2 * radius)
+                for (var i = -radius + 1; i <= radius - 1; i++)
+                    yield return Add(new PointL(i, j, k));
             }
+
+            for (var i = -radius; i <= radius; i++)
+            for (var k = -radius; k <= radius; k++)
+                yield return Add(new PointL(i, radius, k));
         }
 
         private IEnumerable<PointL> GetFlatXzNeighbours(int totalDifference)
