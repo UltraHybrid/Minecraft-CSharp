@@ -117,15 +117,12 @@ namespace tmp
             playerControl.MouseMove();
         }
 
-        public int c = 0;
-
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             if (e.Button == MouseButton.Left)
             {
-                game.PutBlock(new PointL(5 * 16 + c, 120, 5 * 16));
-                c++;
+                game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
             }
         }
 

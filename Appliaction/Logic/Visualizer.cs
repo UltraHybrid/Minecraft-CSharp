@@ -46,6 +46,7 @@ namespace tmp.Logic
             var currentBTextures = currentBlock.BlockType.Textures.GetOrderedTextures();
             var currentCore = currentBlock.BlockType.Core;
             var result = new List<FaceData>();
+
             for (var i = 0; i < TextureInfo.Order.Length; i++)
             {
                 var element = TextureInfo.Order[i];
@@ -55,25 +56,29 @@ namespace tmp.Logic
                     continue;
                 }
 
-                var offset = element switch
-                {
-                    TextureSide.Left => new PointL(1, 0, 0),
-                    TextureSide.Back => new PointL(0, 0, 1),
-                    TextureSide.Right => new PointL(-1, 0, 0),
-                    TextureSide.Front => new PointL(0, 0, -1),
-                    TextureSide.Top => new PointL(0, 1, 0),
-                    TextureSide.Bottom => new PointL(0, -1, 0),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-
+                var offset = CollateShift(element);
                 var neighboringBlock = gameWorld.GetItem(position.Add(offset));
-                
+
                 if (neighboringBlock == null || neighboringBlock == Block.Either ||
                     neighboringBlock.BlockType.Core == BlockCore.Transparent)
                     result.Add(new FaceData(currentBTextures[i], i, TextureInfo.Brightness[element]));
             }
 
             return result.Count != 0 ? new VisualizerData(position, result) : null;
+        }
+
+        private PointL CollateShift(TextureSide side)
+        {
+            return side switch
+            {
+                TextureSide.Left => new PointL(1, 0, 0),
+                TextureSide.Back => new PointL(0, 0, 1),
+                TextureSide.Right => new PointL(-1, 0, 0),
+                TextureSide.Front => new PointL(0, 0, -1),
+                TextureSide.Top => new PointL(0, 1, 0),
+                TextureSide.Bottom => new PointL(0, -1, 0),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public VisualizerData UpdateOne(PointL position)

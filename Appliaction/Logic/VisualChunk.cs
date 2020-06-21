@@ -10,7 +10,7 @@ namespace tmp.Logic
     {
         private readonly List<float>[] rowData;
         public const int RowDataLevels = 16;
-        private const int countInLevel = YLength / RowDataLevels;
+        public const int CountInLevel = YLength / RowDataLevels;
         public IEnumerable<float>[] RowData => rowData;
 
         public VisualChunk(PointI position) : base(position)
@@ -27,7 +27,7 @@ namespace tmp.Logic
             {
                 for (var z = 0; z < ZLength; z++)
                 {
-                    for (var y = number * RowDataLevels; y < number * RowDataLevels + countInLevel; y++)
+                    for (var y = number * CountInLevel; y < number * CountInLevel + CountInLevel; y++)
                     {
                         var vData = this[new PointI(x, y, z).AsPointB()];
                         if (vData == null) continue;

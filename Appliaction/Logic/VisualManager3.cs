@@ -54,29 +54,28 @@ namespace tmp.Logic
         {
         }
 
+        private static readonly PointL[] PointWithNeighbors =
+        {
+            PointL.Zero,
+            new PointL(1, 0, 0), new PointL(-1, 0, 0),
+            new PointL(0, 1, 0), new PointL(0, -1, 0),
+            new PointL(0, 0, 1), new PointL(0, 0, -1)
+        };
+
         public void HandlerForUpdate(PointL position)
         {
             Console.WriteLine("Put " + position);
-            var data = visualizer.UpdateOne(position);
-            World.TrySetItem(position, data);
-            var neighbors = new[]
-            {
-                new PointL(1, 0, 0), new PointL(-1, 0, 0),
-                new PointL(0, 1, 0), new PointL(0, -1, 0),
-                new PointL(0, 0, 1), new PointL(0, 0, -1)
-            };
 
-            for (var i = 0; i < neighbors.Length; i++)
+            foreach (var point in PointWithNeighbors)
             {
-                var point = position.Add(neighbors[i]);
-                var r = World.TrySetItem(point, visualizer.UpdateOne(point));
-                Console.Error.WriteLine(r);
+                var shiftPoint = position.Add(point);
+                World.TrySetItem(shiftPoint, visualizer.UpdateOne(shiftPoint));
             }
 
             var (cPosition, ePosition) = World.Translate2LocalNotation(position);
-            var a = cPosition.Add(new PointI(0, ePosition.Y / VisualChunk.RowDataLevels, 0));
-            World[cPosition].AdaptToStupidData(ePosition.Y / VisualChunk.RowDataLevels);
-            ReadyToUpdate.Enqueue(a);
+            var queuePoint = cPosition.Add(new PointI(0, ePosition.Y / VisualChunk.CountInLevel, 0));
+            World[cPosition].AdaptToStupidData(ePosition.Y / VisualChunk.CountInLevel);
+            ReadyToUpdate.Enqueue(queuePoint);
         }
     }
 }
