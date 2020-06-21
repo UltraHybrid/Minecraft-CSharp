@@ -122,6 +122,7 @@ namespace tmp.Rendering
                 p.p0.Convert(),
                 new Vector3(1, 0, 0),
             };
+            
             SendData();
         }
     }
