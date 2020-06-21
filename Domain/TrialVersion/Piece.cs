@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure;
 using tmp.Infrastructure.SimpleMath;
@@ -40,7 +42,16 @@ namespace tmp.Domain
 
         public IEnumerable<(PointL position, Block block)> Helper()
         {
-            for (var i = -Radius; i <= Radius; i++)
+            for (var i = 1; i <= Radius; i++)
+            {
+                Console.WriteLine(i);
+                foreach (var p in Center.GetCubicNeighbourhood(i))
+                {
+                    Console.WriteLine(p);
+                    yield return (p, GetItem(p));
+                }
+            }
+            /*for (var i = -Radius; i <= Radius; i++)
             {
                 for (var j = -Radius; j <= Radius; j++)
                 {
@@ -50,7 +61,7 @@ namespace tmp.Domain
                         yield return (position, GetItem(position));
                     }
                 }
-            }
+            }*/
         }
     }
 }

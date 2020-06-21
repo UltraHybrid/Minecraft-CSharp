@@ -115,13 +115,8 @@ namespace tmp.Domain.Commands
             if (closestBlock == default((PointL, Block))) return;
 
             var geometry = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position);
-            foreach (var e in geometry)
-            {
-                Console.Write(e);
-            }
-
-            Console.WriteLine();
             var planes = geometry.GetPlanes().ToArray();
+            Console.WriteLine("ClosestBlock " + closestBlock.position);
 
             var intersectPoints = geometry.GetIntersectPoints(line).OrderBy(cameraPos.GetSquaredDistance).ToList();
             if (!intersectPoints.Any()) return;

@@ -44,7 +44,7 @@ namespace tmp.Infrastructure.SimpleMath
         {
             return "PointL(" + X + ", " + Y + ", " + Z + ")";
         }
-        
+
         public IEnumerable<PointL> GetXzNeighbours()
         {
             return GetFlatXzNeighbours(1).Concat(GetFlatXzNeighbours(2));
@@ -60,10 +60,21 @@ namespace tmp.Infrastructure.SimpleMath
             yield return Add(new PointL(1, 0, 0));
         }
 
+        public IEnumerable<PointL> GetCubicNeighbourhood(int radius)
+        {
+            for (var i = -1; i <= 1; i++)
+            for (var j = -1; j <= 1; j++)
+            for (var k = -1; k <= 1; k++)
+            {
+                if (!(i == 0 && j == 0 && k == 0))
+                    yield return Add(new PointL(radius * i, radius * j, radius * k));
+            }
+        }
+
         private IEnumerable<PointL> GetFlatXzNeighbours(int totalDifference)
         {
-            for(var dx = -1; dx <= 1; dx++)
-            for(var dz = -1; dz <= 1; dz++)
+            for (var dx = -1; dx <= 1; dx++)
+            for (var dz = -1; dz <= 1; dz++)
                 if (totalDifference == Math.Abs(dx) + Math.Abs(dz))
                     yield return new PointL(X + dx, Y, Z + dz);
         }

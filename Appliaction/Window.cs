@@ -114,7 +114,7 @@ namespace tmp
                 if (com.figure != null)
                     render.lines.Add(com.figure);
             }
-            
+
             if (e.Key == Key.X)
             {
                 render.lines.lines();
@@ -130,6 +130,11 @@ namespace tmp
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
             playerControl.MouseMove();
+            /*var com = new Spectator(game);
+            com.Execute();
+            if (com.figure != null)
+                render.lines.Add(com.figure);
+            else render.lines.lines();*/
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)

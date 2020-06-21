@@ -43,7 +43,7 @@ namespace tmp.Infrastructure
                 new Parallelogram(Down0, Down1, Down2, Down3), //bot
                 new Parallelogram(Down1, Down2, Up2, Up1), // b
                 //new Parallelogram(Down2, Down3, Up3, Up2), // l
-                new Parallelogram(Down3, Down2, Up2, Up3),
+                new Parallelogram(Down3, Down2, Up2, Up3), // l
             };
         }
 
