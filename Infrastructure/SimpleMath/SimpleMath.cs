@@ -53,6 +53,11 @@ namespace tmp.Infrastructure.SimpleMath
         {
             return new Vector3(point.X, point.Y, point.Z);
         }
+        
+        public static PointF AsPointF(this PointL point)
+        {
+            return new PointF(point.X, point.Y, point.Z);
+        }
 
         public static PointI AsPointI(this Vector3 vectorLast)
         {

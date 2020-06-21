@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace tmp.Infrastructure.SimpleMath
 {
@@ -29,6 +30,11 @@ namespace tmp.Infrastructure.SimpleMath
             if (t <= 0)
                 return null;
             return line.GetPointByParameter(t);
+        }
+        
+        public bool ContainsPoint(PointF point)
+        {
+            return Math.Abs(Vector3.Dot(Normal, point.AsVector()) + D) <= 0.001f;
         }
     }
 
@@ -70,9 +76,10 @@ namespace tmp.Infrastructure.SimpleMath
             var l2 = new Line(p1, p2.Add(-p1).AsVector());
             var l3 = new Line(p2, p3.Add(-p2).AsVector());
             var l4 = new Line(p3, p0.Add(-p3).AsVector());*/
-            return p0.X <= point.X && point.X <= p2.X &&
+            var a = p0.X <= point.X && point.X <= p2.X &&
                    p0.Y <= point.Y && point.Y <= p2.Y &&
                    p0.Z <= point.Z && point.Z <= p2.Z;
+            return a;
         }
     }
 }

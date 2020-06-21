@@ -33,6 +33,16 @@ namespace tmp.Infrastructure
             Up1 = Down1.Add(basis.J);
             Up2 = Down2.Add(basis.J);
             Up3 = Down3.Add(basis.J);
+
+            Squads = new[]
+            {
+                new Parallelogram(Down3, Down0, Up0, Up3), //f
+                new Parallelogram(Down0, Down1, Up1, Up0), //r
+                new Parallelogram(Up0, Up1, Up2, Up3), //t
+                new Parallelogram(Down0, Down1, Down2, Down3), //bot
+                new Parallelogram(Down1, Down2, Up2, Up1), // b
+                new Parallelogram(Down2, Down3, Up3, Up2), // l
+            };
         }
 
         public static Geometry CreateFromCenter(float xLength, float yLength, float zLength, Basis basis)
@@ -64,39 +74,37 @@ namespace tmp.Infrastructure
             return other.Any(IsInnerPoint) || this.Any(other.IsInnerPoint);
         }
 
-        public bool IsIntersect(Line line)
+        public readonly Parallelogram[] Squads;
+
+        public List<PointF> GetIntersectPoints(Line line)
         {
             var planes = GetPlanes().ToArray();
-            var squads = new[]
-            {
-                new Parallelogram(Down3, Down0, Up0, Up3),
-                new Parallelogram(Down0, Down1, Up1, Up0),
-                new Parallelogram(Up0, Up1, Up2, Up3),
-                new Parallelogram(Down0, Down1, Down2, Down3),
-                new Parallelogram(Down1, Up1, Up2, Down2),
-                new Parallelogram(Down2, Up2, Up3, Down3),
-            };
-
-            for (var i = 0; i < 6; i++)
+            var result = new List<PointF>();
+            for (var i = 0; i < Squads.Length; i++)
             {
                 var v = planes[i].CalculateIntersectionPoint(line);
                 if (!v.HasValue)
                     continue;
-                if (squads[i].IsInner(v.Value))
-                    return true;
+                if (Squads[i].IsInner(v.Value))
+                    result.Add(v.Value);
             }
 
-            return false;
+            return result;
+        }
+
+        public bool IsIntersect(Line line)
+        {
+            return GetIntersectPoints(line).Count != 0;
         }
 
         public IEnumerable<Plane> GetPlanes()
         {
-            yield return Plane.From3Points(Down0, Up0, Down3);
-            yield return Plane.From3Points(Down1, Up1, Up0);
-            yield return Plane.From3Points(Up0, Up1, Up3);
-            yield return Plane.From3Points(Down0, Down3, Down1);
-            yield return Plane.From3Points(Down1, Down2, Up1);
-            yield return Plane.From3Points(Down3, Down2, Up3);
+            yield return Plane.From3Points(Down0, Up0, Down3); //f
+            yield return Plane.From3Points(Down1, Up1, Down0); // r
+            yield return Plane.From3Points(Up0, Up1, Up3); // t
+            yield return Plane.From3Points(Down0, Down3, Down1); //bot
+            yield return Plane.From3Points(Down1, Down2, Up1); // b
+            yield return Plane.From3Points(Down3, Up3, Down2); // l
         }
 
 

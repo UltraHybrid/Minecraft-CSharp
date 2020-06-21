@@ -106,6 +106,14 @@ namespace tmp
 
             if (e.Key == Key.U)
                 render.UpdateFrame();
+
+            if (e.Key == Key.Z)
+            {
+                var com = new Spectator(game);
+                com.Execute();
+                //if(com.figure!=null)
+                //    Print(com.figure)
+            }
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs e)
@@ -127,6 +135,7 @@ namespace tmp
                 //game.PutBlock(game.Player.Mover.Position.AsPointL().Add(new PointL(0, -1, 0)));
                 new PutCommand(game).Execute();
             }
+
             if (e.Button == MouseButton.Right)
             {
                 new BreakCommand(game).Execute();

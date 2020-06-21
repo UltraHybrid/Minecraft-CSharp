@@ -41,7 +41,8 @@ namespace tmp.Domain
         }
 
 
-        public SurvivalMover(PointF position, Vector3 front, float hitBoxRadius, float hitBoxHeight, float gravity) : base(position, front)
+        public SurvivalMover(PointF position, Vector3 front, float hitBoxRadius, float hitBoxHeight, float gravity) :
+            base(position, front)
         {
             height = hitBoxHeight;
             radius = hitBoxRadius;
@@ -122,6 +123,7 @@ namespace tmp.Domain
                         var newAxisPos = blockPos.Z - Math.Sign(zDiff) * (0.5 + radius);
                         croppedMove = new Vector3(croppedMove.X, croppedMove.Y, (float) newAxisPos - position.Z);
                     }
+
                     newPosition = position.Add(croppedMove);
                     //newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
                 }
@@ -152,7 +154,7 @@ namespace tmp.Domain
 
             return move;
         }
-        
+
         private bool HaveVerticalAccess(PointF newPosition, PointL accessBlockPosition, Piece piece)
         {
             var newGeometry = Geometry.CreateFromPosition(newPosition, radius, height);
@@ -166,6 +168,7 @@ namespace tmp.Domain
                 if (distance < 0.5 + radius) return false;
                 //if (newGeometry.IsCollision(Block.GetGeometry(neighbour))) return false;
             }
+
             return true;
         }
     }
