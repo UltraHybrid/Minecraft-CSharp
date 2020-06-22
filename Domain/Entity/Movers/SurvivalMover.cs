@@ -76,11 +76,12 @@ namespace tmp.Domain
                 Position = Position.Add(HorizontalCrop(Position, distance * Vector3.Normalize(resultMove), piece));
             }
 
-            var vertMove = VerticalCrop(Position, new Vector3(0, verticalSpeed, 0), piece);
+            var vertDistance = verticalSpeed * time - gravity * time * time / 2;
+            var vertMove = VerticalCrop(Position, new Vector3(0, vertDistance, 0), piece);
             if (vertMove.Equals(Vector3.Zero))
             {
                 if (verticalSpeed < 0 && directions.Contains(Direction.Up))
-                    verticalSpeed = 0.035f;
+                    verticalSpeed = 6.5f;
                 else
                     verticalSpeed = 0;
             } 

@@ -23,7 +23,7 @@ namespace tmp.Domain
             
             Hardness = hardness;
             Height = 1.7f;
-            Mover = new SurvivalMover(5f, position, direction, 0.25f, Height, 0.1f);
+            Mover = new SurvivalMover(5f, position, direction, 0.25f, Height, 16f);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace tmp.Domain.Entity
             Health = 10;
             var rnd = new Random();
             var direction = new Vector3(rnd.Next(), 0, rnd.Next()) + Vector3.UnitX;
-            mover = new SurvivalMover(3, position, direction, 0.4f, 0.9f, 0.1f);
+            mover = new SurvivalMover(3, position, direction, 0.4f, 0.9f, 16f);
         }
 
         public void GoTo(PointL target, Piece piece, float time)
