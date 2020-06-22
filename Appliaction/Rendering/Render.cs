@@ -11,36 +11,27 @@ namespace tmp.Rendering
     public class Render
     {
         #region Variables
-
-        private int texture, arrayTex;
-        private readonly List<PointI> chunksCords = new List<PointI>();
-        private readonly List<int> chunkSidesCount = new List<int>();
-
         private Matrix4 viewMatrix;
         private Matrix4 projectionMatrix, viewProjectionMatrix;
 
         private readonly SkyBox skyBox;
         private readonly World world;
         public readonly Lines lines;
-        public readonly Entity Entity;
-
-        private readonly Game game;
-        private readonly VisualManager3 visualManager;
+        private readonly Entity entity;
         private readonly Camera camera;
-        private readonly float heigth;
-
         #endregion
 
-        public Render(Camera camera, VisualManager3 visualManager, Game game)
+        public Render(Camera camera,
+            SkyBox skyBox,
+            World worldRender,
+            Lines lineRender,
+            Entity entityRender)
         {
-            this.game = game;
-            heigth = game.Player.Height;
             this.camera = camera;
-            this.visualManager = visualManager;
-            skyBox = new SkyBox();
-            world = new World(visualManager, camera.viewer);
-            lines = new Lines(camera.viewer);
-            Entity = new Entity(game);
+            this.skyBox = skyBox;
+            world = worldRender;
+            lines = lineRender;
+            entity = entityRender;
         }
 
         public void RenderFrame()
@@ -50,25 +41,25 @@ namespace tmp.Rendering
             GL.Enable(EnableCap.Multisample);
             GL.Enable(EnableCap.DepthTest);
 
-            lines.Render(viewProjectionMatrix, heigth);
+            lines.Render(viewProjectionMatrix);
             world.Render(viewProjectionMatrix);
-            Entity.Render(viewProjectionMatrix);
+            entity.Render(viewProjectionMatrix);
             skyBox.Render(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
-            
         }
 
         public void UpdateFrame()
         {
             UpdateMatrix();
-            Entity.Update();
+            entity.Update();
             world.Update();
         }
-        
+
         private void UpdateMatrix()
         {
             viewMatrix = camera.GetViewMatrix();
             viewProjectionMatrix = viewMatrix * projectionMatrix;
         }
+
         public void Initialise(int width, int height)
         {
             Resize(width, height);

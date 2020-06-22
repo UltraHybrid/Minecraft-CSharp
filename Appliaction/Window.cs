@@ -23,7 +23,8 @@ namespace tmp
 {
     internal sealed class Window : GameWindow
     {
-        public Window(Game game, VisualManager3 manager) : base(
+        public Window(Game game,
+            VisualManager3 manager) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -41,26 +42,33 @@ namespace tmp
 
             Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
             Model.Load(Directory.GetFiles(Path.Combine("Models", "source"), "*.fbx").ToList());
-            game.Start();
+
             this.game = game;
             this.manager = manager;
+            game.Start();
             Location = new Point(100, 100);
-            camera = new Camera(game.Player.Mover, new Vector3(0, game.Player.Height, 0));
+            //camera = new Camera(game.Player.Mover, new Vector3(0, game.Player.Height, 0));
+  
+            var camera = new Camera(game.Player);
+            var skyBoxRender = new SkyBox();
+            var worldRender = new World(manager, game);
+            var linesRender = new Lines(game);
+            var entityRender = new Entity(game);
+            
+            this.render = new Render(camera, skyBoxRender, worldRender, linesRender, entityRender);
             playerControl = new PlayerControl(keys, game.Player.Mover, game.World);
-            render = new Render(camera, manager, game);
+            //render = new Render(camera, manager, game);
         }
 
         #region Variables
 
         private VisualManager3 manager;
-        private Camera camera;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
         private Game game;
         private PlayerControl playerControl;
 
         #endregion
-
 
         protected override void OnResize(EventArgs e)
         {
@@ -70,7 +78,6 @@ namespace tmp
         protected override void OnLoad(EventArgs e)
         {
             GL.Enable(EnableCap.DepthTest);
-
             CursorVisible = false;
             render.Initialise(Width, Height);
         }
@@ -91,11 +98,8 @@ namespace tmp
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             Title = $"(VSync: {VSync}) FPS: {1f / e.Time} CORD: " + game.Player.Mover.Position;
-
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            
             render.RenderFrame();
-
             SwapBuffers();
         }
 
@@ -107,9 +111,6 @@ namespace tmp
                 Close();
                 Environment.Exit(111);
             }
-
-            if (e.Key == Key.U)
-                render.UpdateFrame();
 
             if (e.Key == Key.Z)
             {
@@ -134,11 +135,6 @@ namespace tmp
         {
             Mouse.SetPosition(Bounds.X + Width / 2f, Bounds.Y + Height / 2f);
             playerControl.MouseMove();
-            /*var com = new Spectator(game);
-            com.Execute();
-            if (com.figure != null)
-                render.lines.Add(com.figure);
-            else render.lines.lines();*/
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)

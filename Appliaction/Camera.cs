@@ -7,13 +7,13 @@ namespace tmp
 {
     public class Camera
     {
-        public readonly IMover viewer;
+        private readonly IMover viewer;
         private readonly Vector3 offset;
 
-        public Camera(IMover viewer, Vector3 offset)
+        public Camera(Player player)
         {
-            this.viewer = viewer;
-            this.offset = offset;
+            this.viewer = player.Mover;
+            this.offset = player.Height* Vector3.UnitY;
         }
 
         public Matrix4 GetViewMatrix()

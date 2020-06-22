@@ -28,9 +28,9 @@ namespace tmp.Rendering
         private readonly IMover viewer;
         private int Size { get; }
 
-        public World(VisualManager3 visualManager, IMover viewer)
+        public World(VisualManager3 visualManager, Game game)
         {
-            this.viewer = viewer;
+            viewer = game.Player.Mover;
             this.visualManager = visualManager;
             arrayTex = Texture.ArrayTex;
             var size = visualManager.World.Size;

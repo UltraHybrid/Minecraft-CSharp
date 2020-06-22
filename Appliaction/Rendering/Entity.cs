@@ -12,7 +12,7 @@ using Shader = tmp.Shaders.Shaders;
 
 namespace tmp.Rendering
 {
-    public class Entity
+    public class Entity: IRender
     {
         private readonly int vPMatrixLocation, shaderProgram;
         private int vbo, vao, ebo, tbo, transform;

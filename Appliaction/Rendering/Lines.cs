@@ -13,13 +13,15 @@ namespace tmp.Rendering
         private int[] vbo, vao;
         private readonly int shaderProgram, vPMatrixLocation;
         private IMover viewer;
+        private Vector3 offset;
 
-        public Lines(IMover viewer)
+        public Lines(Game game)
         {
             vbo = new int[2];
             vao = new int[2];
             coords = a;
-            this.viewer = viewer;
+            offset = game.Player.Height* Vector3.UnitY;
+            viewer = game.Player.Mover;
             shaderProgram = Shader.GetLineShader();
             GenBuffers();
             InstallAttributes();
@@ -27,7 +29,7 @@ namespace tmp.Rendering
             SendData();
         }
 
-        public void Render(Matrix4 viewProjectionMatrix, float higth)
+        public void Render(Matrix4 viewProjectionMatrix)
         {
             GL.UseProgram(shaderProgram);
             GL.BindVertexArray(vao[0]);
@@ -35,7 +37,7 @@ namespace tmp.Rendering
             var front = viewer.Front.Convert();
             var position = viewer.Position.Convert();
             
-            SetVPMatrix(Matrix4.CreateTranslation(position + front + new Vector3(0, higth, 0)) * viewProjectionMatrix);
+            SetVPMatrix(Matrix4.CreateTranslation(position + front + offset) * viewProjectionMatrix);
             GL.DrawArrays(PrimitiveType.Lines, 0, a.Count / 2);
             if (coords.Count != 0)
             {
