@@ -86,9 +86,11 @@ namespace tmp.Rendering
 
                 //Console.WriteLine(angle * 180 / Math.PI);
                 //Console.WriteLine(front);
-                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) *
-                              Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
-                              Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
+                var tmpMatr =
+                    Matrix4.CreateScale(0.05f) *
+                    Matrix4.CreateRotationX(-(float) Math.PI / 2) *
+                    Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
+                    Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
                 matri.Add(tmpMatr);
             }
 

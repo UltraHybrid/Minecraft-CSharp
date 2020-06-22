@@ -37,8 +37,7 @@ namespace tmp.Domain
         public void Start()
         {
             var ready = manager.MakeFirstLunch();
-            Console.WriteLine("Ready ");
-            Console.WriteLine("World " + World.Count);
+            Console.WriteLine("Сгенерирован первый чанк");
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
         }
 
@@ -60,7 +59,6 @@ namespace tmp.Domain
             foreach (var point in animalSpawner.Generate(chunk))
             {
                 var animalPoint = World<Chunk<Block>, Block>.GetAbsolutePosition(point, chunk.Position).AsPointF();
-                //Console.WriteLine("Cow Spawn on " + animalPoint);
                 Animals.Add(new Cow(animalPoint));
             }
         }

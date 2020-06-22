@@ -72,14 +72,9 @@ namespace tmp.Infrastructure.SimpleMath
 
         public bool IsInner(PointF point)
         {
-            /*var l1 = new Line(p0, p1.Add(-p0).AsVector());
-            var l2 = new Line(p1, p2.Add(-p1).AsVector());
-            var l3 = new Line(p2, p3.Add(-p2).AsVector());
-            var l4 = new Line(p3, p0.Add(-p3).AsVector());*/
-            var a = p0.X <= point.X && point.X <= p2.X &&
+            return p0.X <= point.X && point.X <= p2.X &&
                    p0.Y <= point.Y && point.Y <= p2.Y &&
                    p0.Z <= point.Z && point.Z <= p2.Z;
-            return a;
         }
     }
 }
