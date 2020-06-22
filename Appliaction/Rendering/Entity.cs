@@ -6,6 +6,7 @@ using Assimp;
 using OpenTK.Graphics.OpenGL4;
 using tmp.Domain;
 using tmp.Domain.Entity;
+using tmp.Loaders;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Shader = tmp.Shaders.Shaders;
 
@@ -13,9 +14,6 @@ namespace tmp.Rendering
 {
     public class Entity
     {
-        private AssimpContext assimpContext = new AssimpContext();
-        private const PostProcessSteps Flags = PostProcessSteps.FlipUVs | PostProcessSteps.Triangulate;
-
         private readonly int vPMatrixLocation, shaderProgram;
         private int vbo, vao, ebo, tbo, transform;
 
@@ -33,9 +31,8 @@ namespace tmp.Rendering
             shaderProgram = Shader.GetDefaultShader();
             GenBuffer();
             InstallAttributes();
-            var scene = assimpContext.ImportFile("./Models/source/cow.fbx", Flags);
-
-            foreach (var mesh in scene.Meshes)
+            
+            foreach (var mesh in Model.Models["cow"])
             {
                 var size = (uint) vertexList.Count;
                 texCords.AddRange(mesh.TextureCoordinateChannels[0].Select(f => new Vector2(f.X, f.Y)));
@@ -84,13 +81,9 @@ namespace tmp.Rendering
                         angle = Math.PI - Math.Atan(-front.Z);
                 }
 
-                //Console.WriteLine(angle * 180 / Math.PI);
-                //Console.WriteLine(front);
-                var tmpMatr =
-                    Matrix4.CreateScale(0.05f) *
-                    Matrix4.CreateRotationX(-(float) Math.PI / 2) *
-                    Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
-                    Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
+                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) *
+                              Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
+                              Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
                 matri.Add(tmpMatr);
             }
 
