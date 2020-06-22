@@ -17,18 +17,17 @@ namespace tmp.Domain
         public BlockWorld World { get; }
         public Player Player { get; private set; }
 
-        private readonly WorldManager manager;
+        private readonly IWorldManager manager;
 
         private readonly IGenerator<Chunk<Block>, List<PointB>> animalSpawner;
         public List<Cow> Animals;
 
-        public Game(int worldSize, PointI worldOffset, WorldManager manager)
+        public Game(BlockWorld world,
+            IWorldManager manager,
+            IGenerator<Chunk<Block>, List<PointB>> animalSpawner)
         {
-            var world = new GameWorld(worldOffset, worldSize);
-
-            animalSpawner = new CowSpawner();
             this.manager = manager;
-            manager.SetWorld(world);
+            this.animalSpawner = animalSpawner;
             manager.AddAlert += SpawnAnimals;
             World = world;
             Animals = new List<Cow>();
@@ -36,7 +35,7 @@ namespace tmp.Domain
 
         public void Start()
         {
-            var ready = manager.MakeFirstLunch();
+            var ready = manager.MakeFirstLaunch();
             Console.WriteLine("Сгенерирован первый чанк");
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
         }

@@ -34,8 +34,12 @@ namespace tmp
             //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
             //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             //var gg = new FlatGenerator();
-            var manager = new WorldManager(gg);
-            var game = new Game(worldSize, startOffset, manager);
+            var world = new GameWorld(startOffset, worldSize);
+            var manager = new WorldManager(world, gg);
+            var game = new Game(world, manager, new CowSpawner());
+            
+            
+            
             var visualWorld = new VisualWorld(startOffset, worldSize);
             var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;

@@ -9,30 +9,25 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
-    public delegate void BlockUpdateEvent(PointL position);
-
-    public class WorldManager : IDisposable
+    public sealed class WorldManager : IWorldManager, IDisposable
     {
         private readonly IGenerator<PointI, Chunk<Block>> generator;
         private readonly ChunkManager<PointI, Chunk<Block>> manager;
-        private GameWorld world;
+        private readonly World<Chunk<Block>, Block> world;
 
         public event Action<Chunk<Block>> AddAlert;
         public event Action<Chunk<Block>> DeleteAlert;
         public event BlockUpdateEvent UpdateAlert;
 
-        public WorldManager(IGenerator<PointI, Chunk<Block>> generator)
+        public WorldManager(World<Chunk<Block>, Block> world,
+            IGenerator<PointI, Chunk<Block>> generator)
         {
             this.generator = generator;
+            this.world = world;
             manager = new ChunkManager<PointI, Chunk<Block>>(this.generator.Generate);
         }
 
-        public void SetWorld(GameWorld gameWorld)
-        {
-            world = gameWorld;
-        }
-
-        public PointI MakeFirstLunch()
+        public PointI MakeFirstLaunch()
         {
             MakeShift(PointI.Zero, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
             manager.Start();
@@ -66,7 +61,6 @@ namespace tmp.Domain
 
             var nearestChunks = necessaryChunks
                 .OrderBy(p => p.GetDistance(playerPosition));
-            //Console.Write("Запланированы: ");
             foreach (var chunkPoint in nearestChunks)
             {
                 manager.Push(chunkPoint);
@@ -91,7 +85,7 @@ namespace tmp.Domain
             DeleteAlert?.Invoke(chunk);
         }
 
-        protected virtual void OnUpdateAlert(PointL position)
+        private void OnUpdateAlert(PointL position)
         {
             UpdateAlert?.Invoke(position);
         }
@@ -109,7 +103,7 @@ namespace tmp.Domain
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool fromDisposeMethod)
+        private void Dispose(bool fromDisposeMethod)
         {
             if (!isDisposed)
             {

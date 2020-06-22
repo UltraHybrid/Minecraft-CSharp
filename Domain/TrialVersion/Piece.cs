@@ -32,14 +32,6 @@ namespace tmp.Domain
             return world.GetItem(position);
         }
 
-        public Geometry GetBlockGeometry(PointL point)
-        {
-            if (!ContainsPosition(point))
-                return null;
-            var (cPosition, bPosition) = world.Translate2LocalNotation(point);
-            return world.GetItem(point).GetHitBox(cPosition.AsVector());
-        }
-
         public IEnumerable<(PointL position, Block block)> Helper()
         {
             /*for (var i = 1; i <= Radius; i++)
