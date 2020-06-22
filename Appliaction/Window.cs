@@ -12,6 +12,7 @@ using tmp.Domain;
 using tmp.Domain.Commands;
 using tmp.Domain.TrialVersion.Blocks;
 using tmp.Infrastructure.SimpleMath;
+using tmp.Loaders;
 using tmp.Logic;
 using tmp.Rendering;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
@@ -39,6 +40,7 @@ namespace tmp
             }
 
             Texture.InitArray(Directory.GetFiles(Path.Combine("Textures"), "*.png").ToList());
+            Model.Load(Directory.GetFiles(Path.Combine("Models", "source"), "*.fbx").ToList());
             game.Start();
             this.game = game;
             this.manager = manager;
