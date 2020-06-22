@@ -50,9 +50,9 @@ namespace tmp.Domain
         public void Update(float time)
         {
             manager.Update();
-            Animals.ForEach(a => a.GoTo(Player.Mover.Position.AsPointL(),
+            Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
                 new Piece(World, a.Mover.Position.AsPointL(), 5),
-                time));
+                time, 2));
         }
 
         private void SpawnAnimals(Chunk<Block> chunk)
