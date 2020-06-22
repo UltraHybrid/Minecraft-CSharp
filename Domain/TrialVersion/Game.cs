@@ -29,7 +29,7 @@ namespace tmp.Domain
             animalSpawner = new CowSpawner();
             this.manager = manager;
             manager.SetWorld(world);
-            //manager.AddAlert += SpawnAnimals;
+            manager.AddAlert += SpawnAnimals;
             World = world;
             Animals = new List<Cow>();
         }
