@@ -10,7 +10,9 @@ namespace tmp.Domain
     {
         public PointF Position { get; protected set; }
         public Vector3 Front { get; protected set; }
-        protected Vector3 Right { get; set;}
+        public float Yaw { get; }
+        public float Pitch { get; }
+        protected Vector3 Right { get; set; }
         protected Vector3 Up { get; set; }
         public abstract Geometry Geometry { get; }
 
@@ -37,7 +39,7 @@ namespace tmp.Domain
 
         public abstract void Move(Piece piece, IReadOnlyList<Direction> directions, float time);
         public abstract void Rotate(float deltaYaw, float deltaPitch);
-        
+
         public void SetView(Vector3 view)
         {
             if (view.Equals(Vector3.Zero)) return;
