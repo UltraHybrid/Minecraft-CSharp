@@ -41,8 +41,8 @@ namespace tmp.Domain.Entity
                 isSlowed = false;
             }
 
-            if (view.X != 0 && view.Z != 0)
-                Mover.Move(piece, directions, time);
+            //if (view.X != 0 && view.Z != 0)
+                //Mover.Move(piece, directions, time);
             if (Mover.Position.GetSquaredDistance(pos) < mover.Speed * time / 2) isSlowed = true;
         }
     }
