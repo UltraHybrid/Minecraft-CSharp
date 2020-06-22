@@ -63,7 +63,7 @@ namespace tmp.Domain
                     {
                         current = futureChunks.Dequeue();
                     }
-
+                    
                     var result = function(current);
                     lock (outputLock)
                     {

@@ -3,7 +3,7 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Domain
 {
-    public interface IWorld<out TContainer, TItem>
+    public interface IWorld<TContainer, TItem>
     {
         PointI Offset { get; set; }
         int Size { get; }
@@ -13,6 +13,6 @@ namespace tmp.Domain
         IReadOnlyList<PointI> GetNeedlessChunks();
         bool TryDeleteChunk(PointI position);
         IReadOnlyList<PointI> GetPointOfGaps();
-        TContainer this[PointI position] { get; }
+        TContainer this[PointI position] { get; set; }
     }
 }

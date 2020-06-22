@@ -11,37 +11,34 @@ namespace tmp.Domain
 {
     public delegate void BlockUpdateEvent(PointL position);
 
-    public class WorldManager : IDisposable
+    public sealed class WorldManager : IWorldManager, IDisposable
     {
         private readonly IGenerator<PointI, Chunk<Block>> generator;
         private readonly ChunkManager<PointI, Chunk<Block>> manager;
-        private GameWorld world;
 
+        public World<Chunk<Block>, Block> World { get; }
         public event Action<Chunk<Block>> AddAlert;
         public event Action<Chunk<Block>> DeleteAlert;
         public event BlockUpdateEvent UpdateAlert;
 
-        public WorldManager(IGenerator<PointI, Chunk<Block>> generator)
+        public WorldManager(IGenerator<PointI, Chunk<Block>> generator, 
+            World<Chunk<Block>, Block> world)
         {
             this.generator = generator;
             manager = new ChunkManager<PointI, Chunk<Block>>(this.generator.Generate);
-        }
-
-        public void SetWorld(GameWorld gameWorld)
-        {
-            world = gameWorld;
+            World = world;
         }
 
         public PointI MakeFirstLunch()
         {
-            MakeShift(PointI.Zero, PointI.CreateXZ(world.Size / 2, world.Size / 2).Add(world.Offset));
+            MakeShift(PointI.Zero, PointI.CreateXZ(World.Size / 2, World.Size / 2).Add(World.Offset));
             manager.Start();
             while (manager.IsEmpty)
             {
             }
 
             var answer = manager.Pop();
-            world[answer.Position] = answer;
+            World[answer.Position] = answer;
             AddNotifyAll(answer);
             return answer.Position;
         }
@@ -51,33 +48,31 @@ namespace tmp.Domain
             if (!manager.IsEmpty)
             {
                 var chunk = manager.Pop();
-                world[chunk.Position] = chunk;
+                World[chunk.Position] = chunk;
                 AddNotifyAll(chunk);
             }
         }
 
         public void MakeShift(PointI offset, PointI playerPosition)
         {
-            world.Offset = world.Offset.Add(offset);
-            var necessaryChunks = world.GetPointOfGaps();
+            World.Offset = World.Offset.Add(offset);
+            var necessaryChunks = World.GetPointOfGaps();
             if (necessaryChunks.Count == 0)
                 // ReSharper disable once RedundantJumpStatement
                 return;
 
             var nearestChunks = necessaryChunks
                 .OrderBy(p => p.GetDistance(playerPosition));
-            //Console.Write("Запланированы: ");
             foreach (var chunkPoint in nearestChunks)
             {
                 manager.Push(chunkPoint);
-                //Console.Write(chunkPoint);
             }
         }
 
         public void PutBlock(BlockType blockType, PointL position)
         {
-            var (cPosition, ePosition) = world.Translate2LocalNotation(position);
-            world[cPosition][ePosition] = blockType == null ? null : new Block(blockType, ePosition);
+            var (cPosition, ePosition) = World.Translate2LocalNotation(position);
+            World[cPosition][ePosition] = blockType == null ? null : new Block(blockType, ePosition);
             OnUpdateAlert(position);
         }
 
@@ -91,7 +86,7 @@ namespace tmp.Domain
             DeleteAlert?.Invoke(chunk);
         }
 
-        protected virtual void OnUpdateAlert(PointL position)
+        private void OnUpdateAlert(PointL position)
         {
             UpdateAlert?.Invoke(position);
         }
@@ -109,7 +104,7 @@ namespace tmp.Domain
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool fromDisposeMethod)
+        private void Dispose(bool fromDisposeMethod)
         {
             if (!isDisposed)
             {

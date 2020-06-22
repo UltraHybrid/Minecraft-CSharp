@@ -12,30 +12,27 @@ namespace tmp.Domain
 {
     using BlockWorld = World<Chunk<Block>, Block>;
 
-    public class Game : IGame
+    public class Game: IGame
     {
-        public BlockWorld World { get; }
+        public World<Chunk<Block>, Block> World { get; }
         public Player Player { get; private set; }
-
-        private readonly WorldManager manager;
-
+        private readonly IWorldManager manager;
         private readonly IGenerator<Chunk<Block>, List<PointB>> animalSpawner;
         public List<Cow> Animals;
 
-        public Game(int worldSize, PointI worldOffset, WorldManager manager)
+        public Game(World<Chunk<Block>, Block> world,
+            IGenerator<Chunk<Block>, List<PointB>> animalSpawner,
+            IWorldManager manager)
         {
-            var world = new GameWorld(worldOffset, worldSize);
-
-            animalSpawner = new CowSpawner();
+            this.animalSpawner = animalSpawner;
             this.manager = manager;
-            manager.SetWorld(world);
-            manager.AddAlert += SpawnAnimals;
             World = world;
             Animals = new List<Cow>();
         }
 
         public void Start()
         {
+            manager.AddAlert += SpawnAnimals;
             var ready = manager.MakeFirstLunch();
             Console.WriteLine("Сгенерирован первый чанк");
             Player = new Player("Player", DefineSpawn(ready), new Vector3(1, 0, 0), 10);
@@ -49,9 +46,9 @@ namespace tmp.Domain
         public void Update(float time)
         {
             manager.Update();
-            Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
-                new Piece(World, a.Mover.Position.AsPointL(), 5),
-                time, 2));
+            //Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
+            //    new Piece(World, a.Mover.Position.AsPointL(), 5),
+            //    time, 2));
         }
 
         private void SpawnAnimals(Chunk<Block> chunk)

@@ -58,7 +58,8 @@ namespace tmp.Rendering
         public void Update()
         {
             matri = new List<Matrix4>();
-            foreach (var animal in game.Animals)
+            var g = (Game) game;
+            foreach (var animal in g.Animals)
             {
                 var front = animal.Mover.Front.Convert();
                 var position = animal.Mover.Position;

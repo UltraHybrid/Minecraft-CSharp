@@ -32,7 +32,7 @@ namespace tmp.Rendering
         {
             this.viewer = viewer;
             this.visualManager = visualManager;
-            arrayTex = Texture.arrayTex;
+            arrayTex = Texture.ArrayTex;
             var size = visualManager.World.Size;
             Size = size * size * 16;
             vao = new int[Size];

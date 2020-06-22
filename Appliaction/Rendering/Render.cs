@@ -54,7 +54,6 @@ namespace tmp.Rendering
             world.Render(viewProjectionMatrix);
             Entity.Render(viewProjectionMatrix);
             skyBox.Render(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
-            
         }
 
         public void UpdateFrame()

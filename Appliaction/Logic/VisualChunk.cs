@@ -38,7 +38,7 @@ namespace tmp.Logic
                             rowData[number].Add(vData.Position.Z);
 
                             rowData[number].Add(face.Number);
-                            rowData[number].Add(Texture.textures[face.Name]);
+                            rowData[number].Add(Texture.Textures[face.Name]);
                             rowData[number].Add(face.Luminosity);
                         }
                     }
