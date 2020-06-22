@@ -25,6 +25,12 @@ namespace tmp.Domain.Entity
 
         public void GoTo(PointL target, Piece piece, float time)
         {
+            Follow(target, piece, time, 0);
+        }
+
+        public void Follow(PointL target, Piece piece, float time, float distance)
+        {
+            if (Mover.Position.GetDistance(target.AsPointF()) <= distance) return;
             var view = target.AsVector() - Mover.Position.AsVector();
             mover.SetView(view);
             var pos = Mover.Position;
