@@ -40,7 +40,7 @@ namespace tmp.Logic
         private VisualizerData ChooseBordersWithEmpty(PointL position)
         {
             var currentBlock = gameWorld.GetItem(position);
-            if (currentBlock == null)
+            if (currentBlock == null || currentBlock==Block.Either)
                 return null;
 
             var currentBTextures = currentBlock.BlockType.Textures.GetOrderedTextures();

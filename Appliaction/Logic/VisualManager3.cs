@@ -78,8 +78,12 @@ namespace tmp.Logic
 
             foreach (var point in needToUpdate)
             {
-                World[PointI.CreateXZ(point.X, point.Z)].AdaptToStupidData(point.Y);
-                ReadyToUpdate.Enqueue(point);
+                var coords = PointI.CreateXZ(point.X, point.Z);
+                if (World.ContainsChunk(coords))
+                {
+                    World[coords].AdaptToStupidData(point.Y);
+                    ReadyToUpdate.Enqueue(point);
+                }
             }
         }
     }
