@@ -54,6 +54,7 @@ namespace tmp.Rendering
 
             for (var i = 0; i < chunksCords.Count; i++)
             {
+                if (chunkSidesCount[i] == 0) continue;
                 if (System.Numerics.Vector3.Dot(viewer.Front, 16*chunksCords[i].AsVector() - viewer.Position.AsVector() + 32 * viewer.Front) >= 0)
                 {
                     GL.BindVertexArray(vao[i]);

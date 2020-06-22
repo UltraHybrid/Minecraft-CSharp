@@ -10,6 +10,7 @@ using tmp.Logic;
 
 namespace tmp
 {
+    
     public static class UpgradeStarter2
     {
         public static void Main(string[] args)
@@ -23,7 +24,7 @@ namespace tmp
             ThreadPool.SetMaxThreads(threads, threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 10;
+            var worldSize = 15;
             var gg = new WorldGenerator(
                 new LandGenerator(UsageGenerators.CoreGenerator),
                 new OreGenerator(UsageGenerators.OreCoreGenerator),
@@ -32,6 +33,7 @@ namespace tmp
                 );
             //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
             //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
+            //var gg = new FlatGenerator();
             var manager = new WorldManager(gg);
             var game = new Game(worldSize, startOffset, manager);
             var visualWorld = new VisualWorld(startOffset, worldSize);
