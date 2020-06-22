@@ -47,15 +47,15 @@ namespace tmp.Domain.Entity
                 isSlowed = false;
             }
 
-            if (view.X != 0 && view.Z != 0)
-                Mover.Move(piece, directions, time);
+            /*if (view.X != 0 && view.Z != 0)
+                Mover.Move(piece, directions, time);*/
             if (Mover.Position.GetSquaredDistance(pos) < mover.Speed * time / 2) isSlowed = true;
         }
 
         private float GetCoefficient(Vector3 targetView, Vector3 currentView, float time)
         {
             var distance = (targetView - currentView).Length() / 2;
-            var angle = Math.Asin(distance);
+            var angle = Math.Asin(distance) * 2;
             var max = Math.PI * time;
             if (angle <= max) return 1;
             return (float) (max / angle);
