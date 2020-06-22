@@ -5,6 +5,7 @@ using OpenTK;
 using Assimp;
 using OpenTK.Graphics.OpenGL4;
 using tmp.Domain;
+using tmp.Domain.Entity;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Shader = tmp.Shaders.Shaders;
 
@@ -62,13 +63,11 @@ namespace tmp.Rendering
             matri = new List<Matrix4>();
             foreach (var animal in game.Animals)
             {
-                var angle = Vector3.CalculateAngle(animal.Mover.Front.Convert(), new Vector3(1, 0, 0));
-                var position = animal.Mover.Position.Convert();
-                var tmpMatr =
-                    Matrix4.CreateScale(0.05f) *
-                    Matrix4.CreateRotationX(-(float) Math.PI / 2) *
-                    Matrix4.CreateRotationY(angle + (float)Math.PI / 2 + 10e-3f) *
-                    Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
+                var front = animal.Mover.Front.Convert();
+                var position = animal.Mover.Position;
+                float angle = Vector3.CalculateAngle(new Vector3(1, 0, 0), new Vector3(front.X, 0, front.Z));
+                Console.WriteLine(angle);
+                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) * Matrix4.CreateRotationY(angle + (float) Math.PI / 2 + 10e-3f) * Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
                 matri.Add(tmpMatr);
             }
 
