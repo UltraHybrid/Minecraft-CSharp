@@ -12,7 +12,7 @@ namespace tmp.Domain.Generators
 
         public List<PointB> Generate(Chunk<Block> source)
         {
-            var count = rnd.Next(5);
+            var count = rnd.Next(2);
             var result = new List<PointB>();
             if (count == 0)
                 return result;

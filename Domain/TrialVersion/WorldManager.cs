@@ -66,11 +66,11 @@ namespace tmp.Domain
 
             var nearestChunks = necessaryChunks
                 .OrderBy(p => p.GetDistance(playerPosition));
-            Console.Write("Запланированы: ");
+            //Console.Write("Запланированы: ");
             foreach (var chunkPoint in nearestChunks)
             {
                 manager.Push(chunkPoint);
-                Console.Write(chunkPoint);
+                //Console.Write(chunkPoint);
             }
         }
 

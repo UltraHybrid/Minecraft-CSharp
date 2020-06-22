@@ -60,7 +60,7 @@ namespace tmp.Domain
             foreach (var point in animalSpawner.Generate(chunk))
             {
                 var animalPoint = World<Chunk<Block>, Block>.GetAbsolutePosition(point, chunk.Position).AsPointF();
-                Console.WriteLine("Cow Spawn on " + animalPoint);
+                //Console.WriteLine("Cow Spawn on " + animalPoint);
                 Animals.Add(new Cow(animalPoint));
             }
         }

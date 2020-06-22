@@ -10,7 +10,7 @@ namespace tmp.Domain.Entity
     {
         public string Name { get; }
         public int Health { get; }
-        public IMover Mover => mover;
+        public EntityMover Mover => mover;
         private SurvivalMover mover;
         private bool isSlowed = false;
 
