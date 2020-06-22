@@ -65,10 +65,30 @@ namespace tmp.Rendering
             {
                 var front = animal.Mover.Front.Convert();
                 var position = animal.Mover.Position;
-                var dot = Vector2.Dot(new Vector2(1, 0), front.Xz) / front.Xz.Length;
-                float angle = (float)(dot >= 0 ? Math.Acos(dot) :  - Math.Acos(dot));
-                Console.WriteLine(angle);
-                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) * Matrix4.CreateRotationY(angle + (float) Math.PI / 2 + 10e-3f) * Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
+
+                double angle = 0;
+                if (front.X >= 0)
+                {
+                    if (front.Z >= 0)
+                        angle = -Math.Atan(front.Z);
+                    if (front.Z < 0)
+                        angle = Math.Atan(-front.Z);
+                }
+
+                if (front.X < 0)
+                {
+                    if (front.Z >= 0)
+                        angle = -Math.PI + Math.Atan(front.Z);
+
+                    if (front.Z < 0)
+                        angle = Math.PI - Math.Atan(-front.Z);
+                }
+
+                //Console.WriteLine(angle * 180 / Math.PI);
+                //Console.WriteLine(front);
+                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) *
+                              Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
+                              Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
                 matri.Add(tmpMatr);
             }
 
