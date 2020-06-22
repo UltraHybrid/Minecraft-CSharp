@@ -11,8 +11,8 @@ namespace tmp
 {
     public static class Texture
     {
-        public static Dictionary<string, int> textures = new Dictionary<string, int>();
-        public static int arrayTex;
+        public static Dictionary<string, int> Textures { get; } = new Dictionary<string, int>();
+        public static int ArrayTex { get; private set; }
 
         public static int InitTextureFromFile(string name, bool isReflected = false)
         {
@@ -21,7 +21,8 @@ namespace tmp
 
             var image = Image.Load(name);
             var pixels = SetImage(image, isReflected);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Width, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
+                image.Width, image.Width, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             SetTextureParameters(TextureTarget.Texture2D, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge,
                 (int) TextureMagFilter.Nearest);
@@ -42,7 +43,8 @@ namespace tmp
             {
                 var image = Image.Load(paths[i]);
                 var pixels = SetImage(image);
-                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
+                GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, PixelInternalFormat.Rgba,
+                    image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels.ToArray());
             }
 
 
@@ -81,7 +83,6 @@ namespace tmp
             GL.TexParameter(textureTarget, TextureParameterName.TextureWrapR, paramWrap);
         }
 
-        //cubemaparray
         public static int InitCubeMapArray(Dictionary<string, string[]> dataTex)
         {
             const int size = 16;
@@ -109,27 +110,25 @@ namespace tmp
             return cubeMapArray;
         }
 
-        //3dtextures/2darray
-
         public static void InitArray(List<string> path)
         {
             const int width = 16;
             const int height = 16;
-            var laysersCount = path.Count;
+            var layersCount = path.Count;
 
 
             var texturesArray = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2DArray, texturesArray);
-            var finalPixels = new byte[laysersCount, 256 * 4];
+            var finalPixels = new byte[layersCount, 256 * 4];
 
 
             var pixelAll = new List<byte[]>();
 
-            for (var id = 0; id < laysersCount; id++)
+            for (var id = 0; id < layersCount; id++)
             {
                 var e = path[id];
                 var name = Path.GetFileName(e);
-                textures.Add(name ?? throw new Exception("image path does not exist"), id);
+                Textures.Add(name ?? throw new Exception("image path does not exist"), id);
                 var pixels = new List<byte>();
                 var image = Image.Load(e);
                 image.Mutate(x => x.Flip(FlipMode.Vertical));
@@ -156,12 +155,12 @@ namespace tmp
                 }
             }
             
-            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, laysersCount, 0, PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
+            GL.TexImage3D(TextureTarget.Texture2DArray, 0, PixelInternalFormat.Rgba, width, height, layersCount, 0, PixelFormat.Rgba, PixelType.UnsignedByte, finalPixels);
 
             SetTextureParameters(TextureTarget.Texture2DArray, (int) ArbTextureMirrorClampToEdge.MirrorClampToEdge, (int) TextureMagFilter.Nearest);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2DArray);
 
-            arrayTex = texturesArray;
+            ArrayTex = texturesArray;
         }
     }
 }
