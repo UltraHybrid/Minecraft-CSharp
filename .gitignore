@@ -76,3 +76,8 @@ fabric.properties
 /.idea.tmp.dir/.idea/workspace.xml
 
 /obj/project.nuget.cache
+
+bin/
+obj/
+.vs/
+tmp.sln
