@@ -43,18 +43,5 @@ namespace tmp.Infrastructure.SimpleMath
         {
             return "PointI(" + X + ", " + Y + ", " + Z + ")";
         }
-
-        /*public IEnumerable<PointI> GetNeighbours()
-        {
-            return GetFlatNeighbours(1, 2);
-        }
-
-        private IEnumerable<PointI> GetFlatNeighbours(params int[] totalDifference)
-        {
-            for(var dx = -1; dx <= 1; dx++)
-            for(var dz = -1; dz <= 1; dz++)
-                if (totalDifference.Contains(Math.Abs(dx) + Math.Abs(dz)))
-                    yield return new PointI(X + dx, Y, Z + dz);
-        }*/
     }
 }

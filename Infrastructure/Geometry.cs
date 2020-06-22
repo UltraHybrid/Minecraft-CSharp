@@ -36,13 +36,11 @@ namespace tmp.Infrastructure
 
             Squads = new[]
             {
-                //new Parallelogram(Down3, Down0, Up0, Up3), //f
                 new Parallelogram(Down0, Down3, Up3, Up0), // f
                 new Parallelogram(Down0, Down1, Up1, Up0), //r
                 new Parallelogram(Up0, Up1, Up2, Up3), //t
                 new Parallelogram(Down0, Down1, Down2, Down3), //bot
                 new Parallelogram(Down1, Down2, Up2, Up1), // b
-                //new Parallelogram(Down2, Down3, Up3, Up2), // l
                 new Parallelogram(Down3, Down2, Up2, Up3), // l
             };
         }

@@ -31,7 +31,13 @@ namespace tmp.Domain.Entity
         public void Follow(PointL target, Piece piece, float time, float distance)
         {
             if (Mover.Position.GetDistance(target.AsPointF()) <= distance) return;
-            var view = target.AsVector() - Mover.Position.AsVector();
+            var targetView = target.AsVector() - Mover.Position.AsVector();
+            if (targetView.Equals(Vector3.Zero)) return;
+            targetView = Vector3.Normalize(targetView);
+            var currentView = mover.Front;
+            var coef = GetCoefficient(targetView, currentView, time);
+            var view = targetView * coef + currentView * (1 - coef);
+            if (view.Equals(Vector3.Zero)) return;
             mover.SetView(view);
             var pos = Mover.Position;
             var directions = new List<Direction> {Direction.Forward};
@@ -41,9 +47,18 @@ namespace tmp.Domain.Entity
                 isSlowed = false;
             }
 
-            //if (view.X != 0 && view.Z != 0)
-                //Mover.Move(piece, directions, time);
+            /*if (view.X != 0 && view.Z != 0)
+                Mover.Move(piece, directions, time);*/
             if (Mover.Position.GetSquaredDistance(pos) < mover.Speed * time / 2) isSlowed = true;
+        }
+
+        private float GetCoefficient(Vector3 targetView, Vector3 currentView, float time)
+        {
+            var distance = (targetView - currentView).Length() / 2;
+            var angle = Math.Asin(distance) * 2;
+            var max = Math.PI * time;
+            if (angle <= max) return 1;
+            return (float) (max / angle);
         }
     }
 }

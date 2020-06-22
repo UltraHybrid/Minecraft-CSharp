@@ -16,15 +16,16 @@ namespace tmp.Domain.Generators
             var result = new List<PointB>();
             if (count == 0)
                 return result;
-            Func<PointB> getRndPoint = () => new PointI(rnd.Next(16), 0, rnd.Next(16)).AsPointB();
+            Func<PointB> getRndPoint = () =>
+                new PointI(rnd.Next(Chunk<Block>.XLength), 0, rnd.Next(Chunk<Block>.ZLength)).AsPointB();
             for (var i = 0; i < count; i++)
             {
                 var point = getRndPoint();
                 for (var j = Chunk<Block>.YLength - 3; j >= 0; j--)
                 {
-                    var position = point.Add(new PointB(0, (byte)j, 0));
-                    var position1 = point.Add(new PointB(0, (byte)(j + 1), 0));
-                    var position2 = point.Add(new PointB(0, (byte)(j + 2), 0));
+                    var position = point.Add(new PointB(0, (byte) j, 0));
+                    var position1 = point.Add(new PointB(0, (byte) (j + 1), 0));
+                    var position2 = point.Add(new PointB(0, (byte) (j + 2), 0));
                     var block = source[position];
                     if (block != null && block.BlockType == BaseBlocks.Grass &&
                         source[position1] == null &&
