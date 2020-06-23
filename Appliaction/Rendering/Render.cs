@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
-using tmp.Domain;
-using tmp.Infrastructure.SimpleMath;
-using tmp.Logic;
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
     public class Render
     {

@@ -1,9 +1,8 @@
 ﻿using System.Linq;
+using MinecraftSharp.Infrastructure.SimpleMath;
 using NUnit.Framework;
-using OpenTK.Graphics.OpenGL;
-using tmp.Infrastructure.SimpleMath;
 
-namespace tmp.Tests.Infrastructure
+namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
 {
     [TestFixture]
     public class PointB_Should
@@ -12,7 +11,7 @@ namespace tmp.Tests.Infrastructure
         public void Init_Should(byte x, byte y, byte z)
         {
             var point = new PointB(x, y, z);
-            Assert.AreEqual(new[] { x, y, z }, new[] { point.X, point.Y, point.Z });
+            Assert.AreEqual(new[] {x, y, z}, new[] {point.X, point.Y, point.Z});
         }
 
         [Test]
@@ -21,7 +20,7 @@ namespace tmp.Tests.Infrastructure
             var defaultPoint = PointB.Zero;
             Assert.AreEqual(
                 Enumerable.Repeat(0, 3),
-                new[] { defaultPoint.X, defaultPoint.Y, defaultPoint.Z });
+                new[] {defaultPoint.X, defaultPoint.Y, defaultPoint.Z});
         }
 
         [Test]

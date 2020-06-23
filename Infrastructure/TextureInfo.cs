@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace tmp.Infrastructure
+namespace MinecraftSharp.Infrastructure
 {
     public class TextureInfo
     {

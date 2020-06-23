@@ -1,13 +1,11 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public class SurvivalMover : EntityMover
     {

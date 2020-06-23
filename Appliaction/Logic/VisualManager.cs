@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
-using tmp.Domain;
-using tmp.Domain.TrialVersion;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Logic
+namespace MinecraftSharp.Logic
 {
     public class VisualManager : IVisualManager
     {
         private readonly IVisualizer<Block> visualizer;
-        private readonly Queue<PointI> ReadyToUpdate;
-        private readonly Queue<(PointI, PointI)> ReadyToReplace;
+        private readonly Queue<PointI> readyToUpdate;
+        private readonly Queue<(PointI, PointI)> readyToReplace;
         private readonly object replaceLocker = new object();
         public VisualWorld World { get; }
 
@@ -21,7 +18,7 @@ namespace tmp.Logic
         {
             lock (replaceLocker)
             {
-                return ReadyToReplace.Count != 0;
+                return readyToReplace.Count != 0;
             }
         }
 
@@ -29,26 +26,26 @@ namespace tmp.Logic
         {
             lock (replaceLocker)
             {
-                return ReadyToReplace.Dequeue();
+                return readyToReplace.Dequeue();
             }
         }
 
         public bool HasDataToUpdate()
         {
-            return ReadyToUpdate.Count != 0;
+            return readyToUpdate.Count != 0;
         }
 
         public PointI GetDataToUpdate()
         {
-            return ReadyToUpdate.Dequeue();
+            return readyToUpdate.Dequeue();
         }
 
         public VisualManager(IVisualizer<Block> visualizer, VisualWorld visualWorld)
         {
             this.visualizer = visualizer;
             World = visualWorld;
-            ReadyToUpdate = new Queue<PointI>();
-            ReadyToReplace = new Queue<(PointI, PointI)>();
+            readyToUpdate = new Queue<PointI>();
+            readyToReplace = new Queue<(PointI, PointI)>();
         }
 
         public void HandlerForAdd(Chunk<Block> chunk)
@@ -64,7 +61,7 @@ namespace tmp.Logic
                     var queuePoint = result.Position.Add(new PointI(0, i, 0));
                     lock (replaceLocker)
                     {
-                        ReadyToReplace.Enqueue((queuePoint, queuePoint));
+                        readyToReplace.Enqueue((queuePoint, queuePoint));
                     }
                 }
             }, chunk);
@@ -102,7 +99,7 @@ namespace tmp.Logic
                 if (World.ContainsChunk(coords))
                 {
                     World[coords].AdaptToStupidData(point.Y);
-                    ReadyToUpdate.Enqueue(point);
+                    readyToUpdate.Enqueue(point);
                 }
             }
         }

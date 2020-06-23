@@ -1,6 +1,6 @@
-﻿using tmp.Domain.TrialVersion.Blocks;
+﻿using MinecraftSharp.Domain.TrialVersion.Blocks;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public interface IGame
     {

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
 using Assimp;
 
-namespace tmp.Loaders
+namespace MinecraftSharp.Loaders
 {
     public static class Model
     {

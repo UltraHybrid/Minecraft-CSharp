@@ -1,6 +1,6 @@
 using OpenTK;
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
     public interface IRender
     {

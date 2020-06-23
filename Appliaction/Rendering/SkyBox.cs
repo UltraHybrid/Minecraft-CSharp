@@ -1,10 +1,11 @@
 using System.IO;
 using System.Linq;
+using MinecraftSharp.Loaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using Shader = tmp.Shaders.Shaders;
+using Shader = MinecraftSharp.Shaders.Shaders;
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
     public class SkyBox : IRender
     {
@@ -14,7 +15,7 @@ namespace tmp.Rendering
 
         public SkyBox()
         {
-            shaderProgram = Shader.GetSkyBoxShader();
+            shaderProgram = Shaders.Shaders.GetSkyBoxShader();
             GenBuffers();
             InstallAttributes();
             vPMatrixLocation = GL.GetUniformLocation(shaderProgram, "projection");
@@ -37,7 +38,6 @@ namespace tmp.Rendering
 
         public void Update()
         {
-            throw new System.NotImplementedException();
         }
 
         private void SendData()

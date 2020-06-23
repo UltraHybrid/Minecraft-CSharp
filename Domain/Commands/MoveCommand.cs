@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain.Commands
+namespace MinecraftSharp.Domain.Commands
 {
     public class MoveCommand : ICommand
     {

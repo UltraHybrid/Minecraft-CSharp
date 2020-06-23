@@ -1,8 +1,8 @@
 ﻿using System;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public delegate void BlockUpdateEvent(PointL position);
     public interface IWorldManager

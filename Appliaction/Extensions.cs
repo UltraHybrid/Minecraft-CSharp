@@ -1,14 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using MinecraftSharp.Infrastructure.SimpleMath;
 using OpenTK;
-using tmp.Domain;
-using tmp.Domain.TrialVersion;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
-using tmp.Logic;
 
-namespace tmp
+namespace MinecraftSharp
 {
     public static class Extensions
     {

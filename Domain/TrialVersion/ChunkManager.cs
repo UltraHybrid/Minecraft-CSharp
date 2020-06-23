@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public class ChunkManager<TSource, TResult>
     {

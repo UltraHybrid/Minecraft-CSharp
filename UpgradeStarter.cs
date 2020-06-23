@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Domain.Generators;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
+using MinecraftSharp.Logic;
 using Ninject;
 using Ninject.Modules;
-using NUnit.Framework;
 using OpenTK;
-using tmp.Domain;
-using tmp.Domain.Generators;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
-using tmp.Logic;
-using tmp.Rendering;
 
-namespace tmp
+namespace MinecraftSharp
 {
     using ChunkB = Chunk<Block>;
     using BlockWorld = World<Chunk<Block>, Block>;

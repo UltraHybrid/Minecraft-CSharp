@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using NUnit.Framework.Constraints;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Infrastructure.SimpleMath;
+using MinecraftSharp.Loaders;
+using MinecraftSharp.Logic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using tmp.Domain;
-using tmp.Infrastructure.SimpleMath;
-using tmp.Logic;
-using Shader = tmp.Shaders.Shaders;
+using Shader = MinecraftSharp.Shaders.Shaders;
 
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
     public class World : IRender
     {
@@ -37,7 +36,7 @@ namespace tmp.Rendering
             Size = size * size * 16;
             vao = new int[Size];
             data = new int[Size];
-            shaderProgram = Shader.GetSideShader();
+            shaderProgram = Shaders.Shaders.GetSideShader();
             GenBuffers();
             for (var i = 0; i < Size; i++)
                 InstallAttributes(i);
@@ -103,11 +102,11 @@ namespace tmp.Rendering
             }
         }
 
-        private void SendData(int n, float[] data)
+        private void SendData(int n, IReadOnlyCollection<float> vertices)
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.data[n]);
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * data.Length,
-                data.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * vertices.Count,
+                vertices.ToArray(), BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * Vertexes.Length, Vertexes,

@@ -1,19 +1,18 @@
 using System.Collections.Generic;
-using System.Linq;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Infrastructure.SimpleMath;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using tmp.Domain;
-using tmp.Infrastructure.SimpleMath;
-using Shader = tmp.Shaders.Shaders;
+using Shader = MinecraftSharp.Shaders.Shaders;
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
-    public class Lines
+    public class Lines : IRender
     {
-        private int[] vbo, vao;
+        private readonly int[] vbo, vao;
         private readonly int shaderProgram, vPMatrixLocation;
-        private IMover viewer;
-        private Vector3 offset;
+        private readonly IMover viewer;
+        private readonly Vector3 offset;
 
         public Lines(Game game)
         {
@@ -22,7 +21,7 @@ namespace tmp.Rendering
             coords = a;
             offset = game.Player.Height* Vector3.UnitY;
             viewer = game.Player.Mover;
-            shaderProgram = Shader.GetLineShader();
+            shaderProgram = Shaders.Shaders.GetLineShader();
             GenBuffers();
             InstallAttributes();
             vPMatrixLocation = GL.GetUniformLocation(shaderProgram, "viewProjection");
@@ -49,7 +48,6 @@ namespace tmp.Rendering
 
         public void Update()
         {
-            throw new System.NotImplementedException();
         }
 
         private void SetVPMatrix(Matrix4 vPMatrix) => GL.UniformMatrix4(vPMatrixLocation, false, ref vPMatrix);

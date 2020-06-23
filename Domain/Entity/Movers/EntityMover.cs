@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public abstract class EntityMover : IMover
     {

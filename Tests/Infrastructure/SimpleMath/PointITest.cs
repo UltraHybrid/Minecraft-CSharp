@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using MinecraftSharp.Infrastructure.SimpleMath;
 using NUnit.Framework;
-using tmp.Infrastructure.SimpleMath;
 
-namespace tmp.Tests.Infrastructure
+namespace MinecraftSharp.Tests.Infrastructure
 {
     [TestFixture]
     public class PointITest

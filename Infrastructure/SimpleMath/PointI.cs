@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace tmp.Infrastructure.SimpleMath
+namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public readonly struct PointI
     {

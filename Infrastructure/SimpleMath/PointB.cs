@@ -1,6 +1,6 @@
 using System;
 
-namespace tmp.Infrastructure.SimpleMath
+namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public readonly struct PointB
     {

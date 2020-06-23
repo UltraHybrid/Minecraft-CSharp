@@ -1,4 +1,4 @@
-﻿namespace tmp.Domain
+﻿namespace MinecraftSharp.Domain
 {
     public enum Direction
     {

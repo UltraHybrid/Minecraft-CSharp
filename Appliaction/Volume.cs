@@ -1,6 +1,4 @@
-﻿using OpenTK;
-
-namespace tmp
+﻿﻿namespace MinecraftSharp
 {
     public abstract class Volume
     {

@@ -1,13 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Tests.Infrastructure.SimpleMath
+namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
 {
     [TestFixture]
     class BasisTest

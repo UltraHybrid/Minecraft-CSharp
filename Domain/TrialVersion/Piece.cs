@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+﻿using System.Collections.Generic;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public class Piece
     {

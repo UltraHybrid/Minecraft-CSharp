@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure.SimpleMath;
+﻿using System.Collections.Generic;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain.Generators
+namespace MinecraftSharp.Domain.Generators
 {
     public static class WorldStructures
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public interface IMover
     {

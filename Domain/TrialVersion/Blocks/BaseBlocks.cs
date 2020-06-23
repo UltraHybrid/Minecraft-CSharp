@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain.TrialVersion.Blocks
+namespace MinecraftSharp.Domain.TrialVersion.Blocks
 {
     public static class BaseBlocks
     {

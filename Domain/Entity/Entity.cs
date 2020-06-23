@@ -1,4 +1,4 @@
-﻿namespace tmp.Domain.Entity
+﻿namespace MinecraftSharp.Domain.Entity
 {
     public interface IEntity
     {

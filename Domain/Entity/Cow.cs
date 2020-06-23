@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain.Entity
+namespace MinecraftSharp.Domain.Entity
 {
     public class Cow : IEntity
     {

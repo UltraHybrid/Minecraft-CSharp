@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 
-namespace tmp.Shaders
+namespace MinecraftSharp.Shaders
 {
     public static class Shaders
     {
@@ -45,11 +45,11 @@ namespace tmp.Shaders
 
             void main(void)
             {
-                vec4 tmp = texture(tarr, TexCord);
-                if(tmp.a < 0.1)
+                vec4 MinecraftSharp = texture(tarr, TexCord);
+                if(MinecraftSharp.a < 0.1)
                     discard;
                 
-                outColor = tmp;
+                outColor = MinecraftSharp;
             }";
 
         private const string VertSrcSide =
@@ -83,11 +83,11 @@ namespace tmp.Shaders
 
             void main(void)
             {
-                vec4 tmp = texture(tarr, color);
-                if(tmp.a < 0.1)
+                vec4 MinecraftSharp = texture(tarr, color);
+                if(MinecraftSharp.a < 0.1)
                     discard;
                 
-                gl_FragColor = tmp * light;
+                gl_FragColor = MinecraftSharp * light;
             }";
 
         private const string VertSkyBox =

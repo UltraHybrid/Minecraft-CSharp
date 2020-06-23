@@ -1,6 +1,6 @@
-﻿using tmp.Infrastructure;
+﻿using MinecraftSharp.Infrastructure;
 
-namespace tmp.Domain.Generators
+namespace MinecraftSharp.Domain.Generators
 {
     public static class UsageGenerators
     {

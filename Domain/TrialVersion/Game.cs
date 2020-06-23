@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using tmp.Domain.Entity;
-using tmp.Domain.Generators;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain.Entity;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     using BlockWorld = World<Chunk<Block>, Block>;
 

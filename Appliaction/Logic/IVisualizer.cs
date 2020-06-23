@@ -1,8 +1,7 @@
-﻿using tmp.Domain;
-using tmp.Domain.TrialVersion;
-using tmp.Infrastructure.SimpleMath;
+﻿using MinecraftSharp.Domain;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Logic
+namespace MinecraftSharp.Logic
 {
     public interface IVisualizer<TSource>
     {

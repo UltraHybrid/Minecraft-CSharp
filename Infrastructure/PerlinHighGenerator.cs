@@ -1,7 +1,7 @@
 using System;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Infrastructure
+namespace MinecraftSharp.Infrastructure
 {
     public class PerlinHighGenerator : IGenerator<PointF, float>
     {

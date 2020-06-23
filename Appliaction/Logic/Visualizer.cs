@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using tmp.Domain;
-using tmp.Domain.TrialVersion;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Logic
+namespace MinecraftSharp.Logic
 {
     public class Visualizer : IVisualizer<Block>
     {

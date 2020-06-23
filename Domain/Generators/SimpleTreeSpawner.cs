@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
+using MinecraftSharp.Infrastructure;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain.Generators
+namespace MinecraftSharp.Domain.Generators
 {
     public class SimpleTreeSpawner : IGenerator<Chunk<Block>, Chunk<Block>>
     {

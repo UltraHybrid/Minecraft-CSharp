@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using tmp.Domain;
-using tmp.Domain.TrialVersion;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Infrastructure.SimpleMath;
+using MinecraftSharp.Loaders;
 
-namespace tmp.Logic
+namespace MinecraftSharp.Logic
 {
     public class VisualChunk : Chunk<VisualizerData>
     {

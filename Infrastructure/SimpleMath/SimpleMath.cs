@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace tmp.Infrastructure.SimpleMath
+namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public static class SimpleMath
     {

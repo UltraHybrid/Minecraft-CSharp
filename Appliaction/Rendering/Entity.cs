@@ -2,15 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
-using Assimp;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Loaders;
 using OpenTK.Graphics.OpenGL4;
-using tmp.Domain;
-using tmp.Domain.Entity;
-using tmp.Loaders;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
-using Shader = tmp.Shaders.Shaders;
+using Shader = MinecraftSharp.Shaders.Shaders;
 
-namespace tmp.Rendering
+namespace MinecraftSharp.Rendering
 {
     public class Entity: IRender
     {
@@ -20,7 +18,7 @@ namespace tmp.Rendering
         private readonly List<Vector3> vertexList = new List<Vector3>();
         private readonly List<uint> indexList = new List<uint>();
         private readonly List<Vector2> texCords = new List<Vector2>();
-        private List<Matrix4> matri = new List<Matrix4>();
+        private List<Matrix4> modelMatrices = new List<Matrix4>();
         private readonly int texture;
         private readonly Game game;
 
@@ -28,7 +26,7 @@ namespace tmp.Rendering
         {
             this.game = game;
 
-            shaderProgram = Shader.GetDefaultShader();
+            shaderProgram = Shaders.Shaders.GetDefaultShader();
             GenBuffer();
             InstallAttributes();
             
@@ -52,12 +50,12 @@ namespace tmp.Rendering
             GL.BindTexture(TextureTarget.Texture2D, texture);
             SetVPM(vpm);
             GL.DrawElementsInstanced(PrimitiveType.Triangles, indexList.Count, DrawElementsType.UnsignedInt,
-                IntPtr.Zero, matri.Count);
+                IntPtr.Zero, modelMatrices.Count);
         }
 
         public void Update()
         {
-            matri = new List<Matrix4>();
+            modelMatrices = new List<Matrix4>();
             foreach (var animal in game.Animals)
             {
                 var front = animal.Mover.Front.Convert();
@@ -81,14 +79,14 @@ namespace tmp.Rendering
                         angle = Math.PI - Math.Atan(-front.Z);
                 }
 
-                var tmpMatr = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) *
-                              Matrix4.CreateRotationY((float) angle + (float) Math.PI / 2 + 10e-3f) *
+                var modelMatrix = Matrix4.CreateScale(0.05f) * Matrix4.CreateRotationX(-(float) Math.PI / 2) *
+                              Matrix4.CreateRotationY((float) (angle + Math.PI / 2)) *
                               Matrix4.CreateTranslation(position.X, position.Y + 0.6f, position.Z);
-                matri.Add(tmpMatr);
+                modelMatrices.Add(modelMatrix);
             }
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, transform);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector4.SizeInBytes * matri.Count * 4, matri.ToArray(),
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector4.SizeInBytes * modelMatrices.Count * 4, modelMatrices.ToArray(),
                 BufferUsageHint.StreamDraw);
         }
 
@@ -103,7 +101,7 @@ namespace tmp.Rendering
                 BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, transform);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vector4.SizeInBytes * matri.Count * 4, matri.ToArray(),
+            GL.BufferData(BufferTarget.ArrayBuffer, Vector4.SizeInBytes * modelMatrices.Count * 4, modelMatrices.ToArray(),
                 BufferUsageHint.StaticDraw);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
@@ -146,6 +144,6 @@ namespace tmp.Rendering
             GL.BindVertexArray(0);
         }
 
-        private void SetVPM(Matrix4 VPM) => GL.UniformMatrix4(vPMatrixLocation, false, ref VPM);
+        private void SetVPM(Matrix4 vPM) => GL.UniformMatrix4(vPMatrixLocation, false, ref vPM);
     }
 }

@@ -1,4 +1,4 @@
-namespace tmp.Domain.Commands
+namespace MinecraftSharp.Domain.Commands
 {
     public interface ICommand
     {

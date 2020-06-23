@@ -1,4 +1,4 @@
-namespace tmp
+namespace MinecraftSharp
 {
     public interface IControl
     {

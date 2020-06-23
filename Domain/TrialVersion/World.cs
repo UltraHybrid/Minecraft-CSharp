@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public abstract class World<TContainer,TItem> : IWorld<TContainer, TItem> where TContainer: Chunk<TItem>
     {

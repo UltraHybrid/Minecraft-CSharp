@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace tmp
+namespace MinecraftSharp
 {
     public class Cube : Volume
     {

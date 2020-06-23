@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using OpenTK;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Logic
+namespace MinecraftSharp.Logic
 {
     public class VisualizerData
     {

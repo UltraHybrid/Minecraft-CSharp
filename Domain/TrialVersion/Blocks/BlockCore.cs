@@ -1,4 +1,4 @@
-﻿namespace tmp.Domain.TrialVersion.Blocks
+﻿namespace MinecraftSharp.Domain.TrialVersion.Blocks
 {
     public enum BlockCore
     {

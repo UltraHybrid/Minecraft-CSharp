@@ -1,14 +1,10 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using tmp.Infrastructure.SimpleMath;
-using Plane = tmp.Infrastructure.SimpleMath.Plane;
+using MinecraftSharp.Infrastructure.SimpleMath;
+using Plane = MinecraftSharp.Infrastructure.SimpleMath.Plane;
 
-namespace tmp.Tests.Infrastructure.SimpleMath
+namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
 {
     [TestFixture]
     class LineTest
@@ -49,7 +45,7 @@ namespace tmp.Tests.Infrastructure.SimpleMath
         [Test]
         public void Init_Should()
         {
-            var plane = new Plane(Vector3.UnitX, PointF.Zero);
+            var plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.UnitX, PointF.Zero);
             Assert.AreEqual(Vector3.UnitX, plane.Normal);
             Assert.Zero(plane.D);
 
@@ -59,7 +55,7 @@ namespace tmp.Tests.Infrastructure.SimpleMath
             {
                 var normal = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
                 normal = Vector3.Normalize(normal);
-                plane = new Plane(Vector3.Normalize(normal), normal.AsPointF());
+                plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.Normalize(normal), normal.AsPointF());
 
                 Assert.AreEqual(normal.Length(), plane.D);
             }
@@ -77,7 +73,7 @@ namespace tmp.Tests.Infrastructure.SimpleMath
         [Test]
         public void CalculateIntersectionPoint_Should()
         {
-            var plane = new Plane(Vector3.UnitY, new PointF(0, 1, 0));
+            var plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.UnitY, new PointF(0, 1, 0));
             var point = plane.CalculateIntersectionPoint(new Line(PointF.Zero, -Vector3.UnitY));
 
             #pragma warning disable CS8629 // Тип значения, допускающего NULL, может быть NULL.
@@ -87,7 +83,7 @@ namespace tmp.Tests.Infrastructure.SimpleMath
         [Test]
         public void ContainsPoint_Should()
         {
-            var plane = new Plane(Vector3.UnitY, new PointF(0, 1, 0));
+            var plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.UnitY, new PointF(0, 1, 0));
 
             var random = new Random();
             for (int i = 0; i < 1e6; i++)

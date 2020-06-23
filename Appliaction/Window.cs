@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Domain.Commands;
+using MinecraftSharp.Loaders;
+using MinecraftSharp.Logic;
+using MinecraftSharp.Rendering;
 using OpenTK;
 using OpenTK.Graphics;
 using GL = OpenTK.Graphics.OpenGL4.GL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
-using tmp.Domain;
-using tmp.Domain.Commands;
-using tmp.Domain.TrialVersion.Blocks;
-using tmp.Infrastructure.SimpleMath;
-using tmp.Loaders;
-using tmp.Logic;
-using tmp.Rendering;
 using OpenTKUtilities = OpenTK.Platform.Utilities;
-using Vector3 = OpenTK.Vector3;
 
 
-namespace tmp
+namespace MinecraftSharp
 {
     internal sealed class Window : GameWindow
     {
@@ -52,8 +49,7 @@ namespace tmp
             var worldRender = new World(manager, game);
             var linesRender = new Lines(game);
             var entityRender = new Entity(game);
-            
-            this.render = new Render(camera, skyBoxRender, worldRender, linesRender, entityRender);
+            render = new Render(camera, skyBoxRender, worldRender, linesRender, entityRender);
             playerControl = new PlayerControl(keys, game.Player.Mover, game.World);
         }
 
@@ -113,6 +109,7 @@ namespace tmp
                 com.Execute();
                 if (com.figure != null)
                     render.lines.Add(com.figure);
+                
             }
 
             if (e.Key == Key.X)

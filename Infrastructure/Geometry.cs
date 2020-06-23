@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Infrastructure
+namespace MinecraftSharp.Infrastructure
 {
     public class Geometry : IEnumerable<PointF>
     {

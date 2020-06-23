@@ -1,13 +1,11 @@
 using System.Collections.Generic;
+using MinecraftSharp.Domain;
+using MinecraftSharp.Domain.Commands;
+using MinecraftSharp.Domain.TrialVersion.Blocks;
 using OpenTK;
 using OpenTK.Input;
-using tmp.Domain;
-using tmp.Domain.Commands;
-using tmp.Domain.TrialVersion;
-using tmp.Domain.TrialVersion.Blocks;
-using Veldrid;
 
-namespace tmp
+namespace MinecraftSharp
 {
     public class PlayerControl : IControl
     {

@@ -1,9 +1,8 @@
-﻿using OpenTK;
-using tmp.Domain;
-using tmp.Infrastructure.SimpleMath;
+﻿using MinecraftSharp.Domain;
+using OpenTK;
 using Vector3 = OpenTK.Vector3;
 
-namespace tmp
+namespace MinecraftSharp
 {
     public class Camera
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using tmp.Infrastructure.SimpleMath;
+using MinecraftSharp.Infrastructure.SimpleMath;
 
-namespace tmp.Domain
+namespace MinecraftSharp.Domain
 {
     public interface IWorld<out TContainer, TItem>
     {

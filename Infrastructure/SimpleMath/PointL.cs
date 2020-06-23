@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace tmp.Infrastructure.SimpleMath
+namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public class PointL
     {

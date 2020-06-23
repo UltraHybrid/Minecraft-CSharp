@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace tmp
+namespace MinecraftSharp.Loaders
 {
     public static class Texture
     {
@@ -129,20 +129,9 @@ namespace tmp
                 var e = path[id];
                 var name = Path.GetFileName(e);
                 Textures.Add(name ?? throw new Exception("image path does not exist"), id);
-                var pixels = new List<byte>();
                 var image = Image.Load(e);
-                image.Mutate(x => x.Flip(FlipMode.Vertical));
-                var tempPixels = image.GetPixelSpan().ToArray();
 
-                foreach (var p in tempPixels)
-                {
-                    pixels.Add(p.R);
-                    pixels.Add(p.G);
-                    pixels.Add(p.B);
-                    pixels.Add(p.A);
-                }
-
-                pixelAll.Add(pixels.ToArray());
+                pixelAll.Add(SetImage(image).ToArray());
                 Console.WriteLine($"{name} : {id}");
             }
 
