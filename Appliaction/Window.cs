@@ -107,14 +107,13 @@ namespace MinecraftSharp
             {
                 var com = new Spectator(game);
                 com.Execute();
-                if (com.figure != null)
-                    render.lines.Add(com.figure);
+                render.Lines.Aim(Width, Height);
                 
             }
 
             if (e.Key == Key.X)
             {
-                render.lines.lines();
+                render.Lines.Axes();
             }
         }
 

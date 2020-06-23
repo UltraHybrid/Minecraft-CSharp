@@ -12,7 +12,7 @@ namespace MinecraftSharp.Rendering
 
         private readonly SkyBox skyBox;
         private readonly World world;
-        public readonly Lines lines;
+        public readonly Lines Lines;
         private readonly Entity entity;
         private readonly Camera camera;
         #endregion
@@ -26,7 +26,7 @@ namespace MinecraftSharp.Rendering
             this.camera = camera;
             this.skyBox = skyBox;
             world = worldRender;
-            lines = lineRender;
+            Lines = lineRender;
             entity = entityRender;
         }
 
@@ -37,7 +37,7 @@ namespace MinecraftSharp.Rendering
             GL.Enable(EnableCap.Multisample);
             GL.Enable(EnableCap.DepthTest);
 
-            lines.Render(viewProjectionMatrix);
+            Lines.Render(viewProjectionMatrix);
             world.Render(viewProjectionMatrix);
             entity.Render(viewProjectionMatrix);
             skyBox.Render(new Matrix4(new Matrix3(viewMatrix)) * projectionMatrix);
@@ -59,6 +59,7 @@ namespace MinecraftSharp.Rendering
         public void Initialise(int width, int height)
         {
             Resize(width, height);
+            Lines.Aim(width, height);
         }
 
         private static void ClearBackground(Color4 backgroundColor)
