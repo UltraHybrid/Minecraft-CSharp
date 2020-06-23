@@ -9,7 +9,7 @@ namespace MinecraftSharp.Domain.Entity
     {
         public string Name { get; }
         public int Health { get; }
-        public EntityMover Mover => mover;
+        public override EntityMover Mover => mover;
         private SurvivalMover mover;
         private bool isSlowed = false;
 

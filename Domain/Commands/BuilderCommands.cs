@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Numerics;
 using MinecraftSharp.Domain.TrialVersion.Blocks;
@@ -21,7 +22,7 @@ namespace MinecraftSharp.Domain.Commands
             var mover = game.Player.Mover;
             var cameraPos = mover.Position.Add(new PointF(0, game.Player.Height, 0));
             var line = new Line(cameraPos, mover.Front);
-            var piece = new Piece(game.World, cameraPos.AsPointL(), 4);
+            var piece = new Piece(game.World, cameraPos.AsPointL(), 4, game.Animals);
             var closestBlock = piece.Helper()
                 .Where(pair => pair.block != null && pair.block != Block.Either)
                 .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))
@@ -31,6 +32,14 @@ namespace MinecraftSharp.Domain.Commands
             if (closestBlock == default((PointL, Block))) return;
 
             var geometry = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position);
+            foreach (var mob in piece.Mobs)
+            {
+                Console.Write(mob);
+                Console.Write(mob.Mover);
+                Console.WriteLine(mob.Mover.Geometry);
+                var mobGeometry = mob.Mover.Geometry;
+                if (mobGeometry.IsCollision(geometry)) return;
+            }
             var planes = geometry.GetPlanes().ToArray();
 
             var intersectPoints = geometry.GetIntersectPoints(line).OrderBy(cameraPos.GetSquaredDistance).ToList();
@@ -62,7 +71,7 @@ namespace MinecraftSharp.Domain.Commands
             var mover = game.Player.Mover;
             var cameraPos = mover.Position.Add(new PointF(0, game.Player.Height, 0));
             var line = new Line(cameraPos, mover.Front);
-            var piece = new Piece(game.World, cameraPos.AsPointL(), 4);
+            var piece = new Piece(game.World, cameraPos.AsPointL(), 4, game.Animals);
             var closestBlock = piece.Helper()
                 .Where(pair => pair.block != null && pair.block != Block.Either)
                 .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))
@@ -89,7 +98,7 @@ namespace MinecraftSharp.Domain.Commands
             var mover = game.Player.Mover;
             var cameraPos = mover.Position.Add(new PointF(0, game.Player.Height, 0));
             var line = new Line(cameraPos, mover.Front);
-            var piece = new Piece(game.World, cameraPos.AsPointL(), 4);
+            var piece = new Piece(game.World, cameraPos.AsPointL(), 4, game.Animals);
             var closestBlock = piece.Helper()
                 .Where(pair => pair.block != null && pair.block != Block.Either)
                 .Where(pair => Block.GetGeometry(pair.block.BlockType, pair.position).IsIntersect(line))

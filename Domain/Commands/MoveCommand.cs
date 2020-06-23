@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MinecraftSharp.Domain.Entity;
 using MinecraftSharp.Domain.TrialVersion.Blocks;
 using MinecraftSharp.Infrastructure.SimpleMath;
 
@@ -21,7 +22,7 @@ namespace MinecraftSharp.Domain.Commands
 
         public void Execute()
         {
-            entity.Move(new Piece(world, entity.Position.AsPointL(), 5), directions, time);
+            entity.Move(new Piece(world, entity.Position.AsPointL(), 5, new List<Mob>()), directions, time);
         }
     }
 
