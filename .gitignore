@@ -81,3 +81,6 @@ bin/
 obj/
 .vs/
 tmp.sln
+
+Folder.DotSettings
+.idea/
