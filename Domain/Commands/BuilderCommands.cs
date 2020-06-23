@@ -32,11 +32,6 @@ namespace MinecraftSharp.Domain.Commands
             if (closestBlock == default((PointL, Block))) return;
 
             var geometry = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position);
-            foreach (var mob in piece.Mobs)
-            {
-                var mobGeometry = mob.Mover.Geometry;
-                if (mobGeometry.IsCollision(geometry)) return;
-            }
             var planes = geometry.GetPlanes().ToArray();
 
             var intersectPoints = geometry.GetIntersectPoints(line).OrderBy(cameraPos.GetSquaredDistance).ToList();
@@ -50,6 +45,11 @@ namespace MinecraftSharp.Domain.Commands
             if (piece.GetItem(finalCoords) != null) return;
             var blockGeometry = Block.GetGeometry(game.Player.ActiveBlock, finalCoords);
             if (game.Player.Mover.Geometry.IsCollision(blockGeometry)) return;
+            foreach (var mob in piece.Mobs)
+            {
+                var mobGeometry = mob.Mover.Geometry;
+                if (mobGeometry.IsCollision(blockGeometry)) return;
+            }
             game.PutBlock(game.Player.ActiveBlock, finalCoords);
         }
     }
