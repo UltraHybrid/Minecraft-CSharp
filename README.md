@@ -12,10 +12,14 @@ Game-related classes are here (like block, world, game, chunk)
 #### Application
 Classes which used to visualize logical objects, in addition. Also updates current data. Uses OpenTK
 
+#### Models
+Models for rendering
+
 ## Current features
 *Few world generators*
-
+*Ore Generators, Tree Generation*
 *Few Player movement controls*
+*Basic Mobs*
 
 ## Extension points
 '''
