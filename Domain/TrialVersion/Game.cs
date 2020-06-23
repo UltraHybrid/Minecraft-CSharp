@@ -47,7 +47,7 @@ namespace MinecraftSharp.Domain
         {
             manager.Update();
             Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
-                new Piece(World, a.Mover.Position.AsPointL(), 5),
+                new Piece(World, a.Mover.Position.AsPointL(), 5, Animals),
                 time, 2));
         }
 

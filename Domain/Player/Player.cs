@@ -17,8 +17,8 @@ namespace MinecraftSharp.Domain
             Name = name;
             Hardness = hardness;
             Height = 1.7f;
-            Mover = new FreeFlyMover(position, direction, new PointF(0.5f, 1.8f, 0.8f));
-            //Mover = new SurvivalMover(5f, position, direction, 0.25f, Height, 8f);
+            //Mover = new FreeFlyMover(position, direction, new PointF(0.5f, 1.8f, 0.8f));
+            Mover = new SurvivalMover(5f, position, direction, 0.25f, Height, 16f);
         }
     }
 }

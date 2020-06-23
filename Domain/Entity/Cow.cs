@@ -5,11 +5,11 @@ using MinecraftSharp.Infrastructure.SimpleMath;
 
 namespace MinecraftSharp.Domain.Entity
 {
-    public class Cow : IEntity
+    public class Cow : Mob
     {
         public string Name { get; }
         public int Health { get; }
-        public EntityMover Mover => mover;
+        public override EntityMover Mover => mover;
         private SurvivalMover mover;
         private bool isSlowed = false;
 
@@ -22,12 +22,12 @@ namespace MinecraftSharp.Domain.Entity
             mover = new SurvivalMover(2, position, direction, 0.4f, 0.9f, 16f);
         }
 
-        public void GoTo(PointL target, Piece piece, float time)
+        public override void GoTo(PointL target, Piece piece, float time)
         {
             Follow(target, piece, time, 0);
         }
 
-        public void Follow(PointL target, Piece piece, float time, float distance)
+        public override void Follow(PointL target, Piece piece, float time, float distance)
         {
             if (Mover.Position.GetDistance(target.AsPointF()) <= distance) return;
             var targetView = target.AsVector() - Mover.Position.AsVector();
@@ -46,8 +46,8 @@ namespace MinecraftSharp.Domain.Entity
                 isSlowed = false;
             }
 
-            /*if (view.X != 0 && view.Z != 0)
-                Mover.Move(piece, directions, time);*/
+            if (view.X != 0 && view.Z != 0)
+                Mover.Move(piece, directions, time);
             if (Mover.Position.GetSquaredDistance(pos) < mover.Speed * time / 2) isSlowed = true;
         }
 

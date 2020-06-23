@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MinecraftSharp.Domain.Entity;
 using MinecraftSharp.Domain.TrialVersion.Blocks;
 using MinecraftSharp.Infrastructure.SimpleMath;
 
@@ -9,9 +10,11 @@ namespace MinecraftSharp.Domain
         public readonly PointL Center;
         public readonly int Radius;
         private readonly World<Chunk<Block>, Block> world;
+        public readonly IReadOnlyList<Mob> Mobs;
 
-        public Piece(World<Chunk<Block>, Block> world, PointL center, int radius)
+        public Piece(World<Chunk<Block>, Block> world, PointL center, int radius, IReadOnlyList<Mob> mobs)
         {
+            Mobs = mobs;
             this.world = world;
             Center = center;
             Radius = radius;
