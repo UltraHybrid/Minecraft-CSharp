@@ -28,12 +28,13 @@ namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
         [Test]
         public void IsInner_Should()
         {
-            var parallelogram = new Parallelogram(PointF.Zero, new PointF(0, 1, 0), new PointF(1, 1, 0), new PointF(1, 0, 0));
+            var parallelogram =
+                new Parallelogram(PointF.Zero, new PointF(0, 1, 0), new PointF(1, 1, 0), new PointF(1, 0, 0));
 
             var random = new Random();
             for (int i = 0; i < 1e6; i++)
             {
-                var point = new PointF((float)random.NextDouble(), (float)random.NextDouble(), 0);
+                var point = new PointF((float) random.NextDouble(), (float) random.NextDouble(), 0);
                 Assert.IsTrue(parallelogram.IsInner(point));
             }
         }
@@ -53,11 +54,12 @@ namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
             var random = new Random();
             for (int i = 0; i < 1e6; i++)
             {
-                var normal = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
+                var normal = new Vector3((float) random.NextDouble(), (float) random.NextDouble(),
+                    (float) random.NextDouble());
                 normal = Vector3.Normalize(normal);
-                plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.Normalize(normal), normal.AsPointF());
+                plane = new Plane(Vector3.Normalize(normal), normal.AsPointF());
 
-                Assert.AreEqual(normal.Length(), plane.D);
+                Assert.AreEqual(normal.Length(), Math.Abs(plane.D), 10e-5);
             }
         }
 
@@ -73,10 +75,10 @@ namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
         [Test]
         public void CalculateIntersectionPoint_Should()
         {
-            var plane = new MinecraftSharp.Infrastructure.SimpleMath.Plane(Vector3.UnitY, new PointF(0, 1, 0));
-            var point = plane.CalculateIntersectionPoint(new Line(PointF.Zero, -Vector3.UnitY));
+            var plane = new Plane(Vector3.UnitY, new PointF(0, 1, 0));
 
-            #pragma warning disable CS8629 // Тип значения, допускающего NULL, может быть NULL.
+            var point = plane.CalculateIntersectionPoint(new Line(PointF.Zero, 0.5f * Vector3.UnitY));
+
             Assert.AreEqual(Vector3.UnitY, point.Value.AsVector());
         }
 
@@ -88,14 +90,16 @@ namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
             var random = new Random();
             for (int i = 0; i < 1e6; i++)
             {
-                var point = new PointF((float)random.NextDouble() * 1000 - 500, 1, (float)random.NextDouble() * 1000 - 500);
+                var point = new PointF((float) random.NextDouble() * 1000 - 500, 1,
+                    (float) random.NextDouble() * 1000 - 500);
 
                 Assert.IsTrue(plane.ContainsPoint(point));
             }
 
             for (int i = 0; i < 1e6; i++)
             {
-                var point = new PointF((float)random.NextDouble() * 1000 - 500, random.Next(2, 100), (float)random.NextDouble() * 1000 - 500);
+                var point = new PointF((float) random.NextDouble() * 1000 - 500, random.Next(2, 100),
+                    (float) random.NextDouble() * 1000 - 500);
 
                 Assert.IsFalse(plane.ContainsPoint(point));
             }
