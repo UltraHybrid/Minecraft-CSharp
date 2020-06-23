@@ -28,14 +28,21 @@ namespace tmp
             Bind<PointI>().ToConstant(PointI.CreateXZ(1, 1));
             Bind<BlockWorld>().To<GameWorld>().InSingletonScope();
 
-            Bind<IWorldManager>().To<WorldManager>().InSingletonScope()
+            Bind<LandGenerator>().ToSelf()
+                .WithConstructorArgument((typeof(IGenerator<PointF, float>)), UsageGenerators.CoreGenerator);
+            Bind<IGenerator<ChunkB, ChunkB>>().To<OreGenerator>()
+                .WithConstructorArgument((typeof(IGenerator<PointF, float>)), UsageGenerators.OreCoreGenerator);
+            Bind<IGenerator<ChunkB, ChunkB>>().To<SimpleTreeSpawner>();
+            Bind<IGenerator<ChunkB, ChunkB>>().To<BedrockGenerator>()
+                .WithConstructorArgument((typeof(IGenerator<PointF, float>)), UsageGenerators.BedrockCoreGenerator);
+            Bind<IGenerator<PointI, ChunkB>>().To<WorldGenerator>()
+                .WhenInjectedInto<IWorldManager>()
                 .WithConstructorArgument(typeof(IGenerator<PointI, ChunkB>),
-                    c => new WorldGenerator(new LandGenerator(UsageGenerators.CoreGenerator),
-                        new IGenerator<ChunkB, ChunkB>[] {new SimpleTreeSpawner()}))
-                .WithConstructorArgument(typeof(World<Chunk<Block>, Block>),
-                    c => c.Kernel.Get<World<ChunkB, Block>>());
-            Bind<IGenerator<ChunkB, List<PointB>>>().To<CowSpawner>();
+                    c => c.Kernel.Get<LandGenerator>());
 
+            Bind<IWorldManager>().To<WorldManager>().InSingletonScope()
+                .WithConstructorArgument(c => c.Kernel.Get<World<ChunkB, Block>>());
+            Bind<IGenerator<ChunkB, List<PointB>>>().To<CowSpawner>();
             Bind<Game>().ToSelf().InSingletonScope();
         }
     }
@@ -47,7 +54,7 @@ namespace tmp
             Bind<VisualWorld>().ToSelf().InSingletonScope();
             Bind<IVisualizer<Block>>().To<Visualizer>();
             Bind<VisualManager3>().ToSelf().InSingletonScope();
-            Bind<GameWindow>().To<Window>().InSingletonScope().OnActivation(window => window.Run(200, 200));
+            Bind<GameWindow>().To<Window>().InSingletonScope();
         }
     }
 
@@ -71,8 +78,11 @@ namespace tmp
             manager.AddAlert += visualManager.HandlerForAdd;
             manager.UpdateAlert += visualManager.HandlerForUpdate;
 
-            var window = container.Get<GameWindow>();
+            using var window = container.Get<GameWindow>();
+            window.Run(200, 200);
         }
+
+        #region OldMain
 
         public static void Main1(string[] args)
         {
@@ -120,5 +130,7 @@ namespace tmp
                 visualManager);
             painter.Run(200, 200);
         }
+
+        #endregion
     }
 }
