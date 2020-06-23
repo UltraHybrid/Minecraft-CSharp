@@ -6,7 +6,6 @@ namespace tmp.Domain.Generators
 {
     public class LandGenerator : IGenerator<PointI, Chunk<Block>>
     {
-        // ReSharper disable once InconsistentNaming
         private readonly IGenerator<PointF, float> highGenerator;
 
         public LandGenerator(IGenerator<PointF, float> highGenerator)

@@ -7,16 +7,16 @@ namespace tmp.Infrastructure
 {
     public class Geometry : IEnumerable<PointF>
     {
-        public PointF Up0;
-        public PointF Up1;
-        public PointF Up2;
-        public PointF Up3;
-        public PointF Down0;
-        public PointF Down1;
-        public PointF Down2;
-        public PointF Down3;
-        private PointF size;
-        private Basis basis;
+        public readonly PointF Up0;
+        public readonly PointF Up1;
+        public readonly PointF Up2;
+        public readonly PointF Up3;
+        public readonly PointF Down0;
+        public readonly PointF Down1;
+        public readonly PointF Down2;
+        public readonly PointF Down3;
+        private readonly PointF size;
+        private readonly Basis basis;
         public static Geometry Unit => new Geometry(1, 1, 1, Basis.UnitBasis);
 
         public Geometry(float xLength, float yLength, float zLength, Basis directionBasis)

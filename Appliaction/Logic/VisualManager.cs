@@ -46,13 +46,9 @@ namespace tmp.Logic
         public VisualManager(IVisualizer<Block> visualizer, VisualWorld visualWorld)
         {
             this.visualizer = visualizer;
-            this.World = visualWorld;
+            World = visualWorld;
             ReadyToUpdate = new Queue<PointI>();
             ReadyToReplace = new Queue<(PointI, PointI)>();
-        }
-
-        public void Update()
-        {
         }
 
         public void HandlerForAdd(Chunk<Block> chunk)
