@@ -131,14 +131,14 @@ namespace MinecraftSharp.Rendering
         }
 
         private Vector3[] Aimm(int w, int h) => new [] {
-            new Vector3(-0.03f, 0, 0),
+            new Vector3(-0.01f, 0, 0),
             new Vector3(1, 1, 1),
-            new Vector3(0.03f, 0, 0),
+            new Vector3(0.01f, 0, 0),
             new Vector3(1, 1, 1),
             
-            new Vector3(0,(float)w/h*-0.03f, 0),
+            new Vector3(0,(float)w/h*-0.01f, 0),
             new Vector3(1, 1, 1),
-            new Vector3(0, (float)w/h*0.03f, 0),
+            new Vector3(0, (float)w/h*0.01f, 0),
             new Vector3(1, 1, 1),
         };
 
