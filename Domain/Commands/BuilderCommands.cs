@@ -34,9 +34,6 @@ namespace MinecraftSharp.Domain.Commands
             var geometry = Block.GetGeometry(closestBlock.block.BlockType, closestBlock.position);
             foreach (var mob in piece.Mobs)
             {
-                Console.Write(mob);
-                Console.Write(mob.Mover);
-                Console.WriteLine(mob.Mover.Geometry);
                 var mobGeometry = mob.Mover.Geometry;
                 if (mobGeometry.IsCollision(geometry)) return;
             }
