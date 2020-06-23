@@ -53,7 +53,7 @@ namespace tmp
         {
             Bind<VisualWorld>().ToSelf().InSingletonScope();
             Bind<IVisualizer<Block>>().To<Visualizer>();
-            Bind<VisualManager3>().ToSelf().InSingletonScope();
+            Bind<IVisualManager>().To<VisualManager>().InSingletonScope();
             Bind<GameWindow>().To<Window>().InSingletonScope();
         }
     }
@@ -74,7 +74,7 @@ namespace tmp
             var container = new StandardKernel(new GameModule(), new GraphicModule());
 
             var manager = container.Get<IWorldManager>();
-            var visualManager = container.Get<VisualManager3>();
+            var visualManager = container.Get<IVisualManager>();
             manager.AddAlert += visualManager.HandlerForAdd;
             manager.UpdateAlert += visualManager.HandlerForUpdate;
 
@@ -114,7 +114,7 @@ namespace tmp
 
 
             var visualWorld = new VisualWorld(startOffset, worldSize);
-            var visualManager = new VisualManager3(new Visualizer(game.World), visualWorld);
+            var visualManager = new VisualManager(new Visualizer(game.World), visualWorld);
             manager.AddAlert += visualManager.HandlerForAdd;
             manager.UpdateAlert += visualManager.HandlerForUpdate;
 

@@ -9,20 +9,44 @@ using tmp.Infrastructure.SimpleMath;
 
 namespace tmp.Logic
 {
-    public class VisualManager3
+    public class VisualManager : IVisualManager
     {
         private readonly IVisualizer<Block> visualizer;
-        private readonly VisualWorld visualWorld;
-        public readonly Queue<PointI> ReadyToUpdate;
-        public readonly Queue<(PointI, PointI)> ReadyToReplace;
+        private readonly Queue<PointI> ReadyToUpdate;
+        private readonly Queue<(PointI, PointI)> ReadyToReplace;
         private readonly object replaceLocker = new object();
+        public VisualWorld World { get; }
 
-        public VisualWorld World => visualWorld;
+        public bool HasDataToAdd()
+        {
+            lock (replaceLocker)
+            {
+                return ReadyToReplace.Count != 0;
+            }
+        }
 
-        public VisualManager3(IVisualizer<Block> visualizer, VisualWorld visualWorld)
+        public (PointI, PointI) GetDataToAdd()
+        {
+            lock (replaceLocker)
+            {
+                return ReadyToReplace.Dequeue();
+            }
+        }
+
+        public bool HasDataToUpdate()
+        {
+            return ReadyToUpdate.Count != 0;
+        }
+
+        public PointI GetDataToUpdate()
+        {
+            return ReadyToUpdate.Dequeue();
+        }
+
+        public VisualManager(IVisualizer<Block> visualizer, VisualWorld visualWorld)
         {
             this.visualizer = visualizer;
-            this.visualWorld = visualWorld;
+            this.World = visualWorld;
             ReadyToUpdate = new Queue<PointI>();
             ReadyToReplace = new Queue<(PointI, PointI)>();
         }
@@ -37,7 +61,7 @@ namespace tmp.Logic
             {
                 var ch = (Chunk<Block>) c;
                 var result = visualizer.Visualize(ch);
-                visualWorld[result.Position] = result;
+                World[result.Position] = result;
                 for (var i = VisualChunk.RowDataLevels - 1; i >= 0; i--)
                 {
                     result.AdaptToStupidData(i);

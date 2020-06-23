@@ -24,7 +24,7 @@ namespace tmp
     internal sealed class Window : GameWindow
     {
         public Window(Game game,
-            VisualManager3 manager) : base(
+            IVisualManager manager) : base(
             1280, 720,
             GraphicsMode.Default,
             "Minecraft OpenGL 4.1",
@@ -44,10 +44,8 @@ namespace tmp
             Model.Load(Directory.GetFiles(Path.Combine("Models", "source"), "*.fbx").ToList());
 
             this.game = game;
-            this.manager = manager;
             game.Start();
             Location = new Point(100, 100);
-            //camera = new Camera(game.Player.Mover, new Vector3(0, game.Player.Height, 0));
   
             var camera = new Camera(game.Player);
             var skyBoxRender = new SkyBox();
@@ -57,12 +55,10 @@ namespace tmp
             
             this.render = new Render(camera, skyBoxRender, worldRender, linesRender, entityRender);
             playerControl = new PlayerControl(keys, game.Player.Mover, game.World);
-            //render = new Render(camera, manager, game);
         }
 
         #region Variables
 
-        private VisualManager3 manager;
         private Render render;
         private readonly Dictionary<Key, bool> keys;
         private Game game;
@@ -86,7 +82,6 @@ namespace tmp
         {
             playerControl.Move((float) e.Time);
             game.Update((float) e.Time);
-            manager.Update();
             render.UpdateFrame();
         }
 

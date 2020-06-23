@@ -24,11 +24,11 @@ namespace tmp.Rendering
 
         private readonly List<PointI> chunksCords = new List<PointI>();
         private readonly List<int> chunkSidesCount = new List<int>();
-        private readonly VisualManager3 visualManager;
+        private readonly IVisualManager visualManager;
         private readonly IMover viewer;
         private int Size { get; }
 
-        public World(VisualManager3 visualManager, Game game)
+        public World(IVisualManager visualManager, Game game)
         {
             viewer = game.Player.Mover;
             this.visualManager = visualManager;
@@ -55,7 +55,8 @@ namespace tmp.Rendering
             for (var i = 0; i < chunksCords.Count; i++)
             {
                 if (chunkSidesCount[i] == 0) continue;
-                if (System.Numerics.Vector3.Dot(viewer.Front, 16*chunksCords[i].AsVector() - viewer.Position.AsVector() + 32 * viewer.Front) >= 0)
+                if (System.Numerics.Vector3.Dot(viewer.Front,
+                    16 * chunksCords[i].AsVector() - viewer.Position.AsVector() + 32 * viewer.Front) >= 0)
                 {
                     GL.BindVertexArray(vao[i]);
                     GL.DrawElementsInstanced(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero,
@@ -69,19 +70,19 @@ namespace tmp.Rendering
 
         public void Update()
         {
-            while (visualManager.ReadyToUpdate.Count != 0)
+            while (visualManager.HasDataToUpdate())
             {
-                var updateChunk = visualManager.ReadyToUpdate.Dequeue();
+                var updateChunk = visualManager.GetDataToUpdate();
                 var chunkData = visualManager.World.GetRowData(updateChunk);
                 var index = chunksCords.IndexOf(updateChunk);
                 chunksCords[index] = updateChunk;
                 chunkSidesCount[index] = chunkData.Length / 6;
                 SendData(index, chunkData);
             }
-            
-            if (visualManager.ReadyToReplace.Count != 0)
+
+            if (visualManager.HasDataToAdd())
             {
-                var (newChunk, chunkForDelete) = visualManager.ReadyToReplace.Dequeue();
+                var (newChunk, chunkForDelete) = visualManager.GetDataToAdd();
                 var chunkData = visualManager.World.GetRowData(newChunk);
                 int index;
                 var sidesCount = chunkData.Length / 6;
@@ -107,7 +108,7 @@ namespace tmp.Rendering
             GL.BindBuffer(BufferTarget.ArrayBuffer, this.data[n]);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * data.Length,
                 data.ToArray(), BufferUsageHint.StaticDraw);
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, Vector3.SizeInBytes * Vertexes.Length, Vertexes,
                 BufferUsageHint.StaticDraw);
