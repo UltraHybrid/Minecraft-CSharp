@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -16,7 +16,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
       <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
+      <PackageReference Include="Ninject" Version="4.0.0-beta-0134" />
+      <PackageReference Include="NUnit" Version="3.12.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="OpenTK" Version="3.1.0" />
       <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
       <PackageReference Include="Veldrid.ImageSharp" Version="4.7.0" />
@@ -26,8 +33,15 @@
       <None Update="Textures\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+        <None Update="Models\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
       <None Update="Textures\skybox\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="obj\project.nuget.cache" />
     </ItemGroup>
 </Project>
