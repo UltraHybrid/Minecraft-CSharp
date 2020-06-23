@@ -48,6 +48,7 @@ namespace MinecraftSharp.Rendering
 
         public void Update()
         {
+            
         }
 
         private void SetVPMatrix(Matrix4 vPMatrix) => GL.UniformMatrix4(vPMatrixLocation, false, ref vPMatrix);
