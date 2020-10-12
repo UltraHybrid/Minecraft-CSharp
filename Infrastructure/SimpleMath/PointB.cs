@@ -1,4 +1,4 @@
-using System;
+/*using System;
 
 namespace MinecraftSharp.Infrastructure.SimpleMath
 {
@@ -31,4 +31,4 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
             return "PointB(" + X + ", " + Y + ", " + Z + ")";
         }
     }
-}
+}*/

@@ -9,16 +9,14 @@ namespace MinecraftSharp.Domain.Generators
         public Chunk<Block> Generate(PointI point)
         {
             var chunk = new Chunk<Block>(point);
-            for (byte i = 0; i < Chunk<Block>.XLength; i++)
-            for (byte j = 0; j < 5; j++)
-            for (byte k = 0; k < Chunk<Block>.ZLength; k++)
+            var (xL, zL) = Chunk<Block>.GetSize;
+            foreach (var p in Utils.TripleFor(xL, 5, zL))
             {
-                var position = new PointB(i, j, k);
-                chunk[position] = j switch
+                chunk[p] = p.Y switch
                 {
-                    0 => new Block(BaseBlocks.Bedrock, position),
-                    4 => new Block(BaseBlocks.Grass, position),
-                    _ => new Block(BaseBlocks.Dirt, position)
+                    0 => new Block(BaseBlocks.Bedrock),
+                    4 => new Block(BaseBlocks.Grass),
+                    _ => new Block(BaseBlocks.Dirt)
                 };
             }
 

@@ -29,7 +29,7 @@ namespace MinecraftSharp.Logic
                 {
                     for (var y = number * CountInLevel; y < number * CountInLevel + CountInLevel; y++)
                     {
-                        var vData = this[new PointI(x, y, z).AsPointB()];
+                        var vData = this[new PointI(x, y, z)];
                         if (vData == null) continue;
                         foreach (var face in vData.Faces)
                         {

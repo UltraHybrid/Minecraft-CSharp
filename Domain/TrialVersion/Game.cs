@@ -17,16 +17,16 @@ namespace MinecraftSharp.Domain
 
         private readonly IWorldManager manager;
 
-        private readonly IGenerator<Chunk<Block>, List<PointB>> animalSpawner;
+        private readonly IGenerator<Chunk<Block>, List<PointI>> animalSpawner;
         public List<Cow> Animals;
 
         public Game(BlockWorld world,
             IWorldManager manager,
-            IGenerator<Chunk<Block>, List<PointB>> animalSpawner)
+            IGenerator<Chunk<Block>, List<PointI>> animalSpawner)
         {
             this.manager = manager;
             this.animalSpawner = animalSpawner;
-            manager.AddAlert += SpawnAnimals;
+            //manager.AddAlert += SpawnAnimals;
             World = world;
             Animals = new List<Cow>();
         }
@@ -46,38 +46,34 @@ namespace MinecraftSharp.Domain
         public void Update(float time)
         {
             manager.Update();
-            Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
+            /*Animals.ForEach(a => a.Follow(Player.Mover.Position.AsPointL(),
                 new Piece(World, a.Mover.Position.AsPointL(), 5, Animals),
-                time, 2));
+                time, 2));*/
         }
 
-        private void SpawnAnimals(Chunk<Block> chunk)
+        /*private void SpawnAnimals(Chunk<Block> chunk)
         {
             foreach (var point in animalSpawner.Generate(chunk))
             {
                 var animalPoint = World<Chunk<Block>, Block>.GetAbsolutePosition(point, chunk.Position).AsPointF();
                 Animals.Add(new Cow(animalPoint));
             }
-        }
+        }*/
 
         private PointF DefineSpawn(PointI ready)
         {
             var chunk = World[ready];
-            for (byte x = 0; x < Chunk<Block>.XLength; x++)
-            {
-                for (byte z = 0; z < Chunk<Block>.ZLength; z++)
+            var (xL, yL, zL) = Chunk<Block>.GetSize;
+            foreach (var (x, z) in Utils.DualFor(xL, zL))
+                for (var y = yL - 3; y > 0; y--)
                 {
-                    for (byte y = 253; y > 0; y--)
-                    {
-                        var p0 = new PointB(x, y, z);
-                        var p1 = new PointB(x, (byte) (y + 1), z);
-                        var p2 = new PointB(x, (byte) (y + 2), z);
-                        if (chunk[p0] != null && chunk[p1] == null && chunk[p2] == null)
-                            return (BlockWorld.GetAbsolutePosition(p1, ready).AsVector() + new Vector3(0.5f, 0, 0.5f))
-                                .AsPointF();
-                    }
+                    var p0 = new PointI(x, y, z);
+                    var p1 = new PointI(x, y + 1, z);
+                    var p2 = new PointI(x, y + 2, z);
+                    if (chunk[p0] != null && chunk[p1] == null && chunk[p2] == null)
+                        return (BlockWorld.GetAbsolutePosition(p1, ready).AsVector() + new Vector3(0.5f, 0, 0.5f))
+                            .AsPointF();
                 }
-            }
 
             throw new ArgumentException("Не удалось найти подходящего для спавна места", ready.ToString());
         }

@@ -12,6 +12,7 @@ namespace MinecraftSharp.Domain
         public const int YLength = 256;
         public const int ZLength = 16;
         public PointI Position { get; }
+        public static PointI GetSize => new PointI(XLength, YLength, ZLength);
 
         private readonly T[,,] blocks;
 
@@ -32,12 +33,13 @@ namespace MinecraftSharp.Domain
             return GetEnumerator();
         }
 
-        public static bool CheckBounds(PointB position)
+        public static bool CheckBounds(PointI position)
         {
-            return position.X < XLength && position.Y < YLength && position.Z < ZLength;
+            var (x, y, z) = position;
+            return 0 <= x && x < XLength && 0 <= y && y < YLength && 0 <= z && z < ZLength;
         }
 
-        public T this[PointB position]
+        public T this[PointI position]
         {
             get
             {

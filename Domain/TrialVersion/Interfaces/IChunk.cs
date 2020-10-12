@@ -6,6 +6,6 @@ namespace MinecraftSharp.Domain
     public interface IChunk<T> : IEnumerable<T>
     {
         PointI Position { get; }
-        T this[PointB position] { get; set; }
+        T this[PointI position] { get; set; }
     }
 }

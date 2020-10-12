@@ -19,9 +19,12 @@ namespace MinecraftSharp.Domain.Generators
 
         public Chunk<Block> Generate(PointI source)
         {
-            return additionalGenerators
-                .Aggregate(new ChunkBuilder(baseGenerator), (current, g) => current.UseNext(g))
-                .Compile(source);
+            var chunk = baseGenerator.Generate(source);
+            if (additionalGenerators == null) return chunk;
+            foreach (var g in additionalGenerators)
+                chunk = g.Generate(chunk);
+
+            return chunk;
         }
     }
 }

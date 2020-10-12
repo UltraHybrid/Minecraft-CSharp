@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿/*using System.Linq;
 using MinecraftSharp.Infrastructure.SimpleMath;
 using NUnit.Framework;
 
@@ -50,4 +50,4 @@ namespace MinecraftSharp.Tests.Infrastructure.SimpleMath
             Assert.AreEqual(new PointB(0, 1, 2), pointMax.Add(point123));
         }
     }
-}
+}*/

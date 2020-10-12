@@ -16,7 +16,7 @@ namespace MinecraftSharp
     using ChunkB = Chunk<Block>;
     using BlockWorld = World<Chunk<Block>, Block>;
 
-    public class GameModule : NinjectModule
+    /*public class GameModule : NinjectModule
     {
         public override void Load()
         {
@@ -52,11 +52,11 @@ namespace MinecraftSharp
             Bind<IVisualManager>().To<VisualManager>().InSingletonScope();
             Bind<GameWindow>().To<Window>().InSingletonScope();
         }
-    }
+    }*/
 
     public static class UpgradeStarter2
     {
-        public static void Main(string[] args)
+        /*public static void Main1(string[] args)
         {
             var threads = Environment.ProcessorCount;
             ThreadPool.SetMaxThreads(threads, threads);
@@ -76,11 +76,11 @@ namespace MinecraftSharp
 
             using var window = container.Get<GameWindow>();
             window.Run(200, 200);
-        }
+        }*/
 
         #region OldMain
 
-        public static void Main1(string[] args)
+        public static void Main(string[] args)
         {
             TextureInfo.Order = new[]
             {
@@ -91,22 +91,21 @@ namespace MinecraftSharp
             ThreadPool.SetMaxThreads(threads, threads);
             ThreadPool.SetMinThreads(threads, threads);
             var startOffset = PointI.CreateXZ(1, 1);
-            var worldSize = 15;
+            const int worldSize = 15;
             var gg = new WorldGenerator(
                 new LandGenerator(UsageGenerators.CoreGenerator),
-                new IGenerator<ChunkB, ChunkB>[]
-                {
-                    new OreGenerator(UsageGenerators.OreCoreGenerator),
-                    new SimpleTreeSpawner(),
-                    new BedrockGenerator(UsageGenerators.BedrockCoreGenerator)
-                }
+                //new FlatGenerator(), 
+                null
             );
             //var gg=new WorldGenerator(new PerlinChunkGenerator(UsageGenerators.CoreGenerator), new SimpleTreeSpawner());
             //var manager = new WorldManager2(new PerlinChunkGenerator(UsageGenerators.CoreGenerator));
             //var gg = new FlatGenerator();
             var world = new GameWorld(startOffset, worldSize);
             var manager = new WorldManager(world, gg);
-            var game = new Game(world, manager, new CowSpawner());
+            var game = new Game(world, manager, 
+                null
+                //new CowSpawner()
+                );
 
 
             var visualWorld = new VisualWorld(startOffset, worldSize);

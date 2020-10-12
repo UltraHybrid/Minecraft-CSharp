@@ -4,7 +4,7 @@ using MinecraftSharp.Infrastructure.SimpleMath;
 
 namespace MinecraftSharp.Domain
 {
-    public abstract class World<TContainer,TItem> : IWorld<TContainer, TItem> where TContainer: Chunk<TItem>
+    public abstract class World<TContainer, TItem> : IWorld<TContainer, TItem> where TContainer : Chunk<TItem>
     {
         public PointI Offset { get; set; }
         public int Size { get; }
@@ -19,19 +19,21 @@ namespace MinecraftSharp.Domain
             chunks = new Dictionary<PointI, TContainer>();
         }
 
-        public static PointL GetAbsolutePosition(PointB blockPosition, PointI chunkPosition)
+        public static PointL GetAbsolutePosition(PointI blockPosition, PointI chunkPosition)
         {
-            return PointL.CreateXZ((long)chunkPosition.X * Chunk<TItem>.XLength, (long)chunkPosition.Z * Chunk<TItem>.ZLength)
-                .Add(blockPosition.AsPointL());
+            var (xL, zL) = Chunk<TItem>.GetSize;
+            var (xC, zC) = chunkPosition;
+            var (xB, yB, zB) = blockPosition;
+            return new PointL(xL * xC + xB, yB, zL * zC + zB);
         }
 
-        public (PointI cPosition, PointB elementPosition) Translate2LocalNotation(PointL point)
+        public (PointI cPosition, PointI elementPosition) Translate2LocalNotation(PointL point)
         {
-            var elementX = (byte)(point.X % Chunk<TItem>.XLength);
-            var elementZ = (byte)(point.Z % Chunk<TItem>.ZLength);
-            var chunkX = (int)(point.X / Chunk<TItem>.XLength);
-            var chunkZ = (int)(point.Z / Chunk<TItem>.ZLength);
-            return (PointI.CreateXZ(chunkX, chunkZ), new PointB(elementX, (byte)point.Y, elementZ));
+            var elementX = (int) (point.X % Chunk<TItem>.XLength);
+            var elementZ = (int) (point.Z % Chunk<TItem>.ZLength);
+            var chunkX = (int) (point.X / Chunk<TItem>.XLength);
+            var chunkZ = (int) (point.Z / Chunk<TItem>.ZLength);
+            return (PointI.CreateXZ(chunkX, chunkZ), new PointI(elementX, (int) point.Y, elementZ));
         }
 
         public abstract TItem GetItem(PointL position);
@@ -69,12 +71,12 @@ namespace MinecraftSharp.Domain
 
             return result;
         }
-        
+
         public bool ContainsChunk(PointI point)
         {
             return chunks.ContainsKey(point);
         }
-        
+
 
         public TContainer this[PointI position]
         {

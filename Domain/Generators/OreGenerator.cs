@@ -1,4 +1,4 @@
-﻿using MinecraftSharp.Domain.TrialVersion.Blocks;
+﻿/*using MinecraftSharp.Domain.TrialVersion.Blocks;
 using MinecraftSharp.Infrastructure;
 using MinecraftSharp.Infrastructure.SimpleMath;
 
@@ -65,4 +65,4 @@ namespace MinecraftSharp.Domain.Generators
             return (a + b + c) / 3;
         }
     }
-}
+}*/

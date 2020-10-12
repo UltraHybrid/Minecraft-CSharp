@@ -22,6 +22,19 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
             return new PointI(x, 0, z);
         }
 
+        public void Deconstruct(out int x, out int y, out int z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
+        public void Deconstruct(out int x, out int z)
+        {
+            x = X;
+            z = Z;
+        }
+
         public int GetDistance(PointI other)
         {
             return Math.Max(Math.Max(Math.Abs(X - other.X), Math.Abs(Y - other.Y)), Math.Abs(Z - other.Z));

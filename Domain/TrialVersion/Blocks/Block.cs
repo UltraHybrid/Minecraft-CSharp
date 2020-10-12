@@ -6,22 +6,14 @@ namespace MinecraftSharp.Domain.TrialVersion.Blocks
 {
     public class Block
     {
-        public static readonly Block Either = new Block(BaseBlocks.Corpuscle, PointB.Zero);
+        public static readonly Block Either = new Block(BaseBlocks.Corpuscle);
         public readonly BlockType BlockType;
         public int Hardness { get; set; }
-        public PointB Position { get; set; }
 
-        public Block(BlockType blockType, PointB position)
+        public Block(BlockType blockType)
         {
             BlockType = blockType;
             Hardness = blockType.Hardness;
-            Position = position;
-        }
-
-        public Geometry GetHitBox(Vector3 externalOffset)
-        {
-            var offset = BlockType.Form.Shift(Position.AsPointI().AsVector());
-            return Geometry.Identity(offset.Shift(externalOffset));
         }
 
         public bool CanRemove()

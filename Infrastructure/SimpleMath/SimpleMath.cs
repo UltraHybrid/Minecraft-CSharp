@@ -4,7 +4,7 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public static class SimpleMath
     {
-        public static PointI AsPointI(this PointB point)
+        /*public static PointI AsPointI(this PointB point)
         {
             return new PointI(point.X, point.Y, point.Z);
         }
@@ -17,7 +17,7 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
         public static PointB AsPointB(this PointI point)
         {
             return new PointB((byte) point.X, (byte) point.Y, (byte) point.Z);
-        }
+        }*/
 
         public static PointF AsPointF(this PointI point)
         {

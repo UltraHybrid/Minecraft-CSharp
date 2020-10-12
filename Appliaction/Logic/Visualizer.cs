@@ -25,7 +25,7 @@ namespace MinecraftSharp.Logic
                 {
                     for (var k = 0; k < Chunk<Block>.ZLength; k++)
                     {
-                        var point = new PointI(i, j, k).AsPointB();
+                        var point = new PointI(i, j, k);
                         result[point] = ChooseBordersWithEmpty(
                             World<Chunk<Block>, Block>.GetAbsolutePosition(point, worldChunk.Position));
                     }

@@ -68,7 +68,7 @@ namespace MinecraftSharp.Domain
         public void PutBlock(BlockType blockType, PointL position)
         {
             var (cPosition, ePosition) = world.Translate2LocalNotation(position);
-            world[cPosition][ePosition] = blockType == null ? null : new Block(blockType, ePosition);
+            world[cPosition][ePosition] = blockType == null ? null : new Block(blockType);
             OnUpdateAlert(position);
         }
 

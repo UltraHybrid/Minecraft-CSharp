@@ -16,21 +16,14 @@ namespace MinecraftSharp.Domain.Generators
         public Chunk<Block> Generate(PointI point)
         {
             var chunk = new Chunk<Block>(point);
-            for (byte i = 0; i < Chunk<Block>.XLength; i++)
+            var (xL, zL) = Chunk<Block>.GetSize;
+            foreach (var (i, k) in Utils.DualFor(xL, zL))
             {
-                for (byte k = 0; k < Chunk<Block>.ZLength; k++)
-                {
-                    var innerPoint = PointF.CreateXZ(point.X * Chunk<Block>.XLength + i,
-                        point.Z * Chunk<Block>.ZLength + k);
-                    var value = (int) (highGenerator.Generate(innerPoint) * 22f + 100);
-                    var acme = new PointB(i, (byte) value, k);
-                    chunk[acme] = new Block(BaseBlocks.Grass, acme);
-                    for (var y = value - 1; y >= 0; y--)
-                    {
-                        var position = new PointB(i, (byte) y, k);
-                        chunk[position] = new Block(BaseBlocks.Dirt, position);
-                    }
-                }
+                var value = (int) (22 * highGenerator.Generate(PointF.CreateXZ(xL * point.X + i, zL * point.Z + k)));
+                value += 60;
+                chunk[new PointI(i, value, k)] = new Block(BaseBlocks.Grass);
+                // for (var y = value - 1; y >= 0; y--)
+                //     chunk[new PointI(i, y, k)] = new Block(BaseBlocks.Dirt);
             }
 
             return chunk;
