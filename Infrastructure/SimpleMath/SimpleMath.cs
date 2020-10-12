@@ -4,21 +4,6 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
 {
     public static class SimpleMath
     {
-        /*public static PointI AsPointI(this PointB point)
-        {
-            return new PointI(point.X, point.Y, point.Z);
-        }
-        
-        public static PointL AsPointL(this PointB point)
-        {
-            return new PointL(point.X, point.Y, point.Z);
-        }
-
-        public static PointB AsPointB(this PointI point)
-        {
-            return new PointB((byte) point.X, (byte) point.Y, (byte) point.Z);
-        }*/
-
         public static PointF AsPointF(this PointI point)
         {
             return new PointF(point.X, point.Y, point.Z);
@@ -38,7 +23,7 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
         {
             return new PointI((int) point.X, (int) point.Y, (int) point.Z);
         }
-        
+
         public static PointL AsPointL(this PointF point)
         {
             return new PointL((long) point.X, (long) point.Y, (long) point.Z);
@@ -53,7 +38,7 @@ namespace MinecraftSharp.Infrastructure.SimpleMath
         {
             return new Vector3(point.X, point.Y, point.Z);
         }
-        
+
         public static PointF AsPointF(this PointL point)
         {
             return new PointF(point.X, point.Y, point.Z);
